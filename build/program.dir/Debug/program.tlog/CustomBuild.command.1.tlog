@@ -1,0 +1,10 @@
+^C:\USERS\LUCAS\DOCUMENTS\GITHUB\TRABALHO1-FORCA-LUCAS-MORAIS27\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Lucas/Documents/GitHub/trabalho1-forca-lucas-morais27 -BC:/Users/Lucas/Documents/GitHub/trabalho1-forca-lucas-morais27/build --check-stamp-file C:/Users/Lucas/Documents/GitHub/trabalho1-forca-lucas-morais27/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

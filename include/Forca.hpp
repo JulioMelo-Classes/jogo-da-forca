@@ -3,24 +3,31 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <iterator>
 
 using namespace std;
  
 class Forca {
     public:
         enum Dificuldade{
-            FACIL, MEDIO, DIFICIL
+            FACIL = 0, MEDIO = 1, DIFICIL = 2
         };
     private:
         //TODO: armazenar os scores?
 
-        std::vector< std::pair<std::string, std::string> > m_palavras; //<! palavras e sua ocorrência no Corpus
+        std::vector< std::pair<std::string, int> > m_palavras; //<! palavras e sua ocorrência no Corpus
 
         std::string m_arquivo_scores; //<! nome do arquivo contendo os scores
  
         std::string m_arquivo_palavras; //<! nome do arquivo contendo as palavras
 
-        std::vector< std::string > m_frequencias;
+        std::vector< int > m_frequencias;
+
+        std::vector< std::string > p_facil;
+
+        std::vector< std::string > p_medio;
+
+        std::vector< std::string > p_dificil;
  
         Dificuldade m_dificuldade = Dificuldade::FACIL; //<! dificuldade atual do jogo
  
@@ -30,7 +37,9 @@ class Forca {
 
         std::vector< std::string >::iterator it_s;
 
-        std::vector< std::string >::iterator it_i;
+        std::vector< int >::iterator it_i;
+
+        std::vector< int >::iterator iti;
 
         std::vector< std::string >::iterator it_p;
 
@@ -41,6 +50,10 @@ class Forca {
         std::string m_palavra_jogada; //<! palavra sendo jogada “atualmente” no formato “_ _ _ ... _ “
         
         int m_tentativas_restantes; //TODO: armazenar tentativas restantes
+
+        int media_frequencia = 0;
+
+        int soma_frequencia = 0;
 
    
     public:
@@ -65,11 +78,12 @@ class Forca {
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
         std::pair<bool, std::string> eh_valido(){
-            int pos, tam, especial, count_l, count_a;
+            int pos, tam, count_l, count_a;
             count_a = 0;
             count_l = 1;
-            string file, inicio_metade, metade_fim, palavra_invalida, palavra_frequencia;
+            string linha, string, string_im, string_mf, palavra_invalida, palavra_frequencia;
             pair<bool, std::string> parTeste;
+
             fstream arquivos_palavras;
             fstream arquivos_scores;
             arquivos_palavras.open(m_arquivo_palavras, fstream::in);
@@ -77,8 +91,8 @@ class Forca {
 
             //Verifica se existe algo no arquivo .txt.
             while(!arquivos_palavras.eof()){
-                getline(arquivos_palavras, file);
-                if (file.empty()){
+                getline(arquivos_palavras, linha);
+                if (linha.empty()){
                     parTeste.first = false; 
                     parTeste.second = "Erro! Arquivo das palavras vazio ou inexistente.";
                     break;
@@ -89,8 +103,8 @@ class Forca {
 
             //Verifica se existe algo no arquivo .txt.
             while(!arquivos_palavras.eof()){
-                getline(arquivos_scores, file);
-                if (file.empty()){
+                getline(arquivos_scores, linha);
+                if (linha.empty()){
                     parTeste.first = false; 
                     parTeste.second = "Erro! Arquivo dos scores vazio ou inexistente.";
                     break;     
@@ -101,17 +115,17 @@ class Forca {
 
             //Verifica se os caracteres das palavras estão dentro do padrão apresentado.
             while(!arquivos_palavras.eof()){
-                getline(arquivos_palavras, file);
+                getline(arquivos_palavras, linha, ' ');
                 count_l++;
-                pos = file.find(" ", 0);
-                inicio_metade = file.substr(0, pos);
-                char palavra[inicio_metade.length()];
-                for (int i = 0; i < sizeof(palavra); i++) {
-                    palavra[i] = inicio_metade[i];
+                string = linha.substr(0, ' ');
+                cout << string << endl;
+                char palavra[string_im.length()];
+                for (int i = 0; i < (int)sizeof(palavra); i++) {
+                    palavra[i] = string_i[i];
                     if ((palavra[i]>='a' && palavra[i]<='z') || (palavra[i]>='A' && palavra[i]<='Z') || (palavra[i] == '-')){
                         parTeste.first = true;
                     }else{
-                        palavra_invalida = inicio_metade;
+                        palavra_invalida = string_im;
                         parTeste.first = false; 
                         parTeste.second = "Palavra \"" + palavra_invalida + "\" inválida na linha " + to_string(count_l) + ".";
                         break;
@@ -121,19 +135,19 @@ class Forca {
 
             //Verifica se a frequência corresponde a palavra.
             while(!arquivos_palavras.eof()){
-                getline(arquivos_palavras, file);
-                pos = file.find(" ", 0);
-                inicio_metade = file.substr(0, pos);
+                getline(arquivos_palavras, linha);
+                pos = linha.find(" ", 0);
+                string_im = linha.substr(0, pos);
                 tam = pos+1;
-                pos = file.find(";", pos+1);
-                metade_fim = file.substr(tam, pos-tam);
+                pos = linha.find(";", pos+1);
+                string_mf = linha.substr(tam, pos-tam);
 
-                for (int i = 0; i < m_palavras.size(); i++){
-                    if (m_palavras[i].first == inicio_metade && m_palavras[i].second == metade_fim){
+                for (int i = 0; i < (int)m_palavras.size(); i++){
+                    if (m_palavras[i].first == string_im ){
                         parTeste.first = true;
                     }else{
-                        cout << inicio_metade << endl;
-                        palavra_frequencia = inicio_metade;
+                        cout << string_im << endl;
+                        palavra_frequencia = string_im;
                         count_a = i;
                         parTeste.first = false; 
                         parTeste.second = "Palavra \"" + palavra_frequencia + "\" não corresponde à frequência " + to_string(count_a) + ".";
@@ -144,8 +158,8 @@ class Forca {
 
             //Verifica se existe palavras com menos de cinco letras.
             while(!arquivos_palavras.eof()){ 
-                getline(arquivos_palavras, file);
-                if (file.size() <= 4){
+                getline(arquivos_palavras, linha);
+                if (linha.size() <= 4){
                     parTeste.first = false; 
                     parTeste.second = "Erro! O arquivo contém alguma(s) palavra(s) com menos de 5 letras.";
                     break;
@@ -153,9 +167,10 @@ class Forca {
                     parTeste.first = true; 
                 }
             }
-
+            cout << string << endl;
             arquivos_palavras.close();
             arquivos_scores.close();
+
             return parTeste;
         }
  
@@ -168,19 +183,26 @@ class Forca {
             fstream arquivos_scores;
             arquivos_palavras.open(m_arquivo_palavras, fstream::in);
             arquivos_scores.open(m_arquivo_scores, fstream::in);
-            int pos, tam;
+
             while(!arquivos_palavras.eof()){
-                getline(arquivos_palavras, linha_p);
-                pos = linha_p.find(" ", 0);
-                m_palavras_do_jogo.push_back(linha_p.substr(0, pos));
-                tam = pos+1;
-                pos = linha_p.find(";", pos+1);
-                m_frequencias.push_back(linha_p.substr(tam, pos-tam));
-            }   
+                getline(arquivos_palavras, linha_p, ' ');
+                m_palavras_do_jogo.push_back(linha_p);
+
+                getline(arquivos_palavras, linha_p, '\n');
+                m_frequencias.push_back(stoi(linha_p));
+            }
+            
             while(!arquivos_scores.eof()){
-                getline(arquivos_scores, linha_s);
+                getline(arquivos_scores, linha_s, ';');
+                m_scores_do_jogo.push_back(linha_s);
+                getline(arquivos_scores, linha_s, ';');
+                m_scores_do_jogo.push_back(linha_s);
+                getline(arquivos_scores, linha_s, ';');
+                m_scores_do_jogo.push_back(linha_s);
+                getline(arquivos_scores, linha_s, '\n');
                 m_scores_do_jogo.push_back(linha_s);
             }
+
             arquivos_palavras.close();
             arquivos_scores.close();
         };
@@ -192,7 +214,7 @@ class Forca {
             
             arquivos_scores.open(m_arquivo_scores, fstream::in);
             string linha_p, linha_s;
-            int pos, tam, fim;
+            int pos, tam;
 
             cout << "Dificuldade | Jogador    | Palavras     | Pontos" << endl;
 
@@ -210,16 +232,15 @@ class Forca {
                 pos = linha_s.find("\n", -1);
                 pontos.push_back(linha_s.substr(tam, pos-tam));
             }
-            int teste;
-            int i = 0, j = 0, k = 0, a = 0;
+            int i = 0, j = 0;
             for (it_dificuldade = dificuldade.begin(), it_jogador = jogador.begin(), it_pontos = pontos.begin(); it_dificuldade != dificuldade.end(); ++it_dificuldade, ++it_jogador, ++it_pontos) {
                 // cout << *it_dificuldade  << setw(9) << " | " << *it_jogador << setw(5); 
                 cout << *it_dificuldade;
-                for (j = 0; j < (13 - (dificuldade[i].size())); j++) {
+                for (j = 0; j < (13 - ((int)dificuldade[i].size())); j++) {
                     cout << " ";
                 }
                 cout << "| " << *it_jogador;
-                for (j = 0; j < (11 - jogador[i].size()); j++) {
+                for (j = 0; j < (11 - (int)jogador[i].size()); j++) {
                     cout << " ";
                 }
 
@@ -245,8 +266,11 @@ class Forca {
 
         void mostrar_frequencias(){
             for (it_i = m_frequencias.begin(); it_i != m_frequencias.end(); ++it_i){
-                cout << *it_i << endl;
-            }      
+                soma_frequencia = soma_frequencia + *it_i;
+            }  
+            media_frequencia = soma_frequencia/m_frequencias.size();
+            cout << "Frequência: " << soma_frequencia << endl;   
+            cout << "Média: " << media_frequencia << endl;   
         };
 
         void mostrar_palavras(){
@@ -257,18 +281,25 @@ class Forca {
         
         void montarPar(){
             vector<string>::iterator itp;
-            vector<string>::iterator itf;
+            vector<int>::iterator itf;
             for (itp = m_palavras_do_jogo.begin(), itf = m_frequencias.begin(); itp != m_palavras_do_jogo.end(), itf != m_frequencias.end(); ++itp, ++itf){
                 m_palavras.push_back(make_pair(*itp, *itf));
             }
         }
 
+        void separarPorDificuldade(){
+            for (int i = 0; i < (int)m_palavras.size(); i++){
+                if (m_palavras[i].first == "" && m_palavras[i].second == 0){
+                    
+                }
+            }
+        }
 
         void mostrar_parDePalavras(){
             cout << "(";
-            for (int i = 0; i < m_palavras.size(); i++) {
+            for (int i = 0; i < (int)m_palavras.size(); i++) {
                 cout << "[" << m_palavras[i].first << "," << m_palavras[i].second << "], ";
-                if (i == (m_palavras.size()-2)) {
+                if (i == ((int)m_palavras.size()-2)) {
                     cout << "[" << m_palavras[i-1].first << "," << m_palavras[i-1].second << "]";
                     break;
                 }
@@ -283,7 +314,7 @@ class Forca {
          * @param d a dificuldade desejada
          * @see proxima_palavra
          */
-        void set_dificuldade(Dificuldade d){
+        void set_dificuldade(int d){
             if (d == 0){
                 m_dificuldade = FACIL;
             }else if(d == 1){

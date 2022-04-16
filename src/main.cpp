@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
     }else{
         cout << "Arquivos OK!" << endl;
     }
-    forca.montarPar();
+    //forca.montarPar();
     cout << "--------------------------------------------------------------------" << endl;
     int option, dif;
     while(true){
@@ -36,26 +36,48 @@ int main(int argc, char *argv[]){
             cout << "Sua escolha: ";
             cin >> dif;
             cout << endl;
-            Forca::Dificuldade d;
+            int d = 0;
             if (dif == 1){
-                d = Forca::Dificuldade::FACIL;
+                d = 0;
                 cout << "Iniciando o Jogo no nível fácil, será que você conhece essa palavra?" << endl;
             }else if(dif == 2){
-                d = Forca::Dificuldade::MEDIO;
+                d = 1;
                 cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
             }else if(dif == 3){
-                d = Forca::Dificuldade::DIFICIL;
+                d = 2;
                 cout << "Iniciando o Jogo no nível difícil, será que você conhece essa palavra?" << endl;
             }
             forca.set_dificuldade(d);
             cout << endl;
             cout << endl;
             cout << endl;
-            /*ler informações do jogador para o score e gravar no arquivo*/
+            while(true){
+                /*
+                string p = forca.proxima_palavra();
+                //exibe interface do jogo 
+                while (!forca.rodada_terminada()){ //loop da rodada
+                    //ler palpite 
+                    string palpite;
+                    auto result = forca.palpite(palpite);
+                    //testa palpite e atualiza a interface dependendo do resultado 
+                }
+                if(//acertou a palavra inteira ){
+                    //imprime interface de continuar / parar 
+                    if (//parar )
+                        break;
+                    else
+                        forca.reset_rodada();
+                }
+                else{ //perdeu 
+                    //imprime gameover e a palavra que estava sendo jogada 
+                    break;
+                }*/
+            }
+            //ler informações do jogador para o score e gravar no arquivo 
         }
         else if(option == 2){
-            forca.mostrar_scores();
-            //forca.mostrar_frequencias();
+            //forca.mostrar_scores();
+            forca.mostrar_frequencias();
             //forca.mostrar_palavras();
             //forca.mostrar_parDePalavras();
         }else{ //qualquer outro número sai do jogo
