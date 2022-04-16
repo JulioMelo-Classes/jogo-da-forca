@@ -142,7 +142,11 @@ CMakeFiles/program.dir/src/main.cpp.obj: ../src/main.cpp \
   C:/msys64/mingw64/include/c++/11.2.0/bits/codecvt.h \
   C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/basic_file.h \
   C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/c++io.h \
-  C:/msys64/mingw64/include/c++/11.2.0/bits/fstream.tcc
+  C:/msys64/mingw64/include/c++/11.2.0/bits/fstream.tcc \
+  C:/msys64/mingw64/include/c++/11.2.0/cstring \
+  C:/msys64/mingw64/include/string.h \
+  C:/msys64/mingw64/include/sec_api/string_s.h \
+  C:/msys64/mingw64/include/c++/11.2.0/filesystem
 
 
 C:/msys64/mingw64/include/wchar.h:
@@ -428,3 +432,11 @@ C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/basic_file.h:
 C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/c++io.h:
 
 C:/msys64/mingw64/include/c++/11.2.0/bits/fstream.tcc:
+
+C:/msys64/mingw64/include/c++/11.2.0/cstring:
+
+C:/msys64/mingw64/include/string.h:
+
+C:/msys64/mingw64/include/sec_api/string_s.h:
+
+C:/msys64/mingw64/include/c++/11.2.0/filesystem:

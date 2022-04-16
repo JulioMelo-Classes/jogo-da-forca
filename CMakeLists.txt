@@ -11,9 +11,9 @@ add_executable( ${APP_NAME}
 
 set_property(TARGET ${APP_NAME} PROPERTY CXX_STANDARD 14)
 
-add_custom_target(
-    verify
-    COMMAND python3 ${CMAKE_SOURCE_DIR}/../scripts/verify-inputs.py ./${APP_NAME}
-    DEPENDS ${APP_NAME}
-)
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/palavrasP.txt
+    ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scores.txt
+    ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)

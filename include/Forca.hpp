@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <cstring>
 
 using namespace std;
  
@@ -64,72 +65,95 @@ class Forca {
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
         std::pair<bool, std::string> eh_valido(){
-            bool existe_arqP, existe_arqS, tam_arqP;
-            int count = 0;
-            string file;
+            int pos, tam, especial, count_l, count_a;
+            count_a = 0;
+            count_l = 1;
+            string file, inicio_metade, metade_fim, palavra_invalida, palavra_frequencia;
             pair<bool, std::string> parTeste;
             fstream arquivos_palavras;
             fstream arquivos_scores;
             arquivos_palavras.open(m_arquivo_palavras, fstream::in);
             arquivos_scores.open(m_arquivo_scores, fstream::in);
 
+            //Verifica se existe algo no arquivo .txt.
             while(!arquivos_palavras.eof()){
                 getline(arquivos_palavras, file);
-                if (file.size() <= 4){
-                    tam_arqP = false;
-                }else{
-                    tam_arqP = true; 
-                }
                 if (file.empty()){
-                    existe_arqP = false;
+                    parTeste.first = false; 
+                    parTeste.second = "Erro! Arquivo das palavras vazio ou inexistente.";
                     break;
                 }else{
-                    existe_arqP = true;
-                    break;
+                    parTeste.first = true;
                 }
             }
 
-            while(!arquivos_scores.eof()){
+            //Verifica se existe algo no arquivo .txt.
+            while(!arquivos_palavras.eof()){
                 getline(arquivos_scores, file);
                 if (file.empty()){
-                    existe_arqS = false;
-                    break;
-                }else {
-                    existe_arqS = true;
-                    break;
+                    parTeste.first = false; 
+                    parTeste.second = "Erro! Arquivo dos scores vazio ou inexistente.";
+                    break;     
+                }else{
+                    parTeste.first = true;
                 }
             }
 
-            
+            //Verifica se os caracteres das palavras estão dentro do padrão apresentado.
+            while(!arquivos_palavras.eof()){
+                getline(arquivos_palavras, file);
+                count_l++;
+                pos = file.find(" ", 0);
+                inicio_metade = file.substr(0, pos);
+                char palavra[inicio_metade.length()];
+                for (int i = 0; i < sizeof(palavra); i++) {
+                    palavra[i] = inicio_metade[i];
+                    if ((palavra[i]>='a' && palavra[i]<='z') || (palavra[i]>='A' && palavra[i]<='Z') || (palavra[i] == '-')){
+                        parTeste.first = true;
+                    }else{
+                        palavra_invalida = inicio_metade;
+                        parTeste.first = false; 
+                        parTeste.second = "Palavra \"" + palavra_invalida + "\" inválida na linha " + to_string(count_l) + ".";
+                        break;
+                    }  
+                }
+            }
 
-            while(true){
-                if (existe_arqP == true){
-                    count++;
-                }else{
-                    parTeste.first = false; 
-                    parTeste.second = "Erro! Não existe arquivo .txt (palavras).";
-                    break;
+            //Verifica se a frequência corresponde a palavra.
+            while(!arquivos_palavras.eof()){
+                getline(arquivos_palavras, file);
+                pos = file.find(" ", 0);
+                inicio_metade = file.substr(0, pos);
+                tam = pos+1;
+                pos = file.find(";", pos+1);
+                metade_fim = file.substr(tam, pos-tam);
+
+                for (int i = 0; i < m_palavras.size(); i++){
+                    if (m_palavras[i].first == inicio_metade && m_palavras[i].second == metade_fim){
+                        parTeste.first = true;
+                    }else{
+                        cout << inicio_metade << endl;
+                        palavra_frequencia = inicio_metade;
+                        count_a = i;
+                        parTeste.first = false; 
+                        parTeste.second = "Palavra \"" + palavra_frequencia + "\" não corresponde à frequência " + to_string(count_a) + ".";
+                        break;
+                    }
                 }
-                if (existe_arqS == true){
-                    count++;
-                }else{
-                    parTeste.first = false;
-                    parTeste.second = "Erro! Não existe arquivo .txt (scores).";
-                    break;
-                }
-                if (tam_arqP == true){
-                    count++;
-                }else{
+            }
+
+            //Verifica se existe palavras com menos de cinco letras.
+            while(!arquivos_palavras.eof()){ 
+                getline(arquivos_palavras, file);
+                if (file.size() <= 4){
                     parTeste.first = false; 
                     parTeste.second = "Erro! O arquivo contém alguma(s) palavra(s) com menos de 5 letras.";
                     break;
-                }
-                if (count == 3){
-                    parTeste.first = true;
-                    parTeste.second = "";
-                    break;
+                }else{
+                    parTeste.first = true; 
                 }
             }
+
             arquivos_palavras.close();
             arquivos_scores.close();
             return parTeste;
@@ -144,7 +168,7 @@ class Forca {
             fstream arquivos_scores;
             arquivos_palavras.open(m_arquivo_palavras, fstream::in);
             arquivos_scores.open(m_arquivo_scores, fstream::in);
-            int pos, tam, fim;
+            int pos, tam;
             while(!arquivos_palavras.eof()){
                 getline(arquivos_palavras, linha_p);
                 pos = linha_p.find(" ", 0);
@@ -153,22 +177,71 @@ class Forca {
                 pos = linha_p.find(";", pos+1);
                 m_frequencias.push_back(linha_p.substr(tam, pos-tam));
             }   
-
             while(!arquivos_scores.eof()){
                 getline(arquivos_scores, linha_s);
                 m_scores_do_jogo.push_back(linha_s);
             }
-
             arquivos_palavras.close();
             arquivos_scores.close();
         };
         
-
         void mostrar_scores(){
-            for (it_s = m_scores_do_jogo.begin(); it_s != m_scores_do_jogo.end(); ++it_s){
-                cout << *it_s << endl;
-            }      
-        };
+            fstream arquivos_scores;
+            vector<string> dificuldade, jogador, palavras, pontos;
+            vector<string>::iterator it_dificuldade, it_jogador, it_palavras, it_pontos;
+            
+            arquivos_scores.open(m_arquivo_scores, fstream::in);
+            string linha_p, linha_s;
+            int pos, tam, fim;
+
+            cout << "Dificuldade | Jogador    | Palavras     | Pontos" << endl;
+
+            while(!arquivos_scores.eof()){
+                getline(arquivos_scores, linha_s);
+                pos = linha_s.find(";", 0);
+                dificuldade.push_back(linha_s.substr(0, pos));
+                tam = pos+1;
+                pos = linha_s.find(";", pos+1);
+                jogador.push_back(linha_s.substr(tam, pos-tam));
+                tam = pos+1;
+                pos = linha_s.find(";", pos+1);
+                palavras.push_back(linha_s.substr(tam, pos-tam));
+                tam = pos+1;
+                pos = linha_s.find("\n", -1);
+                pontos.push_back(linha_s.substr(tam, pos-tam));
+            }
+            int teste;
+            int i = 0, j = 0, k = 0, a = 0;
+            for (it_dificuldade = dificuldade.begin(), it_jogador = jogador.begin(), it_pontos = pontos.begin(); it_dificuldade != dificuldade.end(); ++it_dificuldade, ++it_jogador, ++it_pontos) {
+                // cout << *it_dificuldade  << setw(9) << " | " << *it_jogador << setw(5); 
+                cout << *it_dificuldade;
+                for (j = 0; j < (13 - (dificuldade[i].size())); j++) {
+                    cout << " ";
+                }
+                cout << "| " << *it_jogador;
+                for (j = 0; j < (11 - jogador[i].size()); j++) {
+                    cout << " ";
+                }
+
+                // j = 0;
+                // if (j == 0) {
+                //     cout << "| ";
+                //     pos = palavras[j].find(',', 0);
+                //     string primeira_palavra = palavras[a].substr(0, pos);
+                //     cout << primeira_palavra;
+                    
+                //     for (k = 0; k < 13 - (primeira_palavra.size()); k++) {
+                //         cout << ' ';
+                //     }
+                //     cout << "| " << it_pontos[i].substr(0, 2) << "\n";
+                //     j++, a++;
+                // }
+                    // cout  <<"            |            |              |";
+                
+                cout << "\n" <<"------------+------------+--------------+--------" << endl;
+                i++;
+            }
+        };   
 
         void mostrar_frequencias(){
             for (it_i = m_frequencias.begin(); it_i != m_frequencias.end(); ++it_i){
@@ -192,15 +265,15 @@ class Forca {
 
 
         void mostrar_parDePalavras(){
-        cout << "(";
+            cout << "(";
             for (int i = 0; i < m_palavras.size(); i++) {
-                cout << "[" << m_palavras[i].first << ", " << m_palavras[i].second << "], ";
+                cout << "[" << m_palavras[i].first << "," << m_palavras[i].second << "], ";
                 if (i == (m_palavras.size()-2)) {
-                    cout << "[" << m_palavras[i+1].first << ", " << m_palavras[i+1].second << "]";
+                    cout << "[" << m_palavras[i-1].first << "," << m_palavras[i-1].second << "]";
                     break;
                 }
             }
-        cout << ")" << endl;
+            cout << ")" << endl;
         };
  
         /**

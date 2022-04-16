@@ -128,19 +128,6 @@ program/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\program.dir\build.make CMakeFiles/program.dir/build
 .PHONY : program/fast
 
-#=============================================================================
-# Target rules for targets named verify
-
-# Build rule for target.
-verify: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 verify
-.PHONY : verify
-
-# fast build rule for target.
-verify/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\verify.dir\build.make CMakeFiles/verify.dir/build
-.PHONY : verify/fast
-
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -173,7 +160,6 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... verify
 	@echo ... program
 	@echo ... src/main.obj
 	@echo ... src/main.i

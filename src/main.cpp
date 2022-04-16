@@ -1,12 +1,11 @@
 #include <iostream>
 #include "Forca.hpp"
-#include <string>
 
 using namespace std;
 int main(int argc, char *argv[]){
     setlocale(LC_ALL, " ");
     Forca forca(argv[1], argv[2]);
-
+    string palavra_secreta = "MELANCIA";
     cout << ">>> Lendo arquivos de palavras ["<< argv[1] <<"] e scores ["<< argv[2] <<"], por favor aguarde.." << endl;
     cout << "--------------------------------------------------------------------" << endl;
     forca.carregar_arquivos();
@@ -18,7 +17,7 @@ int main(int argc, char *argv[]){
     }else{
         cout << "Arquivos OK!" << endl;
     }
-
+    forca.montarPar();
     cout << "--------------------------------------------------------------------" << endl;
     int option, dif;
     while(true){
@@ -55,14 +54,11 @@ int main(int argc, char *argv[]){
             /*ler informações do jogador para o score e gravar no arquivo*/
         }
         else if(option == 2){
-            //forca.mostrar_scores();
+            forca.mostrar_scores();
             //forca.mostrar_frequencias();
             //forca.mostrar_palavras();
-            forca.montarPar();
-            forca.mostrar_parDePalavras();
+            //forca.mostrar_parDePalavras();
         }else{ //qualquer outro número sai do jogo
-            
-
             break;
         }    
     }

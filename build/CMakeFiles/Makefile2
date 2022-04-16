@@ -71,7 +71,6 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/program.dir/clean
-clean: CMakeFiles/verify.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -99,32 +98,6 @@ program: CMakeFiles/program.dir/rule
 CMakeFiles/program.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\program.dir\build.make CMakeFiles/program.dir/clean
 .PHONY : CMakeFiles/program.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/verify.dir
-
-# All Build rule for target.
-CMakeFiles/verify.dir/all: CMakeFiles/program.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\verify.dir\build.make CMakeFiles/verify.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\verify.dir\build.make CMakeFiles/verify.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Lucas\Documents\GitHub\trabalho1-forca-lucas-morais27\build\CMakeFiles --progress-num= "Built target verify"
-.PHONY : CMakeFiles/verify.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/verify.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Lucas\Documents\GitHub\trabalho1-forca-lucas-morais27\build\CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/verify.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Lucas\Documents\GitHub\trabalho1-forca-lucas-morais27\build\CMakeFiles 0
-.PHONY : CMakeFiles/verify.dir/rule
-
-# Convenience name for target.
-verify: CMakeFiles/verify.dir/rule
-.PHONY : verify
-
-# clean rule for target.
-CMakeFiles/verify.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\verify.dir\build.make CMakeFiles/verify.dir/clean
-.PHONY : CMakeFiles/verify.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
