@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
     cout << "--------------------------------------------------------------------" << endl;
     forca.carregar_arquivos();
 
-    auto valid = forca.eh_valido(argv[1], argv[2]);
+    auto valid = forca.eh_valido();
     if(!valid.first){ //sai do programa ao encontrar um erro
         cout<<valid.second<<endl;
         exit(-1);
@@ -55,9 +55,9 @@ int main(int argc, char *argv[]){
             /*ler informações do jogador para o score e gravar no arquivo*/
         }
         else if(option == 2){
-            forca.mostrar_scores();
-            forca.mostrar_frequencias();
-            forca.mostrar_palavras();
+            //forca.mostrar_scores();
+            //forca.mostrar_frequencias();
+            //forca.mostrar_palavras();
             forca.montarPar();
             forca.mostrar_parDePalavras();
         }else{ //qualquer outro número sai do jogo

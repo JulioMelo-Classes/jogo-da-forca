@@ -13,7 +13,7 @@ class Forca {
     private:
         //TODO: armazenar os scores?
 
-        std::vector< std::pair<std::string, int> > m_palavras; //<! palavras e sua ocorrência no Corpus
+        std::vector< std::pair<std::string, std::string> > m_palavras; //<! palavras e sua ocorrência no Corpus
 
         std::string m_arquivo_scores; //<! nome do arquivo contendo os scores
  
@@ -63,17 +63,44 @@ class Forca {
          * razão correspondente de acordo com as especificações.
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
-        std::pair<bool, std::string> eh_valido(std::string arq_palavras, std::string arq_scores){
+        std::pair<bool, std::string> eh_valido(){
             bool existe_arqP, existe_arqS, tam_arqP;
             int count = 0;
+            string file;
             pair<bool, std::string> parTeste;
+            fstream arquivos_palavras;
+            fstream arquivos_scores;
+            arquivos_palavras.open(m_arquivo_palavras, fstream::in);
+            arquivos_scores.open(m_arquivo_scores, fstream::in);
 
-            for (const auto &file : arq_palavras, arq_scores){
-                (file)? existe_arqP = true : existe_arqP = false;
-                (file)? existe_arqS = true : existe_arqS = false;
+            while(!arquivos_palavras.eof()){
+                getline(arquivos_palavras, file);
+                if (file.size() <= 4){
+                    tam_arqP = false;
+                }else{
+                    tam_arqP = true; 
+                }
+                if (file.empty()){
+                    existe_arqP = false;
+                    break;
+                }else{
+                    existe_arqP = true;
+                    break;
+                }
             }
 
-            (m_palavras.size() <= 4)? tam_arqP = false : tam_arqP = true; 
+            while(!arquivos_scores.eof()){
+                getline(arquivos_scores, file);
+                if (file.empty()){
+                    existe_arqS = false;
+                    break;
+                }else {
+                    existe_arqS = true;
+                    break;
+                }
+            }
+
+            
 
             while(true){
                 if (existe_arqP == true){
@@ -81,18 +108,21 @@ class Forca {
                 }else{
                     parTeste.first = false; 
                     parTeste.second = "Erro! Não existe arquivo .txt (palavras).";
+                    break;
                 }
                 if (existe_arqS == true){
                     count++;
                 }else{
                     parTeste.first = false;
                     parTeste.second = "Erro! Não existe arquivo .txt (scores).";
+                    break;
                 }
                 if (tam_arqP == true){
                     count++;
                 }else{
                     parTeste.first = false; 
                     parTeste.second = "Erro! O arquivo contém alguma(s) palavra(s) com menos de 5 letras.";
+                    break;
                 }
                 if (count == 3){
                     parTeste.first = true;
@@ -100,6 +130,8 @@ class Forca {
                     break;
                 }
             }
+            arquivos_palavras.close();
+            arquivos_scores.close();
             return parTeste;
         }
  
@@ -116,8 +148,8 @@ class Forca {
             while(!arquivos_palavras.eof()){
                 getline(arquivos_palavras, linha_p);
                 pos = linha_p.find(" ", 0);
-                tam = pos+1;
                 m_palavras_do_jogo.push_back(linha_p.substr(0, pos));
+                tam = pos+1;
                 pos = linha_p.find(";", pos+1);
                 m_frequencias.push_back(linha_p.substr(tam, pos-tam));
             }   
@@ -154,7 +186,7 @@ class Forca {
             vector<string>::iterator itp;
             vector<string>::iterator itf;
             for (itp = m_palavras_do_jogo.begin(), itf = m_frequencias.begin(); itp != m_palavras_do_jogo.end(), itf != m_frequencias.end(); ++itp, ++itf){
-                m_palavras.push_back(make_pair(*itp, stoi(*itf)));
+                m_palavras.push_back(make_pair(*itp, *itf));
             }
         }
 

@@ -1,4 +1,3 @@
-from cgi import print_form
 import re
 import sys
 
@@ -7,7 +6,7 @@ if len(sys.argv) == 1:
 else:
     bruto = sys.argv[1]
 
-formatado = "palavras.txt"
+formatado = "palavrasP.txt"
 
 try:
     ref_arquivo = open(bruto,"r",encoding='utf-8')
@@ -50,5 +49,5 @@ try:
     print("Média: ", int(s/c))
     ref_arquivo.close()
     esc_arquivo.close()
-finally:
+except:
     print("Arquivo finalizado.")
