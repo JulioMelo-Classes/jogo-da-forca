@@ -40,7 +40,7 @@ try:
                 frase = frase.translate(transTable)
                 frase = re.sub(r"[^a-zA-Z-]","",frase)
                 frase = frase.upper()
-                if (len(frase) > 4):
+                if (len(frase) > 4 and len(frequencia) > 1):
                     c += 1
                     s += int(frequencia)
                     esc_arquivo.write(frase+" "+frequencia+"\n")

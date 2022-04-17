@@ -4,6 +4,8 @@
 #include <string>
 #include <cstring>
 #include <iterator>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
  
@@ -78,54 +80,45 @@ class Forca {
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
         std::pair<bool, std::string> eh_valido(){
-            int pos, tam, count_l, count_a;
-            count_a = 0;
-            count_l = 1;
-            string linha, string, string_im, string_mf, palavra_invalida, palavra_frequencia;
+            int pos, tam, count_l = 1, count_a = 0, string_mf;
+            string linha, string, string_im, palavra_invalida, palavra_frequencia;
             pair<bool, std::string> parTeste;
 
-            fstream arquivos_palavras;
-            fstream arquivos_scores;
-            arquivos_palavras.open(m_arquivo_palavras, fstream::in);
-            arquivos_scores.open(m_arquivo_scores, fstream::in);
-
             //Verifica se existe algo no arquivo .txt.
-            while(!arquivos_palavras.eof()){
-                getline(arquivos_palavras, linha);
+            for (auto &linha : m_palavras_do_jogo){
                 if (linha.empty()){
                     parTeste.first = false; 
                     parTeste.second = "Erro! Arquivo das palavras vazio ou inexistente.";
                     break;
                 }else{
                     parTeste.first = true;
+                    break;
                 }
             }
 
             //Verifica se existe algo no arquivo .txt.
-            while(!arquivos_palavras.eof()){
-                getline(arquivos_scores, linha);
+            for (auto &linha : m_scores_do_jogo){
                 if (linha.empty()){
                     parTeste.first = false; 
                     parTeste.second = "Erro! Arquivo dos scores vazio ou inexistente.";
                     break;     
                 }else{
                     parTeste.first = true;
+                    break;
                 }
             }
 
             //Verifica se os caracteres das palavras estão dentro do padrão apresentado.
-            while(!arquivos_palavras.eof()){
-                getline(arquivos_palavras, linha, ' ');
+            for (auto &linha : m_palavras_do_jogo){
+                string = linha;
+                char palavra[string.length()];
                 count_l++;
-                string = linha.substr(0, ' ');
-                cout << string << endl;
-                char palavra[string_im.length()];
                 for (int i = 0; i < (int)sizeof(palavra); i++) {
-                    palavra[i] = string_i[i];
-                    if ((palavra[i]>='a' && palavra[i]<='z') || (palavra[i]>='A' && palavra[i]<='Z') || (palavra[i] == '-')){
+                    palavra[i] = string[i];
+                    if ((palavra[i] >= 'a' && palavra[i] <= 'z') || (palavra[i] >= 'A' && palavra[i] <= 'Z') || (palavra[i] == '-')){
                         parTeste.first = true;
                     }else{
-                        palavra_invalida = string_im;
+                        palavra_invalida = string[i];
                         parTeste.first = false; 
                         parTeste.second = "Palavra \"" + palavra_invalida + "\" inválida na linha " + to_string(count_l) + ".";
                         break;
@@ -133,32 +126,8 @@ class Forca {
                 }
             }
 
-            //Verifica se a frequência corresponde a palavra.
-            while(!arquivos_palavras.eof()){
-                getline(arquivos_palavras, linha);
-                pos = linha.find(" ", 0);
-                string_im = linha.substr(0, pos);
-                tam = pos+1;
-                pos = linha.find(";", pos+1);
-                string_mf = linha.substr(tam, pos-tam);
-
-                for (int i = 0; i < (int)m_palavras.size(); i++){
-                    if (m_palavras[i].first == string_im ){
-                        parTeste.first = true;
-                    }else{
-                        cout << string_im << endl;
-                        palavra_frequencia = string_im;
-                        count_a = i;
-                        parTeste.first = false; 
-                        parTeste.second = "Palavra \"" + palavra_frequencia + "\" não corresponde à frequência " + to_string(count_a) + ".";
-                        break;
-                    }
-                }
-            }
-
             //Verifica se existe palavras com menos de cinco letras.
-            while(!arquivos_palavras.eof()){ 
-                getline(arquivos_palavras, linha);
+            for (auto &linha : m_palavras_do_jogo){
                 if (linha.size() <= 4){
                     parTeste.first = false; 
                     parTeste.second = "Erro! O arquivo contém alguma(s) palavra(s) com menos de 5 letras.";
@@ -167,10 +136,6 @@ class Forca {
                     parTeste.first = true; 
                 }
             }
-            cout << string << endl;
-            arquivos_palavras.close();
-            arquivos_scores.close();
-
             return parTeste;
         }
  
@@ -193,13 +158,7 @@ class Forca {
             }
             
             while(!arquivos_scores.eof()){
-                getline(arquivos_scores, linha_s, ';');
-                m_scores_do_jogo.push_back(linha_s);
-                getline(arquivos_scores, linha_s, ';');
-                m_scores_do_jogo.push_back(linha_s);
-                getline(arquivos_scores, linha_s, ';');
-                m_scores_do_jogo.push_back(linha_s);
-                getline(arquivos_scores, linha_s, '\n');
+                getline(arquivos_scores, linha_s);
                 m_scores_do_jogo.push_back(linha_s);
             }
 
@@ -264,13 +223,11 @@ class Forca {
             }
         };   
 
-        void mostrar_frequencias(){
+        void montar_media(){
             for (it_i = m_frequencias.begin(); it_i != m_frequencias.end(); ++it_i){
                 soma_frequencia = soma_frequencia + *it_i;
             }  
-            media_frequencia = soma_frequencia/m_frequencias.size();
-            cout << "Frequência: " << soma_frequencia << endl;   
-            cout << "Média: " << media_frequencia << endl;   
+            media_frequencia = soma_frequencia/m_frequencias.size();    
         };
 
         void mostrar_palavras(){
@@ -279,20 +236,58 @@ class Forca {
             }      
         };
         
-        void montarPar(){
+        void montar_par(){
             vector<string>::iterator itp;
             vector<int>::iterator itf;
             for (itp = m_palavras_do_jogo.begin(), itf = m_frequencias.begin(); itp != m_palavras_do_jogo.end(), itf != m_frequencias.end(); ++itp, ++itf){
                 m_palavras.push_back(make_pair(*itp, *itf));
             }
         }
-
-        void separarPorDificuldade(){
-            for (int i = 0; i < (int)m_palavras.size(); i++){
-                if (m_palavras[i].first == "" && m_palavras[i].second == 0){
-                    
+        
+        vector<string> separarPorDificuldade(){
+            unsigned seed = time(0);
+            int nrand;
+            vector<string> palavras_facil, palavras_mediaMaior, palavras_mediaMenor, palavras_escMenor, palavras_escMaior, palavras_dificil, palavras_escolhidas;
+            vector<pair<string, int>>::iterator it_si;
+            vector<string>::iterator it_pe;
+            srand(seed);
+            
+            if (m_dificuldade == 0){
+                for (int i = 0; i < (int)m_palavras.size(); i++){
+                    if (m_palavras[i].second > media_frequencia){
+                        palavras_facil.push_back(m_palavras[i].first);
+                    }
                 }
+                for (int i = 0; i < 10; i++){
+                    nrand = rand()%(int)palavras_facil.size();
+                    palavras_escolhidas.push_back(palavras_facil[nrand]);
+                }
+            }else if(m_dificuldade == 1){
+                for (int i = 0; i < (int)m_palavras.size(); i++){
+                    if (m_palavras[i].second < media_frequencia){
+                        palavras_mediaMenor.push_back(m_palavras[i].first);
+                    }else if(m_palavras[i].second >= media_frequencia){
+                        palavras_mediaMaior.push_back(m_palavras[i].first);
+                    }
+                }
+                for (int i = 0; i < 7; i++){
+                    nrand = rand()%(int)palavras_mediaMenor.size();
+                    palavras_escMenor.push_back(palavras_mediaMenor[nrand]);
+                    palavras_escolhidas.emplace_back(palavras_escMenor);
+                }
+                for (int i = 0; i < 13; i++){
+                    nrand = rand()%(int)palavras_mediaMaior.size();
+                    palavras_escMaior.push_back(palavras_mediaMaior[nrand]);
+                    palavras_escolhidas.emplace_back(palavras_escMaior);
+                }
+            }else if(m_dificuldade == 2){
+
             }
+            for (it_pe = palavras_escolhidas.begin(); it_pe != palavras_escolhidas.end(); ++it_pe){
+                cout << *it_pe << endl;
+            } 
+
+            return palavras_escolhidas;
         }
 
         void mostrar_parDePalavras(){

@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
     }else{
         cout << "Arquivos OK!" << endl;
     }
-    //forca.montarPar();
+    forca.montar_par();
     cout << "--------------------------------------------------------------------" << endl;
     int option, dif;
     while(true){
@@ -51,6 +51,7 @@ int main(int argc, char *argv[]){
             cout << endl;
             cout << endl;
             cout << endl;
+            //forca.separarPorDificuldade();
             while(true){
                 /*
                 string p = forca.proxima_palavra();
@@ -77,7 +78,7 @@ int main(int argc, char *argv[]){
         }
         else if(option == 2){
             //forca.mostrar_scores();
-            forca.mostrar_frequencias();
+            forca.montar_media();
             //forca.mostrar_palavras();
             //forca.mostrar_parDePalavras();
         }else{ //qualquer outro número sai do jogo
