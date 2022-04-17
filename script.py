@@ -6,7 +6,7 @@ if len(sys.argv) == 1:
 else:
     bruto = sys.argv[1]
 
-formatado = "palavrasFormatada.txt"
+formatado = "palavrasTeste.txt"
 
 try:
     ref_arquivo = open(bruto,"r",encoding='utf-8')
@@ -43,7 +43,12 @@ try:
                 if (len(frase) > 4 and len(frequencia) > 1):
                     c += 1
                     s += int(frequencia)
-                    esc_arquivo.write(frase+" "+frequencia+"\n")
+                    for linha in ref_arquivo:
+                        if frase not in esc_arquivo:
+                            esc_arquivo.write(frase+" "+frequencia+"\n")
+                            break
+                        else:
+                            break
     print("Quantidade de palavras: ", c)
     print("Soma das frequências: ", s)
     print("Média: ", int(s/c))

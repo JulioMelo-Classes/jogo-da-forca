@@ -6,6 +6,8 @@
 #include <iterator>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
+#include <iomanip>
 
 using namespace std;
  
@@ -80,7 +82,7 @@ class Forca {
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
         std::pair<bool, std::string> eh_valido(){
-            int pos, tam, count_l = 1, count_a = 0, string_mf;
+            int count_l = 1;
             string linha, string, string_im, palavra_invalida, palavra_frequencia;
             pair<bool, std::string> parTeste;
 
@@ -165,6 +167,15 @@ class Forca {
             arquivos_palavras.close();
             arquivos_scores.close();
         };
+
+        bool letraExiste(char chute, string palavra){
+            for (char letra : palavra){
+                if (chute == letra){
+                    return true;
+                }
+            }
+            return false;
+        }
         
         void mostrar_scores(){
             fstream arquivos_scores;
@@ -247,11 +258,9 @@ class Forca {
         vector<string> separarPorDificuldade(){
             unsigned seed = time(0);
             int nrand;
-            vector<string> palavras_facil, palavras_mediaMaior, palavras_mediaMenor, palavras_escMenor, palavras_escMaior, palavras_dificil, palavras_escolhidas;
-            vector<pair<string, int>>::iterator it_si;
-            vector<string>::iterator it_pe;
+            vector<string> palavras_facil, palavras_mediaMaior, palavras_mediaMenor, palavras_dificil, palavras_escolhidas;
             srand(seed);
-            
+            // FACIL
             if (m_dificuldade == 0){
                 for (int i = 0; i < (int)m_palavras.size(); i++){
                     if (m_palavras[i].second > media_frequencia){
@@ -262,33 +271,64 @@ class Forca {
                     nrand = rand()%(int)palavras_facil.size();
                     palavras_escolhidas.push_back(palavras_facil[nrand]);
                 }
+            // MEDIO
             }else if(m_dificuldade == 1){
                 for (int i = 0; i < (int)m_palavras.size(); i++){
                     if (m_palavras[i].second < media_frequencia){
                         palavras_mediaMenor.push_back(m_palavras[i].first);
-                    }else if(m_palavras[i].second >= media_frequencia){
+                    }if(m_palavras[i].second >= media_frequencia){
                         palavras_mediaMaior.push_back(m_palavras[i].first);
                     }
                 }
                 for (int i = 0; i < 7; i++){
                     nrand = rand()%(int)palavras_mediaMenor.size();
-                    palavras_escMenor.push_back(palavras_mediaMenor[nrand]);
-                    palavras_escolhidas.emplace_back(palavras_escMenor);
+                    palavras_escolhidas.push_back(palavras_mediaMenor[nrand]);
                 }
                 for (int i = 0; i < 13; i++){
                     nrand = rand()%(int)palavras_mediaMaior.size();
-                    palavras_escMaior.push_back(palavras_mediaMaior[nrand]);
-                    palavras_escolhidas.emplace_back(palavras_escMaior);
-                }
+                    palavras_escolhidas.push_back(palavras_mediaMaior[nrand]);
+                }   
+            // DIFICIL
             }else if(m_dificuldade == 2){
-
+                for (int i = 0; i < (int)m_palavras.size(); i++){
+                    if (m_palavras[i].second < media_frequencia){
+                        palavras_mediaMenor.push_back(m_palavras[i].first);
+                    }
+                    if (m_palavras[i].second >= media_frequencia){
+                        palavras_mediaMaior.push_back(m_palavras[i].first);
+                    }
+                }
+                for (int i = 0; i < 22; i++) {
+                    nrand = rand()%(int)palavras_mediaMenor.size();
+                    palavras_escolhidas.push_back(palavras_mediaMenor[nrand]);
+                }
+                for (int i = 0; i < 8; i++) {
+                    nrand = rand()%(int)palavras_mediaMaior.size();
+                    palavras_escolhidas.push_back(palavras_mediaMaior[nrand]);
+                }
             }
-            for (it_pe = palavras_escolhidas.begin(); it_pe != palavras_escolhidas.end(); ++it_pe){
-                cout << *it_pe << endl;
-            } 
-
             return palavras_escolhidas;
         }
+
+        string sorteiaPalavra(vector<string> palavras){
+            unsigned seed = time(0);
+            int nrand;
+            vector<string> stringSorteada;
+            srand(seed);
+            nrand = rand()%(int)palavras.size();
+            stringSorteada.push_back(palavras[nrand]);
+            return stringSorteada[0];
+        }
+
+        void mostrar_palavraSort(){
+            vector<string>::iterator it_ps;
+            /*for (it_ps = stringSorteada.begin(); it_ps != stringSorteada.end(); ++it_ps){
+                cout << *it_ps << endl;
+            } */
+        }
+        
+
+
 
         void mostrar_parDePalavras(){
             cout << "(";
@@ -365,7 +405,9 @@ class Forca {
          * @return T caso o m_tentativas_restantes do jogo esteja igual a 0 ou se o usuário 
          *         acertou toda a palavra, F caso contrário.
          */
-        bool rodada_terminada();
+        bool rodada_terminada(){
+            return true;
+        };
  
         /**
          * Reseta o valor de tentativas restantes para 5 e do atributo m_letras_palpitadas para vazio

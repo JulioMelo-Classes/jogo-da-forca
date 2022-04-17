@@ -1,25 +1,29 @@
 #include <iostream>
 #include "Forca.hpp"
 
+
 using namespace std;
+
 int main(int argc, char *argv[]){
     setlocale(LC_ALL, " ");
     Forca forca(argv[1], argv[2]);
-    string palavra_secreta = "MELANCIA";
-    cout << ">>> Lendo arquivos de palavras ["<< argv[1] <<"] e scores ["<< argv[2] <<"], por favor aguarde.." << endl;
-    cout << "--------------------------------------------------------------------" << endl;
     forca.carregar_arquivos();
 
-    auto valid = forca.eh_valido();
-    if(!valid.first){ //sai do programa ao encontrar um erro
-        cout<<valid.second<<endl;
-        exit(-1);
-    }else{
-        cout << "Arquivos OK!" << endl;
-    }
-    forca.montar_par();
+    cout << ">>> Lendo arquivos de palavras ["<< argv[1] <<"] e scores ["<< argv[2] <<"], por favor aguarde.." << endl;
     cout << "--------------------------------------------------------------------" << endl;
-    int option, dif;
+    auto valid = forca.eh_valido();
+    if(!valid.first){ cout<< valid.second <<endl; exit(-1); }else{ cout << "Arquivos OK!" << endl; }
+    cout << "--------------------------------------------------------------------" << endl;
+
+    forca.montar_par();
+    forca.montar_media();
+
+    int option, dif, pontos = 0, d = 0, tam_palavra;
+    char palpite;
+    string palavra_secreta;
+    string palavra_secretaCopia;
+    vector<string>::iterator it;
+
     while(true){
         cout << "Bem vindo ao Jogo Forca! Por favor escolha uma das opções" << endl;
         cout << "1 - Iniciar Jogo" << endl;
@@ -28,6 +32,7 @@ int main(int argc, char *argv[]){
         cout << "Sua escolha: ";
         cin >> option;
         cout << endl;
+
         if(option == 1){
             cout << "Vamos iniciar o jogo! Por favor escolha o nível de dificuldade" << endl;
             cout << "1 - Fácil" << endl;
@@ -36,32 +41,51 @@ int main(int argc, char *argv[]){
             cout << "Sua escolha: ";
             cin >> dif;
             cout << endl;
-            int d = 0;
-            if (dif == 1){
-                d = 0;
-                cout << "Iniciando o Jogo no nível fácil, será que você conhece essa palavra?" << endl;
-            }else if(dif == 2){
-                d = 1;
-                cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
-            }else if(dif == 3){
-                d = 2;
-                cout << "Iniciando o Jogo no nível difícil, será que você conhece essa palavra?" << endl;
-            }
+
+            if (dif == 1){ d = 0; cout << "Iniciando o Jogo no nível fácil, será que você conhece essa palavra?" << endl;
+            }else if(dif == 2){ d = 1; cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
+            }else if(dif == 3){ d = 2; cout << "Iniciando o Jogo no nível difícil, será que você conhece essa palavra?" << endl;}
+
             forca.set_dificuldade(d);
-            cout << endl;
-            cout << endl;
-            cout << endl;
-            //forca.separarPorDificuldade();
+            forca.separarPorDificuldade();
+            palavra_secreta = forca.sorteiaPalavra(forca.separarPorDificuldade());
+            
+            
+
             while(true){
-                /*
-                string p = forca.proxima_palavra();
+                //string p = forca.proxima_palavra();
                 //exibe interface do jogo 
-                while (!forca.rodada_terminada()){ //loop da rodada
-                    //ler palpite 
-                    string palpite;
-                    auto result = forca.palpite(palpite);
+                while (true){ //loop da rodada
+                    cout << endl;
+                    cout << endl;
+                    cout << endl;
+                    cout << endl;
+                    cout << palavra_secreta << endl;
+                    cout << "Pontos: " << pontos << endl;
+                    cout << "Palpite: ";
+                    cin >> palpite;
+
+                    for(int i = 0; i < palavra_secreta.size(); i++){
+                        palavra_secretaCopia.push_back(palavra_secreta[i]);
+                    }
+
+                    sort(palavra_secretaCopia.begin(),palavra_secretaCopia.end());
+                    palavra_secretaCopia.erase(unique(palavra_secretaCopia.begin(), palavra_secretaCopia.end()), palavra_secretaCopia.end());
+                    tam_palavra = palavra_secretaCopia.size();
+
+                    auto result = forca.letraExiste(palpite,palavra_secreta);
+                    if (result){
+                        cout << "Muito bem! A palavra contém a letra "<< palpite << "!" << endl;
+                        pontos++;
+                        break;
+                    }else{
+                        cout << "Meh, não achei a letra " << palpite << "! :<" << endl;
+                        pontos--;
+                        break;
+                    }
                     //testa palpite e atualiza a interface dependendo do resultado 
                 }
+                /*
                 if(//acertou a palavra inteira ){
                     //imprime interface de continuar / parar 
                     if (//parar )
@@ -77,8 +101,9 @@ int main(int argc, char *argv[]){
             //ler informações do jogador para o score e gravar no arquivo 
         }
         else if(option == 2){
+            
+            //forca.mostrar_palavraSort();
             //forca.mostrar_scores();
-            forca.montar_media();
             //forca.mostrar_palavras();
             //forca.mostrar_parDePalavras();
         }else{ //qualquer outro número sai do jogo

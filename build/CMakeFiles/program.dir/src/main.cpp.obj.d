@@ -140,4 +140,27 @@ CMakeFiles/program.dir/src/main.cpp.obj: \
  C:/msys64/mingw64/include/sec_api/string_s.h \
  C:/msys64/mingw64/include/c++/11.2.0/iterator \
  C:/msys64/mingw64/include/c++/11.2.0/bits/stream_iterator.h \
- C:/msys64/mingw64/include/c++/11.2.0/ctime
+ C:/msys64/mingw64/include/c++/11.2.0/ctime \
+ C:/msys64/mingw64/include/c++/11.2.0/algorithm \
+ C:/msys64/mingw64/include/c++/11.2.0/utility \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/stl_relops.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/stl_algo.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/algorithmfwd.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/stl_heap.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/stl_tempbuf.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/uniform_int_dist.h \
+ C:/msys64/mingw64/include/c++/11.2.0/iomanip \
+ C:/msys64/mingw64/include/c++/11.2.0/locale \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/locale_facets_nonio.h \
+ C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/time_members.h \
+ C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/messages_members.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/locale_facets_nonio.tcc \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/locale_conv.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/unique_ptr.h \
+ C:/msys64/mingw64/include/c++/11.2.0/tuple \
+ C:/msys64/mingw64/include/c++/11.2.0/array \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/uses_allocator.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/invoke.h \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/quoted_string.h \
+ C:/msys64/mingw64/include/c++/11.2.0/sstream \
+ C:/msys64/mingw64/include/c++/11.2.0/bits/sstream.tcc
