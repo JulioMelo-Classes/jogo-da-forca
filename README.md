@@ -8,7 +8,7 @@ Para rodar digite os comandos no terminal:
   - cmake ..
   - cmake --build .
   - ./program palavrasFormatada.txt scores.txt
-  - 
+
 </br>
 
 # Documento de Especificação
