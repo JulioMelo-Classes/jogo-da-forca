@@ -6,7 +6,7 @@ Para rodar digite os comandos no terminal:
   - mkdir build
   - cd build
   - cmake ..
-  - cmake build .
+  - cmake --build .
   - ./program palavrasFormatada.txt scores.txt
   - 
 </br>
