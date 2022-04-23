@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
     forca.montar_par();
     forca.montar_media();
 
-    int option, dif, pontos = 0, d = 0, tam_palavra;
+    int option, dif, pontos = 0, d = 0;
     char palpite;
     string palavra_secreta;
     string palavra_secretaCopia;
@@ -65,13 +65,13 @@ int main(int argc, char *argv[]){
                     cout << "Palpite: ";
                     cin >> palpite;
 
-                    for(int i = 0; i < palavra_secreta.size(); i++){
+                    for(int i = 0; i < (int)palavra_secreta.size(); i++){
                         palavra_secretaCopia.push_back(palavra_secreta[i]);
                     }
 
                     sort(palavra_secretaCopia.begin(),palavra_secretaCopia.end());
                     palavra_secretaCopia.erase(unique(palavra_secretaCopia.begin(), palavra_secretaCopia.end()), palavra_secretaCopia.end());
-                    tam_palavra = palavra_secretaCopia.size();
+                    
 
                     auto result = forca.letraExiste(palpite,palavra_secreta);
                     if (result){

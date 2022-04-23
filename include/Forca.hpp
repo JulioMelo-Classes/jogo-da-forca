@@ -328,8 +328,6 @@ class Forca {
         }
         
 
-
-
         void mostrar_parDePalavras(){
             cout << "(";
             for (int i = 0; i < (int)m_palavras.size(); i++) {
