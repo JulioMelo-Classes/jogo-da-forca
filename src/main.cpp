@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     forca.montar_par();
     forca.montar_media();
 
-    int option, dif, pontos = 0, d = 0;
+    int option, dif, pontos = 0, d = 0, erros = 0;
     char palpite;
     string palavra_secreta;
     string palavra_secretaCopia;
@@ -61,15 +61,18 @@ int main(int argc, char *argv[]) {
                 // string p = forca.proxima_palavra();
                 // Exibe interface do jogo 
                 while(true) { //loop da rodada
-                    cout << endl;
-                    cout << endl;
-                    cout << endl;
-                    cout << endl;
-                    cout << palavra_secreta << endl;
+                    // cout << endl;
+                    // cout << endl;
+                    // cout << endl;
+                    // cout << endl;
+                    cout << "Print temporário para teste de palavra: " << palavra_secreta << endl;
                     cout << "Pontos: " << pontos << endl;
                     cout << "Palpite: ";
                     cin >> palpite;
-    
+                    palpite = toupper(palpite);
+                    cout << "\n";
+        
+
                     for (int i = 0; i < (int)palavra_secreta.size(); i++){
                         palavra_secretaCopia.push_back(palavra_secreta[i]);
                     }
@@ -78,14 +81,21 @@ int main(int argc, char *argv[]) {
                     palavra_secretaCopia.erase(unique(palavra_secretaCopia.begin(), palavra_secretaCopia.end()), palavra_secretaCopia.end());
                     
 
-                    auto result = forca.letraExiste(palpite,palavra_secreta);
+                    bool result = forca.letraExiste(palpite, palavra_secreta);
                     if (result) {
-                        cout << "Muito bem! A palavra contém a letra: "<< palpite << "!" << endl;
+                        cout << "Muito bem! A palavra contém a letra "<< palpite << "!" << endl;
+                        forca.imprimirBoneco(erros);
+                        cout << "\n\n";
                         pontos++;
                         break;
                     } else {
-                        cout << "Meh, não achei a letra: " << palpite << "! :<" << endl;
-                        pontos--;
+                        cout << "Meh, não achei a letra " << palpite << "! :<" << endl;
+                        pontos--, erros++;
+                        forca.imprimirBoneco(erros);
+                        cout << "\n\n";
+                        if (pontos == -5) {
+                        cout << "O jogo acabou, a palavra era " << palavra_secreta << '!' << endl;
+                        }
                         break;
                     }
                     //testa palpite e atualiza a interface dependendo do resultado 

@@ -311,6 +311,31 @@ class Forca {
             return palavras_escolhidas;
         }
 
+        void imprimirBoneco(int e) {
+            switch (e) {
+                case 1:
+                    cout << "  o  " << endl;
+                    break;
+                case 2:
+                    cout << "  o\n  |  ";
+                    break;
+                case 3:
+                    cout << "  o\n /|  ";
+                    break;
+                case 4:
+                    cout << "  o\n /|\\ ";
+                    break;
+                case 5:
+                    cout << "  o\n /|\\ \n / ";
+                    break;
+                case 6: 
+                    cout << "Vixe, Fim de Jogo!\n  o\n /|\\ \n / \\";
+                default:
+                    break;
+            }
+        }
+
+
         // Escolhendo uma palavra secreta de acordo com o nível de dificuldade
         string sorteiaPalavra(vector<string> palavras) {
             unsigned seed = time(0);
