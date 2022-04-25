@@ -1,5 +1,7 @@
 # Trabalho und1 - LP1
 
+# Jogo da Forca!
+
 Necessário ter o CMAKE e G++ no ambiente para executar o código.
 
 Para rodar digite os comandos no terminal:
