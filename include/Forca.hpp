@@ -16,6 +16,7 @@ class Forca {
         enum Dificuldade{
             FACIL = 0, MEDIO = 1, DIFICIL = 2
         };
+
     private:
         //TODO: armazenar os scores?
 
@@ -58,7 +59,6 @@ class Forca {
         int media_frequencia = 0;
 
         int soma_frequencia = 0;
-
    
     public:
         /**
@@ -68,26 +68,27 @@ class Forca {
          * ou scores inválidos, use o método eh_valido.
          * @param palavras o arquivo que contém as palavras
          * @param scores o nome do arquivo que contém os scores
-         * @see eh_valido
-         */
-        Forca( std::string palavras, std::string scores ){
+         * @see eh_valido 
+        */
+        Forca(std::string palavras, std::string scores) {
             m_arquivo_palavras = palavras;
             m_arquivo_scores = scores;
         };
        
+
         /**
          * Valida os arquivos de entrada de acordo com as especificações.
          * Ao validar os arquivos, no caso de arquivos inválidos, este método deve retornar a 
          * razão correspondente de acordo com as especificações.
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
-        std::pair<bool, std::string> eh_valido(){
+        std::pair<bool, std::string> eh_valido() {
             int count_l = 1;
             string linha, string, string_im, palavra_invalida, palavra_frequencia;
             pair<bool, std::string> parTeste;
 
-            //Verifica se existe algo no arquivo .txt.
-            for (auto &linha : m_palavras_do_jogo){
+            // Verifica se existe algo no arquivo .txt.
+            for (auto &linha : m_palavras_do_jogo) {
                 if (linha.empty()){
                     parTeste.first = false; 
                     parTeste.second = "Erro! Arquivo das palavras vazio ou inexistente.";
@@ -99,19 +100,19 @@ class Forca {
             }
 
             //Verifica se existe algo no arquivo .txt.
-            for (auto &linha : m_scores_do_jogo){
+            for (auto &linha : m_scores_do_jogo) {
                 if (linha.empty()){
                     parTeste.first = false; 
                     parTeste.second = "Erro! Arquivo dos scores vazio ou inexistente.";
                     break;     
-                }else{
+                } else {
                     parTeste.first = true;
                     break;
                 }
             }
 
             //Verifica se os caracteres das palavras estão dentro do padrão apresentado.
-            for (auto &linha : m_palavras_do_jogo){
+            for (auto &linha : m_palavras_do_jogo) {
                 string = linha;
                 char palavra[string.length()];
                 count_l++;
@@ -119,7 +120,7 @@ class Forca {
                     palavra[i] = string[i];
                     if ((palavra[i] >= 'a' && palavra[i] <= 'z') || (palavra[i] >= 'A' && palavra[i] <= 'Z') || (palavra[i] == '-')){
                         parTeste.first = true;
-                    }else{
+                    } else {
                         palavra_invalida = string[i];
                         parTeste.first = false; 
                         parTeste.second = "Palavra \"" + palavra_invalida + "\" inválida na linha " + to_string(count_l) + ".";
@@ -129,12 +130,12 @@ class Forca {
             }
 
             //Verifica se existe palavras com menos de cinco letras.
-            for (auto &linha : m_palavras_do_jogo){
-                if (linha.size() <= 4){
+            for (auto &linha : m_palavras_do_jogo) {
+                if (linha.size() <= 4) {
                     parTeste.first = false; 
                     parTeste.second = "Erro! O arquivo contém alguma(s) palavra(s) com menos de 5 letras.";
                     break;
-                }else{
+                } else {
                     parTeste.first = true; 
                 }
             }
@@ -144,22 +145,23 @@ class Forca {
         /**
          * Carrega os arquivos de scores e palavras preenchendo **ao menos** a estrutura m_palavras
          */
-        void carregar_arquivos(){
+        void carregar_arquivos() {
             string linha_p, linha_s;
+            // fstream é a combinação de ofstream e ifstream, criando arquivo.
             fstream arquivos_palavras;
             fstream arquivos_scores;
             arquivos_palavras.open(m_arquivo_palavras, fstream::in);
             arquivos_scores.open(m_arquivo_scores, fstream::in);
-
-            while(!arquivos_palavras.eof()){
-                getline(arquivos_palavras, linha_p, ' ');
+            // EOF para quando não há mais arquivos a serem lidos.
+            while(!arquivos_palavras.eof()) {
+                getline(arquivos_palavras, linha_p, ' '); // ' ' delimitador.
                 m_palavras_do_jogo.push_back(linha_p);
 
-                getline(arquivos_palavras, linha_p, '\n');
+                getline(arquivos_palavras, linha_p, '\n'); // '\n' delimitador.
                 m_frequencias.push_back(stoi(linha_p));
             }
-            
-            while(!arquivos_scores.eof()){
+            // SEGUNDO CHECKPOINT
+            while(!arquivos_scores.eof()) {
                 getline(arquivos_scores, linha_s);
                 m_scores_do_jogo.push_back(linha_s);
             }
@@ -168,16 +170,18 @@ class Forca {
             arquivos_scores.close();
         };
 
-        bool letraExiste(char chute, string palavra){
-            for (char letra : palavra){
-                if (chute == letra){
+        // Verificação do chute da letra, retorna true se o chute for correto.
+        bool letraExiste(char chute, string &palavra){
+            for (char letra : palavra) {
+                if (toupper(chute) == letra) {
                     return true;
                 }
             }
             return false;
         }
         
-        void mostrar_scores(){
+        // SEGUNDO CHECKPOINT
+        void mostrar_scores() {
             fstream arquivos_scores;
             vector<string> dificuldade, jogador, palavras, pontos;
             vector<string>::iterator it_dificuldade, it_jogador, it_palavras, it_pontos;
@@ -234,18 +238,13 @@ class Forca {
             }
         };   
 
-        void montar_media(){
+        void montar_media() {
             for (it_i = m_frequencias.begin(); it_i != m_frequencias.end(); ++it_i){
                 soma_frequencia = soma_frequencia + *it_i;
             }  
             media_frequencia = soma_frequencia/m_frequencias.size();    
         };
 
-        void mostrar_palavras(){
-            for (it_p = m_palavras_do_jogo.begin(); it_p != m_palavras_do_jogo.end(); ++it_p){
-                cout << *it_p << endl;
-            }      
-        };
         
         void montar_par(){
             vector<string>::iterator itp;
@@ -255,24 +254,26 @@ class Forca {
             }
         }
         
-        vector<string> separarPorDificuldade(){
+        //Faz a escolha das palavras de acordo com o nível de dificuldade escolhido pelo jogador.
+        vector<string> separarPorDificuldade() {
             unsigned seed = time(0);
             int nrand;
             vector<string> palavras_facil, palavras_mediaMaior, palavras_mediaMenor, palavras_dificil, palavras_escolhidas;
             srand(seed);
-            // FACIL
-            if (m_dificuldade == 0){
+
+            // FÁCIL
+            if (m_dificuldade == 0) {
                 for (int i = 0; i < (int)m_palavras.size(); i++){
                     if (m_palavras[i].second > media_frequencia){
                         palavras_facil.push_back(m_palavras[i].first);
                     }
                 }
-                for (int i = 0; i < 10; i++){
-                    nrand = rand()%(int)palavras_facil.size();
+                for (int i = 0; i < 10; i++) {
+                    nrand = rand() % (int)palavras_facil.size();
                     palavras_escolhidas.push_back(palavras_facil[nrand]);
                 }
-            // MEDIO
-            }else if(m_dificuldade == 1){
+            // MÉDIO
+            } else if (m_dificuldade == 1) {
                 for (int i = 0; i < (int)m_palavras.size(); i++){
                     if (m_palavras[i].second < media_frequencia){
                         palavras_mediaMenor.push_back(m_palavras[i].first);
@@ -281,54 +282,54 @@ class Forca {
                     }
                 }
                 for (int i = 0; i < 7; i++){
-                    nrand = rand()%(int)palavras_mediaMenor.size();
+                    nrand = rand() % (int)palavras_mediaMenor.size();
                     palavras_escolhidas.push_back(palavras_mediaMenor[nrand]);
                 }
                 for (int i = 0; i < 13; i++){
-                    nrand = rand()%(int)palavras_mediaMaior.size();
+                    nrand = rand() % (int)palavras_mediaMaior.size();
                     palavras_escolhidas.push_back(palavras_mediaMaior[nrand]);
-                }   
-            // DIFICIL
-            }else if(m_dificuldade == 2){
+                } 
+            // DIFÍCIL
+            } else if (m_dificuldade == 2) {
                 for (int i = 0; i < (int)m_palavras.size(); i++){
-                    if (m_palavras[i].second < media_frequencia){
+                    if (m_palavras[i].second < media_frequencia) {
                         palavras_mediaMenor.push_back(m_palavras[i].first);
                     }
-                    if (m_palavras[i].second >= media_frequencia){
+                    if (m_palavras[i].second >= media_frequencia) {
                         palavras_mediaMaior.push_back(m_palavras[i].first);
                     }
                 }
                 for (int i = 0; i < 22; i++) {
-                    nrand = rand()%(int)palavras_mediaMenor.size();
+                    nrand = rand() % (int)palavras_mediaMenor.size();
                     palavras_escolhidas.push_back(palavras_mediaMenor[nrand]);
                 }
                 for (int i = 0; i < 8; i++) {
-                    nrand = rand()%(int)palavras_mediaMaior.size();
+                    nrand = rand() % (int)palavras_mediaMaior.size();
                     palavras_escolhidas.push_back(palavras_mediaMaior[nrand]);
                 }
             }
             return palavras_escolhidas;
         }
 
-        string sorteiaPalavra(vector<string> palavras){
+        // Escolhendo uma palavra secreta de acordo com o nível de dificuldade
+        string sorteiaPalavra(vector<string> palavras) {
             unsigned seed = time(0);
             int nrand;
             vector<string> stringSorteada;
             srand(seed);
-            nrand = rand()%(int)palavras.size();
+            nrand = rand() % (int)palavras.size();
             stringSorteada.push_back(palavras[nrand]);
             return stringSorteada[0];
         }
 
-        void mostrar_palavraSort(){
+        void mostrar_palavraSort() {
             vector<string>::iterator it_ps;
             /*for (it_ps = stringSorteada.begin(); it_ps != stringSorteada.end(); ++it_ps){
                 cout << *it_ps << endl;
             } */
         }
-        
 
-        void mostrar_parDePalavras(){
+        void mostrar_parDePalavras() {
             cout << "(";
             for (int i = 0; i < (int)m_palavras.size(); i++) {
                 cout << "[" << m_palavras[i].first << "," << m_palavras[i].second << "], ";
@@ -338,6 +339,12 @@ class Forca {
                 }
             }
             cout << ")" << endl;
+        };
+
+        void mostrar_palavras() {
+            for (it_p = m_palavras_do_jogo.begin(); it_p != m_palavras_do_jogo.end(); ++it_p){
+                cout << *it_p << endl;
+            }      
         };
  
         /**
