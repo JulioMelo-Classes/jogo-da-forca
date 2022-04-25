@@ -83,62 +83,75 @@ class Forca {
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
         std::pair<bool, std::string> eh_valido() {
-            int count_l = 1;
-            string linha, string, string_im, palavra_invalida, palavra_frequencia;
+            int count_l = 1, count_np = 0;
+            string linha_1, linha_2, string, string_im, palavra_invalida, palavra_frequencia;
             pair<bool, std::string> parTeste;
+            fstream arq_palavras;
+            fstream arq_scores;
+
+            arq_palavras.open(m_arquivo_palavras, fstream::in);
+            arq_scores.open(m_arquivo_scores, fstream::in);
 
             // Verifica se existe algo no arquivo .txt.
-            for (auto &linha : m_palavras_do_jogo) {
-                if (linha.empty()){
-                    parTeste.first = false; 
-                    parTeste.second = "Erro! Arquivo das palavras vazio ou inexistente.";
-                    break;
-                }else{
-                    parTeste.first = true;
-                    break;
-                }
+            if (!arq_palavras.is_open()){
+                parTeste.first = false; 
+                parTeste.second = "Erro! Arquivo das palavras vazio ou inexistente.";
+            }else{
+                parTeste.first = true;
             }
 
             //Verifica se existe algo no arquivo .txt.
-            for (auto &linha : m_scores_do_jogo) {
-                if (linha.empty()){
-                    parTeste.first = false; 
-                    parTeste.second = "Erro! Arquivo dos scores vazio ou inexistente.";
-                    break;     
-                } else {
-                    parTeste.first = true;
-                    break;
-                }
+            if (!arq_scores.is_open()){
+                parTeste.first = false; 
+                parTeste.second = "Erro! Arquivo dos scores vazio ou inexistente.";     
+            } else {
+                parTeste.first = true;
             }
 
             //Verifica se os caracteres das palavras estão dentro do padrão apresentado.
-            for (auto &linha : m_palavras_do_jogo) {
-                string = linha;
+            while(!arq_palavras.eof()) {
+                getline(arq_palavras, linha_1, ' ');
+                string = linha_1;
+                getline(arq_palavras, linha_2, '\n');
+
                 char palavra[string.length()];
                 count_l++;
                 for (int i = 0; i < (int)sizeof(palavra); i++) {
                     palavra[i] = string[i];
                     if ((palavra[i] >= 'a' && palavra[i] <= 'z') || (palavra[i] >= 'A' && palavra[i] <= 'Z') || (palavra[i] == '-')){
-                        parTeste.first = true;
+                        count_np++;
+                        if (count_np == (int)sizeof(palavra)){
+                            parTeste.first = true;
+                        }
                     } else {
-                        palavra_invalida = string[i];
+                        palavra_invalida = string;
                         parTeste.first = false; 
                         parTeste.second = "Palavra \"" + palavra_invalida + "\" inválida na linha " + to_string(count_l) + ".";
-                        break;
                     }  
+                }
+                
+                //Verifica se possui frequência correspondente.
+                cout << stoi(linha_2) << endl;
+                if (stoi(linha_2) > 0){
+                    parTeste.first = true;
+                }else{
+                    parTeste.first = false;
+                    parTeste.second = "A palavra \"" + palavra_invalida + "\" não possui frequência inteira positiva.";
+                }
+
+                //Verifica se existe palavras com menos de cinco letras.
+                palavra_invalida = string;
+                if ((int)linha_1.size() <= 4) {
+                    parTeste.first = false; 
+                    parTeste.second = "Erro! A palavra " + palavra_invalida + " na linha " + to_string(count_l) + " contém menos de 5 letras.";
+                } else {
+                    parTeste.first = true;
                 }
             }
 
-            //Verifica se existe palavras com menos de cinco letras.
-            for (auto &linha : m_palavras_do_jogo) {
-                if (linha.size() <= 4) {
-                    parTeste.first = false; 
-                    parTeste.second = "Erro! O arquivo contém alguma(s) palavra(s) com menos de 5 letras.";
-                    break;
-                } else {
-                    parTeste.first = true; 
-                }
-            }
+            arq_palavras.close();
+            arq_scores.close();
+
             return parTeste;
         }
  
