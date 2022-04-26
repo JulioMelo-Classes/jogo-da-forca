@@ -8,6 +8,7 @@
 #include <ctime>
 #include <algorithm>
 #include <iomanip>
+#include <exception>
 
 using namespace std;
  
@@ -33,6 +34,8 @@ class Forca {
         std::vector< std::string > p_medio;
 
         std::vector< std::string > p_dificil;
+
+        vector<string> dificuldade, jogador, palavras, pontos;
  
         Dificuldade m_dificuldade = Dificuldade::FACIL; //<! dificuldade atual do jogo
  
@@ -83,29 +86,20 @@ class Forca {
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
         std::pair<bool, std::string> eh_valido() {
-            int count_l = 1, count_np = 0;
-            string linha_1, linha_2, string, string_im, palavra_invalida, palavra_frequencia;
+            int count_l = 1, count_np = 0, count_ns = 1, count_pv = 0, count_l2 = 0;
+            string linha_1, linha_2, linha_3, linha_4, string, palavra_invalida, dif, name, pal, points;
             pair<bool, std::string> parTeste;
-            fstream arq_palavras;
-            fstream arq_scores;
+            ifstream arq_palavras;
+            ifstream arq_scores;
 
-            arq_palavras.open(m_arquivo_palavras, fstream::in);
-            arq_scores.open(m_arquivo_scores, fstream::in);
+            arq_palavras.open(m_arquivo_palavras);
 
-            // Verifica se existe algo no arquivo .txt.
-            if (!arq_palavras.is_open()){
-                parTeste.first = false; 
-                parTeste.second = "Erro! Arquivo das palavras vazio ou inexistente.";
+            // Verifica se o arquivo de palavras existe.
+            if (arq_palavras.is_open()){
+                parTeste.first = true;
             }else{
-                parTeste.first = true;
-            }
-
-            //Verifica se existe algo no arquivo .txt.
-            if (!arq_scores.is_open()){
-                parTeste.first = false; 
-                parTeste.second = "Erro! Arquivo dos scores vazio ou inexistente.";     
-            } else {
-                parTeste.first = true;
+                cout << "Erro! Arquivo das palavras inexistente." << endl;
+                exit(-1);
             }
 
             //Verifica se os caracteres das palavras estão dentro do padrão apresentado.
@@ -113,7 +107,6 @@ class Forca {
                 getline(arq_palavras, linha_1, ' ');
                 string = linha_1;
                 getline(arq_palavras, linha_2, '\n');
-
                 char palavra[string.length()];
                 count_l++;
                 for (int i = 0; i < (int)sizeof(palavra); i++) {
@@ -125,31 +118,94 @@ class Forca {
                         }
                     } else {
                         palavra_invalida = string;
-                        parTeste.first = false; 
-                        parTeste.second = "Palavra \"" + palavra_invalida + "\" inválida na linha " + to_string(count_l) + ".";
+                        cout << "Palavra \"" + palavra_invalida + "\" inválida na linha " + to_string(count_l) + "." << endl;
+                        exit(-1);
                     }  
                 }
-                
-                //Verifica se possui frequência correspondente.
-                cout << stoi(linha_2) << endl;
-                if (stoi(linha_2) > 0){
-                    parTeste.first = true;
-                }else{
-                    parTeste.first = false;
-                    parTeste.second = "A palavra \"" + palavra_invalida + "\" não possui frequência inteira positiva.";
+                palavra_invalida = string;
+
+                //Verifica se possui uma frequência ou uma frequência positiva.
+                try{
+                    if (stoi(linha_2) > 0 || linha_2.empty()){
+                        parTeste.first = true;
+                    }
+                }catch(...){
+                    cout << "A palavra \"" + palavra_invalida + "\" na linha " + to_string(count_l-1) + ", não possui frequência ou frequência positiva." << endl;
+                    exit(-1);
                 }
 
                 //Verifica se existe palavras com menos de cinco letras.
-                palavra_invalida = string;
                 if ((int)linha_1.size() <= 4) {
-                    parTeste.first = false; 
-                    parTeste.second = "Erro! A palavra " + palavra_invalida + " na linha " + to_string(count_l) + " contém menos de 5 letras.";
+                    cout << "Erro! A palavra " + palavra_invalida + " na linha " + to_string(count_l) + " contém menos de 5 letras." << endl;
+                    exit(-1);
                 } else {
                     parTeste.first = true;
                 }
             }
 
             arq_palavras.close();
+            arq_scores.open(m_arquivo_scores);
+
+            // Verifica se o arquivo de scores existe.
+            if (arq_scores.is_open()){
+                parTeste.first = true;
+            }else{
+                cout << "Erro! Arquivo das scores inexistente." << endl;
+                exit(-1);
+            }
+
+            //Verifica se tem mais ou menos três ';' na linha do arquivo scores.
+            while(!arq_scores.eof()) {
+                getline(arq_scores, linha_3, '\n');
+                count_l2++;
+                for (int i = 0; i < (int)sizeof(linha_3); i++) {
+                    if (linha_3[i] == ';'){
+                        count_pv++;
+                    }
+                }
+                cout << count_pv << endl;
+                if (count_pv > 3 ){
+                    cout << "Linha " + to_string(count_l2) + " com mais de três ';'." << endl;
+                    exit(-1);
+                }else if (count_pv == 3){
+                    parTeste.first = true; 
+                }else if (count_pv < 3){
+                    cout << "Linha " + to_string(count_l2) + " com menos de três ';'." << endl;
+                    exit(-1);
+                }
+                count_pv = 0; 
+            }
+            
+            arq_scores.close();
+            arq_scores.open(m_arquivo_scores);
+
+            while(!arq_scores.eof()){
+                getline(arq_scores, linha_4);
+                cout << linha_4 << endl;
+                /*getline(arq_scores, linha_4, ';');
+                dif = linha_4;
+                getline(arq_scores, linha_4, ';');
+                name = linha_4;
+                cout << name << endl;
+                getline(arq_scores, linha_4, ';');
+                pal = linha_4;
+                getline(arq_scores, linha_4, '\n');
+                points = linha_4;
+                if (dif.size() == 0){
+                    cout << "Campo 'dificuldade' vazio na linha " + to_string(count_ns+1) + "." << endl;
+                    exit(-1);
+                }if (name.size() == 0){
+                    cout << "Campo 'nome/jogador' vazio na linha " + to_string(count_ns+1) + "." << endl;
+                    exit(-1);
+                }if (points.size() == 0){
+                    cout << "Campo 'pontuação' vazio na linha " + to_string(count_ns+1) + "." << endl;
+                    exit(-1);
+                }else{
+                    parTeste.first = true;
+                }*/
+                count_ns++;
+            }
+
             arq_scores.close();
 
             return parTeste;
@@ -166,6 +222,7 @@ class Forca {
             arquivos_palavras.open(m_arquivo_palavras, fstream::in);
             arquivos_scores.open(m_arquivo_scores, fstream::in);
             // EOF para quando não há mais arquivos a serem lidos.
+
             while(!arquivos_palavras.eof()) {
                 getline(arquivos_palavras, linha_p, ' '); // ' ' delimitador.
                 m_palavras_do_jogo.push_back(linha_p);
@@ -173,6 +230,7 @@ class Forca {
                 getline(arquivos_palavras, linha_p, '\n'); // '\n' delimitador.
                 m_frequencias.push_back(stoi(linha_p));
             }
+
             // SEGUNDO CHECKPOINT
             while(!arquivos_scores.eof()) {
                 getline(arquivos_scores, linha_s);
@@ -196,7 +254,7 @@ class Forca {
         // SEGUNDO CHECKPOINT
         void mostrar_scores() {
             fstream arquivos_scores;
-            vector<string> dificuldade, jogador, palavras, pontos;
+            
             vector<string>::iterator it_dificuldade, it_jogador, it_palavras, it_pontos;
             
             arquivos_scores.open(m_arquivo_scores, fstream::in);

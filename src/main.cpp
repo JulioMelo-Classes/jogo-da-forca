@@ -5,9 +5,8 @@ using namespace std;
 
 
 int main(int argc, char *argv[]) {
-    setlocale(LC_ALL, " "); // Fazer com que o programa reconheça acentuação
+    setlocale(LC_ALL, ""); // Fazer com que o programa reconheça acentuação
     Forca forca(argv[1], argv[2]);
-    forca.carregar_arquivos();
 
     cout << ">>> Lendo arquivos de palavras ["<< argv[1] <<"] e scores ["<< argv[2] <<"], por favor aguarde.." << endl;
     cout << "--------------------------------------------------------------------" << endl;
@@ -20,6 +19,7 @@ int main(int argc, char *argv[]) {
         }
     cout << "--------------------------------------------------------------------" << endl;
 
+    forca.carregar_arquivos();
     forca.montar_par();
     forca.montar_media();
 

@@ -10,10 +10,3 @@ add_executable( ${APP_NAME}
                 src/main.cpp )
 
 set_property(TARGET ${APP_NAME} PROPERTY CXX_STANDARD 14)
-
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/palavrasFormatada.txt
-    ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scores.txt
-    ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
