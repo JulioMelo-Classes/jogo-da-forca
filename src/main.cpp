@@ -4,6 +4,8 @@
 using namespace std;
 
 
+
+
 int main(int argc, char *argv[]) {
     setlocale(LC_ALL, ""); // Fazer com que o programa reconheça acentuação
     Forca forca(argv[1], argv[2]);
@@ -23,11 +25,15 @@ int main(int argc, char *argv[]) {
     forca.montar_par();
     forca.montar_media();
 
-    int option, dif, pontos = 0, d = 0, erros = 0;
+    int option, dif, pontos = 0, d = 0, erros = 0, count_lc = 0;
     char palpite;
     string palavra_secreta;
     string palavra_secretaCopia;
+    string palavra_sec;
     vector<string>::iterator it;
+    vector<char> letrasErradas;
+    bool continuaChute = false;
+    map<char,bool> chute;
 
     while(true) {
         cout << "Bem vindo ao Jogo Forca! Por favor escolha uma das opções" << endl;
@@ -58,20 +64,35 @@ int main(int argc, char *argv[]) {
             
 
             while(true) {
+
                 // string p = forca.proxima_palavra();
                 // Exibe interface do jogo 
+                
                 while(true) { //loop da rodada
-                    // cout << endl;
-                    // cout << endl;
-                    // cout << endl;
-                    // cout << endl;
+                    cout << endl;
+                    cout << endl;
+                    cout << endl;
+                    cout << endl;
+                    cout << "Chutes errados: ";
+                    for (char letra : letrasErradas){
+                        cout << letra << " ";
+                    }
+                    cout << endl;
+                    for (char letra : palavra_secreta){
+                        if (chute[letra]){
+                            cout << letra << " ";
+                        }else{
+                            cout << "_ ";
+                        }  
+                    }
+                    cout << endl;
                     cout << "Print temporário para teste de palavra: " << palavra_secreta << endl;
                     cout << "Pontos: " << pontos << endl;
                     cout << "Palpite: ";
                     cin >> palpite;
                     palpite = toupper(palpite);
+                    chute[palpite] = true;
                     cout << "\n";
-        
 
                     for (int i = 0; i < (int)palavra_secreta.size(); i++){
                         palavra_secretaCopia.push_back(palavra_secreta[i]);
@@ -79,26 +100,38 @@ int main(int argc, char *argv[]) {
 
                     sort(palavra_secretaCopia.begin(),palavra_secretaCopia.end());
                     palavra_secretaCopia.erase(unique(palavra_secretaCopia.begin(), palavra_secretaCopia.end()), palavra_secretaCopia.end());
-                    
 
                     bool result = forca.letraExiste(palpite, palavra_secreta);
+
+                    for (auto letra : palavra_secretaCopia){
+                        if (letra == palpite){
+                            palavra_sec.push_back(letra);
+                            palavra_sec.erase(unique(palavra_sec.begin(), palavra_sec.end()), palavra_sec.end());
+                        }
+                    }
+                    
+                    if (palavra_sec.size() == palavra_secretaCopia.size()){
+                        cout << "PARABÉNS, VC GANHOU!!!!" << endl;
+                        exit(-1);
+                    }
+
                     if (result) {
                         cout << "Muito bem! A palavra contém a letra "<< palpite << "!" << endl;
-                        forca.imprimirBoneco(erros);
+                        forca.imprimirBoneco(letrasErradas.size());
                         cout << "\n\n";
-                        pontos++;
                         break;
                     } else {
+                        letrasErradas.push_back(palpite);
                         cout << "Meh, não achei a letra " << palpite << "! :<" << endl;
-                        pontos--, erros++;
-                        forca.imprimirBoneco(erros);
-                        cout << "\n\n";
-                        if (pontos == -5) {
-                        cout << "O jogo acabou, a palavra era " << palavra_secreta << '!' << endl;
+                        forca.imprimirBoneco(letrasErradas.size());
+                        if (letrasErradas.size() == 6){
+                            cout << endl;
+                            cout << "EROOOOOOOOOOOOOOU" << endl;
+                            exit(-1);
                         }
+                        cout << "\n\n";
                         break;
                     }
-                    //testa palpite e atualiza a interface dependendo do resultado 
                 }
                 /*
                 if(//acertou a palavra inteira ){

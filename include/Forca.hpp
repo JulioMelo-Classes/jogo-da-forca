@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <exception>
+#include <map>
 
 using namespace std;
  
@@ -155,55 +156,45 @@ class Forca {
             }
 
             //Verifica se tem mais ou menos três ';' na linha do arquivo scores.
+            int contador1 = 0, linha_test = 0;
             while(!arq_scores.eof()) {
-                getline(arq_scores, linha_3, '\n');
-                count_l2++;
-                for (int i = 0; i < (int)sizeof(linha_3); i++) {
-                    if (linha_3[i] == ';'){
-                        count_pv++;
+                linha_test++;
+                getline(arq_scores, linha_3);
+                for (int i = 0; i < (int)linha_3.size(); i++) {
+                    if (linha_3[i] == ';') {
+                        contador1++;
                     }
                 }
-                cout << count_pv << endl;
-                if (count_pv > 3 ){
-                    cout << "Linha " + to_string(count_l2) + " com mais de três ';'." << endl;
-                    exit(-1);
-                }else if (count_pv == 3){
-                    parTeste.first = true; 
-                }else if (count_pv < 3){
-                    cout << "Linha " + to_string(count_l2) + " com menos de três ';'." << endl;
+
+                std::string del = ";";
+                int start = 0;
+                int end = linha_3.find(del);
+
+                // Verificação de espaços vazios
+                while (end != -1) {
+                    start = end + del.size();
+                    end = linha_3.find(del, start);
+                    if (linha_3.substr(start, end - start).size() == 0) {
+                        cout << "TÁ VAZIO NA LINHA: " << linha_test << endl;
+                        exit(-1);
+                    }
+                }
+
+                if (linha_3.substr(start, end - start).size() == 0) {
+                    cout << "TÁ VAZIO NA LINHA: " << linha_test << endl;
                     exit(-1);
                 }
-                count_pv = 0; 
-            }
-            
-            arq_scores.close();
-            arq_scores.open(m_arquivo_scores);
 
-            while(!arq_scores.eof()){
-                getline(arq_scores, linha_4);
-                cout << linha_4 << endl;
-                /*getline(arq_scores, linha_4, ';');
-                dif = linha_4;
-                getline(arq_scores, linha_4, ';');
-                name = linha_4;
-                cout << name << endl;
-                getline(arq_scores, linha_4, ';');
-                pal = linha_4;
-                getline(arq_scores, linha_4, '\n');
-                points = linha_4;
-                if (dif.size() == 0){
-                    cout << "Campo 'dificuldade' vazio na linha " + to_string(count_ns+1) + "." << endl;
+                // Verificação da quantidade de ';'
+                if(contador1 > 3) {
+                    cout << "Erro, mais de 3 ';' LINHA: " << linha_test << endl;
                     exit(-1);
-                }if (name.size() == 0){
-                    cout << "Campo 'nome/jogador' vazio na linha " + to_string(count_ns+1) + "." << endl;
+                } else if (contador1 < 3) {
+                    cout << "Erro, menos de 3 ';' LINHA: " << linha_test << endl;
                     exit(-1);
-                }if (points.size() == 0){
-                    cout << "Campo 'pontuação' vazio na linha " + to_string(count_ns+1) + "." << endl;
-                    exit(-1);
-                }else{
-                    parTeste.first = true;
-                }*/
-                count_ns++;
+                }
+
+                contador1 = 0;
             }
 
             arq_scores.close();
