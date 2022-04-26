@@ -9,7 +9,7 @@ Para rodar digite os comandos no terminal:
   - cd build
   - cmake ..
   - cmake --build .
-  - ./program palavrasFormatada.txt scores.txt
+  - ./program ../palavrasFormatada.txt ../scores.txt
 
 </br>
 
