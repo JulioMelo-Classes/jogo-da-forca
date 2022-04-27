@@ -103,7 +103,7 @@ class Forca {
                 exit(-1);
             }
 
-            //Verifica se os caracteres das palavras estão dentro do padrão apresentado.
+            // Verifica se os caracteres das palavras estão dentro do padrão apresentado.
             while(!arq_palavras.eof()) {
                 getline(arq_palavras, linha_1, ' ');
                 string = linha_1;
@@ -125,12 +125,12 @@ class Forca {
                 }
                 palavra_invalida = string;
 
-                //Verifica se possui uma frequência ou uma frequência positiva.
+                // Verifica se possui uma frequência ou uma frequência positiva.
                 try{
                     if (stoi(linha_2) > 0 || linha_2.empty()){
                         parTeste.first = true;
                     }
-                }catch(...){
+                } catch(...) {
                     cout << "A palavra \"" + palavra_invalida + "\" na linha " + to_string(count_l-1) + ", não possui frequência." << endl;
                     exit(-1);
                 }
@@ -140,7 +140,7 @@ class Forca {
                     exit(-1);
                 }
 
-                //Verifica se existe palavras com menos de cinco letras.
+                // Verifica se existe palavras com menos de cinco letras.
                 if ((int)linha_1.size() <= 4) {
                     cout << "Erro! A palavra " + palavra_invalida + " na linha " + to_string(count_l) + " contém menos de 5 letras." << endl;
                     exit(-1);
@@ -153,14 +153,14 @@ class Forca {
             arq_scores.open(m_arquivo_scores);
 
             // Verifica se o arquivo de scores existe.
-            if (arq_scores.is_open()){
+            if (arq_scores.is_open()) {
                 parTeste.first = true;
-            }else{
+            } else {
                 cout << "Erro! Arquivo das scores inexistente." << endl;
                 exit(-1);
             }
 
-            //Verifica se tem mais ou menos três ';' na linha do arquivo scores.
+            // Verifica se tem mais ou menos três ';' na linha do arquivo scores.
             while(!arq_scores.eof()) {
                 linha_test++;
                 getline(arq_scores, linha_3);
@@ -169,12 +169,9 @@ class Forca {
                         contador1++;
                     }
                 }
-                std::string del = ";";
-                int start = 0;
-                int end = linha_3.find(del);
 
                 // Verificação da quantidade de ';'.
-                if(contador1 > 3) {
+                if (contador1 > 3) {
                     cout << "Erro! Mais de 3 ';' na linha: " << linha_test << endl;
                     exit(-1);
                 } else if (contador1 < 3) {
@@ -183,7 +180,10 @@ class Forca {
                 }
                 contador1 = 0;
 
-                // Verificação de campos vazios.
+                // Verificação de campos vazios, criando substrings a partir de um delimitador ';'.
+                int start = 0;
+                std::string del = ";";
+                int end = linha_3.find(del);
                 while (end != -1) {
                     start = end + del.size();
                     end = linha_3.find(del, start);
@@ -300,6 +300,7 @@ class Forca {
             }
         };   
 
+        // Montando média da frequência para utilização nos filtros de palavras por dificuldade.
         void montar_media() {
             for (it_i = m_frequencias.begin(); it_i != m_frequencias.end(); ++it_i){
                 soma_frequencia = soma_frequencia + *it_i;
