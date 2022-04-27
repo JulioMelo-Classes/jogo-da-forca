@@ -87,7 +87,7 @@ class Forca {
          * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
          */
         std::pair<bool, std::string> eh_valido() {
-            int count_l = 1, count_np = 0, count_ns = 1, count_pv = 0, count_l2 = 0;
+            int count_l = 1, count_np = 0, contador1 = 0, linha_test = 0;
             string linha_1, linha_2, linha_3, linha_4, string, palavra_invalida, dif, name, pal, points;
             pair<bool, std::string> parTeste;
             ifstream arq_palavras;
@@ -131,7 +131,12 @@ class Forca {
                         parTeste.first = true;
                     }
                 }catch(...){
-                    cout << "A palavra \"" + palavra_invalida + "\" na linha " + to_string(count_l-1) + ", não possui frequência ou frequência positiva." << endl;
+                    cout << "A palavra \"" + palavra_invalida + "\" na linha " + to_string(count_l-1) + ", não possui frequência." << endl;
+                    exit(-1);
+                }
+
+                if (stoi(linha_2) < 0){
+                    cout << "A palavra \"" + palavra_invalida + "\" na linha " + to_string(count_l-1) + ", não possui frequência positiva." << endl;
                     exit(-1);
                 }
 
@@ -156,7 +161,6 @@ class Forca {
             }
 
             //Verifica se tem mais ou menos três ';' na linha do arquivo scores.
-            int contador1 = 0, linha_test = 0;
             while(!arq_scores.eof()) {
                 linha_test++;
                 getline(arq_scores, linha_3);
@@ -165,38 +169,34 @@ class Forca {
                         contador1++;
                     }
                 }
-
                 std::string del = ";";
                 int start = 0;
                 int end = linha_3.find(del);
 
-                // Verificação de espaços vazios
+                // Verificação da quantidade de ';'.
+                if(contador1 > 3) {
+                    cout << "Erro! Mais de 3 ';' na linha: " << linha_test << endl;
+                    exit(-1);
+                } else if (contador1 < 3) {
+                    cout << "Erro! Menos de 3 ';' na linha: " << linha_test << endl;
+                    exit(-1);
+                }
+                contador1 = 0;
+
+                // Verificação de campos vazios.
                 while (end != -1) {
                     start = end + del.size();
                     end = linha_3.find(del, start);
                     if (linha_3.substr(start, end - start).size() == 0) {
-                        cout << "TÁ VAZIO NA LINHA: " << linha_test << endl;
+                        cout << "Algum campo vazio na linha: " << linha_test << endl;
                         exit(-1);
                     }
                 }
-
                 if (linha_3.substr(start, end - start).size() == 0) {
-                    cout << "TÁ VAZIO NA LINHA: " << linha_test << endl;
+                    cout << "Algum campo vazio na linha: " << linha_test << endl;
                     exit(-1);
                 }
-
-                // Verificação da quantidade de ';'
-                if(contador1 > 3) {
-                    cout << "Erro, mais de 3 ';' LINHA: " << linha_test << endl;
-                    exit(-1);
-                } else if (contador1 < 3) {
-                    cout << "Erro, menos de 3 ';' LINHA: " << linha_test << endl;
-                    exit(-1);
-                }
-
-                contador1 = 0;
             }
-
             arq_scores.close();
 
             return parTeste;
@@ -449,8 +449,10 @@ class Forca {
             }else if(d == 2){
                 m_dificuldade = DIFICIL;
             }
-        };
- 
+        };  
+        
+        //-----------------X--------------------//
+
         /**
          * Retorna a próxima palavra de acordo com a dificuldade atual.
          * Este método deve atualizar o valor dos atributos m_palavra_atual, com a palavra atual,
