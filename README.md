@@ -19,7 +19,7 @@ Abra o terminal na pasta dos arquivos e digite:
   - cd build
   - cmake ..
   - cmake --build .
-  - ./program ../palavrasFormatada.txt ../scores.txt
+  - ./program ../data/palavrasFormatada.txt ../data/scores.txt
 
 ## Validação dos arquivos (TESTES)
 
