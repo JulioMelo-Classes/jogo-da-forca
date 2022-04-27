@@ -307,7 +307,7 @@ class Forca {
             media_frequencia = soma_frequencia/m_frequencias.size();    
         };
 
-        
+        // Montando par de [Palavra; Frequência] para utilização em diversas funcionalidades.
         void montar_par(){
             vector<string>::iterator itp;
             vector<int>::iterator itf;
@@ -316,56 +316,67 @@ class Forca {
             }
         }
         
-        //Faz a escolha das palavras de acordo com o nível de dificuldade escolhido pelo jogador.
+        // Faz a escolha das palavras de acordo com o nível de dificuldade escolhido pelo jogador.
         vector<string> separarPorDificuldade() {
-            unsigned seed = time(0);
+            unsigned seed = time(0); // Garantindo que a randomização seja um "seed" sempre diferente.
             int nrand;
             vector<string> palavras_facil, palavras_mediaMaior, palavras_mediaMenor, palavras_dificil, palavras_escolhidas;
             srand(seed);
 
             // FÁCIL
             if (m_dificuldade == 0) {
-                for (int i = 0; i < (int)m_palavras.size(); i++){
-                    if (m_palavras[i].second > media_frequencia){
+                for (int i = 0; i < (int)m_palavras.size(); i++) { 
+                    // Fazendo a filtragem por números cuja frequência seja maior que a frequência média.
+                    if (m_palavras[i].second > media_frequencia) { 
                         palavras_facil.push_back(m_palavras[i].first);
                     }
                 }
                 for (int i = 0; i < 10; i++) {
+                    // Sorteando 10 palavras da filtragem acima para colocá-las a disposição do jogo pela dificuldade.
                     nrand = rand() % (int)palavras_facil.size();
                     palavras_escolhidas.push_back(palavras_facil[nrand]);
                 }
             // MÉDIO
             } else if (m_dificuldade == 1) {
-                for (int i = 0; i < (int)m_palavras.size(); i++){
+                for (int i = 0; i < (int)m_palavras.size(); i++) {
+                    // Fazendo a filtragem por números cuja frequência seja menor que a frequência média.
                     if (m_palavras[i].second < media_frequencia){
                         palavras_mediaMenor.push_back(m_palavras[i].first);
-                    }if(m_palavras[i].second >= media_frequencia){
+                    }
+                    // Fazendo a filtragem por números cuja frequência seja maior ou igual que a frequência média.
+                    if (m_palavras[i].second >= media_frequencia) {
                         palavras_mediaMaior.push_back(m_palavras[i].first);
                     }
                 }
-                for (int i = 0; i < 7; i++){
+                for (int i = 0; i < 7; i++) {
+                    // Sorteando 7 palavras cuja frequência seja menor que a média para colocá-las a disposição do jogo pela dificuldade.
                     nrand = rand() % (int)palavras_mediaMenor.size();
                     palavras_escolhidas.push_back(palavras_mediaMenor[nrand]);
                 }
-                for (int i = 0; i < 13; i++){
+                for (int i = 0; i < 13; i++) {
+                    // Sorteando 13 palavras cuja frequência seja maior/igual que a média para colocá-las a disposição do jogo pela dificuldade.
                     nrand = rand() % (int)palavras_mediaMaior.size();
                     palavras_escolhidas.push_back(palavras_mediaMaior[nrand]);
                 } 
             // DIFÍCIL
             } else if (m_dificuldade == 2) {
-                for (int i = 0; i < (int)m_palavras.size(); i++){
+                for (int i = 0; i < (int)m_palavras.size(); i++) {
+                    // Fazendo a filtragem por números cuja frequência seja menor que a frequência média.
                     if (m_palavras[i].second < media_frequencia) {
                         palavras_mediaMenor.push_back(m_palavras[i].first);
                     }
+                    // Fazendo a filtragem por números cuja frequência seja maior ou igual que a frequência média.
                     if (m_palavras[i].second >= media_frequencia) {
                         palavras_mediaMaior.push_back(m_palavras[i].first);
                     }
                 }
                 for (int i = 0; i < 22; i++) {
+                    // Sorteando 22 palavras cuja frequência seja menor que a média para colocá-las a disposição do jogo pela dificuldade.
                     nrand = rand() % (int)palavras_mediaMenor.size();
                     palavras_escolhidas.push_back(palavras_mediaMenor[nrand]);
                 }
                 for (int i = 0; i < 8; i++) {
+                    // Sorteando 8 palavras cuja frequência seja maior/igual que a média para colocá-las a disposição do jogo pela dificuldade.
                     nrand = rand() % (int)palavras_mediaMaior.size();
                     palavras_escolhidas.push_back(palavras_mediaMaior[nrand]);
                 }
@@ -373,6 +384,7 @@ class Forca {
             return palavras_escolhidas;
         }
 
+        // Representação da interface de um boneco que retrata os erros do jogador.
         void imprimirBoneco(int e) {
             switch (e) {
                 case 1:
@@ -397,7 +409,6 @@ class Forca {
             }
         }
 
-
         // Escolhendo uma palavra secreta de acordo com o nível de dificuldade
         string sorteiaPalavra(vector<string> palavras) {
             unsigned seed = time(0);
@@ -409,13 +420,7 @@ class Forca {
             return stringSorteada[0];
         }
 
-        void mostrar_palavraSort() {
-            vector<string>::iterator it_ps;
-            /*for (it_ps = stringSorteada.begin(); it_ps != stringSorteada.end(); ++it_ps){
-                cout << *it_ps << endl;
-            } */
-        }
-
+        // Função para teste dos pares durante desenvolvimento.
         void mostrar_parDePalavras() {
             cout << "(";
             for (int i = 0; i < (int)m_palavras.size(); i++) {
@@ -427,7 +432,7 @@ class Forca {
             }
             cout << ")" << endl;
         };
-
+        // Função para teste das palavras durante desenvolvimento.
         void mostrar_palavras() {
             for (it_p = m_palavras_do_jogo.begin(); it_p != m_palavras_do_jogo.end(); ++it_p){
                 cout << *it_p << endl;
