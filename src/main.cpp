@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
     vector<char> letrasErradas; // Vector com as letras chutadas erradas.
     map<char,bool> chute; // Map com as letras e valores, ex.:(MELAO) <E,true> se o chute for a letra E. Caso contrário <E,false>.
 
+    // Loop principal do jogo.
     while(true) {
         cout << "Bem vindo ao Jogo Forca! Por favor escolha uma das opções" << endl;
         cout << "1 - Iniciar Jogo" << endl;
@@ -37,6 +38,7 @@ int main(int argc, char *argv[]) {
         cin >> opcao; // Ler opção do usuário.
         cout << endl;
 
+        // Caso a escolha do jogador perante a interface seja '1' :
         if(opcao == 1) {
             cout << "Vamos iniciar o jogo! Por favor escolha o nível de dificuldade" << endl;
             cout << "1 - Fácil" << endl;
@@ -56,7 +58,7 @@ int main(int argc, char *argv[]) {
             // Selecionando uma palavra secreta aleatória pelas palavras filtradas por dificuldade.
             palavra_secreta = forca.sorteiaPalavra(forca.separarPorDificuldade());
         
-            while(true) {
+            while(true) { // Loop auxiliar para não deixar o código encerrar e o jogador conseguir chutar mais palavras.
                 while(true) { // Loop da rodada
                     cout << endl;
                     cout << "Chutes errados: "; // Imprime cada letra chutada errada.
@@ -66,7 +68,7 @@ int main(int argc, char *argv[]) {
                     cout << endl;
                     // Imprime _ se a letra ainda não foi chutada.
                     for (char letra : palavra_secreta) {
-                        if (chute[letra]){
+                        if (chute[letra]) {
                             cout << letra << " ";
                         } else {
                             cout << "_ ";
@@ -100,7 +102,7 @@ int main(int argc, char *argv[]) {
                     // Verifica se a letra existe na palavra e imprime.
                     bool result = forca.letraExiste(palpite, palavra_secreta);
 
-                    if (result) { //Se letra existir na palavra.
+                    if (result) { // Se letra existir na palavra.
                         cout << "Muito bem! A palavra contém a letra "<< palpite << "!" << endl;
                         forca.imprimirBoneco(letrasErradas.size());
                         // VITÓRIA
@@ -127,9 +129,11 @@ int main(int argc, char *argv[]) {
                 }
             }
             // Ler informações do jogador para o score e gravar no arquivo.
-        }else if (opcao == 2) {
+            
+        // Caso a escolha do jogador perante a interface seja '1' :
+        } else if (opcao == 2) {
             forca.mostrar_scores();
-        }else{
+        } else { // Caso a opção seja 3 para sair do jogo ou alguma outra não especificada, o jogo encerra.
             break;
         }    
     }

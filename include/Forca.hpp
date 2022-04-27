@@ -20,7 +20,6 @@ class Forca {
         };
 
     private:
-        //TODO: armazenar os scores?
 
         std::vector< std::pair<std::string, int> > m_palavras; //<! palavras e sua ocorrência no Corpus
 
@@ -30,12 +29,6 @@ class Forca {
 
         std::vector< int > m_frequencias;
 
-        std::vector< std::string > p_facil;
-
-        std::vector< std::string > p_medio;
-
-        std::vector< std::string > p_dificil;
-
         vector<string> dificuldade, jogador, palavras, pontos;
  
         Dificuldade m_dificuldade = Dificuldade::FACIL; //<! dificuldade atual do jogo
@@ -44,13 +37,9 @@ class Forca {
 
         std::vector< std::string > m_scores_do_jogo; //<! container “Scores do Jogo”
 
-        std::vector< std::string >::iterator it_s;
+        std::vector< int >::iterator it_i; // iterator de frequencias.
 
-        std::vector< int >::iterator it_i;
-
-        std::vector< int >::iterator iti;
-
-        std::vector< std::string >::iterator it_p;
+        std::vector< std::string >::iterator it_p; // Iterator de palavras
 
         std::vector< char > m_letras_palpitadas; //<! contem as letras palpitadas pelo jogador
 
@@ -82,9 +71,7 @@ class Forca {
 
         /**
          * Valida os arquivos de entrada de acordo com as especificações.
-         * Ao validar os arquivos, no caso de arquivos inválidos, este método deve retornar a 
-         * razão correspondente de acordo com as especificações.
-         * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
+         * Ao validar os arquivos, no caso de arquivos inválidos, este método irá encerrar o programa e mostrar o tipo de erro juntamente da linha onde ele ocorreu.
          */
         std::pair<bool, std::string> eh_valido() {
             int count_l = 1, count_np = 0, contador1 = 0, linha_test = 0;
@@ -126,7 +113,7 @@ class Forca {
                 palavra_invalida = string;
 
                 // Verifica se possui uma frequência ou uma frequência positiva.
-                try{
+                try {
                     if (stoi(linha_2) > 0 || linha_2.empty()){
                         parTeste.first = true;
                     }
