@@ -1,4 +1,24 @@
 # Trabalho - Unidade 1 - LP1 - T01 (2022.1)
+
+# Avaliação e Feeback
+
+- Implementação do carregamento dos arquivos |  6 / 10 pontos
+  - Da forma como vcs fizeram, o programa não suporta arquivos com palavras compostas com espaço no meio tipo "Sao Paulo"
+
+- Implementação de parte da validação | 10 / 10 pontos
+
+- Implementação de um main funcional com parte da UI | 5 / 5 pontos
+
+- Implementação de parte da lógica de sorteio de palavras | 6 / 10 pontos 
+  - Da forma que está as palavras sorteadas sempre são iguais
+
+- Estrutura básica dos arquivos e processo de compilação definido | 4 / 5 pontos
+  - Tirei uma parte aqui por terem implementado tudo no .hpp
+
+- Observações gerais
+  - Por favor, na entrega final separem em .hpp e .cpp a implementação da classe e **removam** o `using namespace std` do .hpp!
+  - Ao invés de colocar tudo no forca.hpp, tentem criar mais arquivos .hpp e .cpp, especialmente com funções auxiliares ou funções relacionadas a UI
+
 ## Componentes:
   - Danrley Lima
   - Lucas Morais
