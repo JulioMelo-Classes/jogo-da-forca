@@ -1,0 +1,4 @@
+Facil;JulioCARRO,CART,CORACAO;10
+Facil;Julio;CORACAO;5
+Dificil;Isaac;<nenhuma>;-4
+Medio;Ramon;PROFESSOR,CASA,DISCORD;60
