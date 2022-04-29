@@ -16,16 +16,10 @@ int main(int argc, char *argv[]) {
     cout << "--------------------------------------------------------------------" << endl;
 
     forca.carregar_arquivos();
-    forca.montar_par();
-    forca.montar_media();
 
-    int opcao, dificuldade, dif = 0;
+    int opcao, dificuldade, tentativas = 6, acertos = 0, dificuldade_escolhida = 0;
     char palpite;
     string palavra_secreta;
-    string palavra_secretaCopia; //String contendo apenas as letras não repetidas da palavra secreta.
-    string palavra_sec; //String auxiliar para verificação de acerto da palavra secreta.
-    vector<char> letrasErradas; //Vector com as letras chutadas erradas.
-    map<char,bool> chute; //Map com as letras e valores, ex.:(MELAO) <E,true> se o chute for a letra E. Caso contrário <E,false>.
 
     while(true) {
         cout << "Bem vindo ao Jogo Forca! Por favor escolha uma das opções" << endl;
@@ -45,80 +39,66 @@ int main(int argc, char *argv[]) {
             cin >> dificuldade; //Ler dificuldade escolhida.
             cout << endl;
 
-            if (dificuldade == 1){ dif = 0; cout << "Iniciando o Jogo no nível fácil, será que você conhece essa palavra?" << endl;
-            } else if (dificuldade == 2){ dif = 1; cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
-            } else if (dificuldade == 3){ dif = 2; cout << "Iniciando o Jogo no nível difícil, será que você conhece essa palavra?" << endl;}
+            if (dificuldade == 1){
+                dificuldade_escolhida = 0; cout << "Iniciando o Jogo no nível fácil, será que você conhece essa palavra?" << endl;
+            } else if (dificuldade == 2){
+                dificuldade_escolhida = 1; cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
+            } else if (dificuldade == 3){
+                dificuldade_escolhida = 2; cout << "Iniciando o Jogo no nível difícil, será que você conhece essa palavra?" << endl;
+            }
 
-            forca.set_dificuldade(dif);
-            forca.separarPorDificuldade();
-
-            // Selecionando uma palavra secreta aleatória pelas palavras filtradas por dificuldade.
-            palavra_secreta = forca.sorteiaPalavra(forca.separarPorDificuldade());
+            forca.set_dificuldade(dificuldade_escolhida);
+            forca.separar_por_dificuldade();
+            palavra_secreta = forca.get_palavra_atual();
         
             while(true) {
                 while(true) { //loop da rodada
+                    forca.imprimir_chutes_errados();
                     cout << endl;
-                    cout << "Chutes errados: "; //Imprime cada letra chutada errada.
-                    for (char letra : letrasErradas){
-                        cout << letra << " ";
-                    }
+                    forca.imprimir_underline(palavra_secreta);
                     cout << endl;
-                    //Imprime _ se a letra ainda não foi chutada.
-                    for (char letra : palavra_secreta){
-                        if (chute[letra]){
-                            cout << letra << " ";
-                        }else{
-                            cout << "_ ";
-                        }  
-                    }
-
-                    cout << endl;
-                    cout << "Print temporário para teste de palavra: " << palavra_secreta << endl;
+                    cout << "Palavra secreta: " << palavra_secreta << endl;
                     cout << "Pontos: " << "TESTE" << endl;
+                    cout << "Tentativas: "; 
+                    cout << tentativas << endl; // Diminui o número de tentantivas a cada jogada.
                     cout << "Palpite: ";
                     cin >> palpite; //Ler o palpite.
+                    cout << endl;
                     palpite = toupper(palpite); //Modifica a leitura pra maiúsculo.
-                    chute[palpite] = true; //Marca true para qualquer letra chutada.
-                    cout << "\n";
 
-                    //Pegando as letras únicas da palavra secreta e armazenando na cópia.
-                    for (int i = 0; i < (int)palavra_secreta.size(); i++){
-                        palavra_secretaCopia.push_back(palavra_secreta[i]);
-                    }
-                    sort(palavra_secretaCopia.begin(),palavra_secretaCopia.end());
-                    palavra_secretaCopia.erase(unique(palavra_secretaCopia.begin(), palavra_secretaCopia.end()), palavra_secretaCopia.end());
-    
-                    //Verificando cada letra da cópia com o palpite e salvando na string 'palavra_sec' (removendo letras repetidas).
-                    for (auto letra : palavra_secretaCopia){
-                        if (letra == palpite){
-                            palavra_sec.push_back(letra);
-                            palavra_sec.erase(unique(palavra_sec.begin(), palavra_sec.end()), palavra_sec.end());
-                        }
-                    }
-
+                    forca.muda_valor_mapa(palpite);
                     //Verifica se a letra existe na palavra e imprime.
-                    bool result = forca.letraExiste(palpite, palavra_secreta);
+                    bool resultado = forca.letra_existe(palpite, palavra_secreta);
 
-                    if (result) { //Se letra existir na palavra.
+                    if (resultado) { 
+                        //Se letra existir na palavra.
+                        acertos++;
+                        cout << "--------------------------------------------------------------------" << endl;
                         cout << "Muito bem! A palavra contém a letra "<< palpite << "!" << endl;
-                        forca.imprimirBoneco(letrasErradas.size());
-                        //VITÓRIA
-                        //Verifica de acordo com os palpites se a string 'palavra_sec' contém todas as letras da palavra secreta, ou seja,
-                        //se são do mesmo tamanho.
-                        if (palavra_sec.size() == palavra_secretaCopia.size()){
+                        forca.imprimir_boneco(forca.get_tam_letras_erradas());
+                        //Se descobrir todas as letras da palavra.
+                        if (forca.verifica_vitoria(palpite, palavra_secreta, acertos) && tentativas > 0){
                             cout << "Parabéns! Você conseguiu descobrir a palavra secreta: " + palavra_secreta + "." << endl;
+                            exit(-1);
+                        }else if (tentativas == 0){
+                            cout << "Tentativas esgotadas!" << endl;
                             exit(-1);
                         }
                         break;
-                    }else{ //Se letra não existir na palavra.
+                    }else{
+                        //Se letra não existir na palavra. 
+                        tentativas--;
+                        cout << "--------------------------------------------------------------------" << endl;
                         cout << "Meh, não achei a letra " << palpite << "! :<" << endl;
-                        letrasErradas.push_back(palpite);
-                        forca.imprimirBoneco(letrasErradas.size());
-                        //GAME OVER
+                        forca.get_letras_erradas(palpite);
+                        forca.imprimir_boneco(forca.get_tam_letras_erradas());
                         //Se número de letras erradas não repetidas se excederem, fim de jogo.
-                        if (letrasErradas.size() == 6){
+                        if (forca.verifica_derrota(palpite)){
                             cout << endl;
                             cout << "Você enforcou o bonequinho :(" << endl;
+                            exit(-1);
+                        }else if (tentativas == 0){
+                            cout << "Tentativas esgotadas!" << endl;
                             exit(-1);
                         }
                         break;

@@ -6,7 +6,7 @@ if len(sys.argv) == 1:
 else:
     bruto = sys.argv[1]
 
-formatado = "palavrasTeste.txt"
+formatado = "palavrasFormatadas.txt"
 
 try:
     ref_arquivo = open(bruto,"r",encoding='utf-8')
@@ -28,7 +28,7 @@ try:
                     '.':'', 'º':'', '°':'', 'ª':'', '§':'', '£':'', '©':'', '¡':'', '<':'', '¹':'', '²':'',
                     '³':'', '@':'', '#':'', '!':'', '$':'', '%':'', '¨':'', '&':'', '*':'', '(':'', ')':'', 
                     '_':'', '+':'', '=':'', '/':'', ']':'', '[':'', ',':'', '?':'', ':':'', ';':'', '¢':'', 
-                    '¬':'', '|':'', '{':'', '}':'', '>':'',
+                    '¬':'', '|':'', '{':'', '}':'', '>':'', '-':' ',
                     'ç':"c", 'Ç':'C',
                     'á':'a', 'â':'a', 'à':'a', 'ã':'a', 'ä':'a', 'Á':'A', 'À':'A', 'Â':'A', 'Ã':'A', 'Ä':'A',
                     'é':'e', 'è':'e', 'ê':'e', 'ẽ':'e', 'ë':'e', 'É':'E', 'È':'E', 'Ê':'E', 'Ẽ':'E', 'Ë':'E',
@@ -38,17 +38,13 @@ try:
                 }
                 transTable = frase.maketrans(dictionary)
                 frase = frase.translate(transTable)
-                frase = re.sub(r"[^a-zA-Z-]","",frase)
+                frase.replace("-"," ")
+                frase = re.sub(r"[^a-zA-Z ]","",frase)
                 frase = frase.upper()
                 if (len(frase) > 4 and len(frequencia) > 1):
                     c += 1
                     s += int(frequencia)
-                    for linha in ref_arquivo:
-                        if frase not in esc_arquivo:
-                            esc_arquivo.write(frase+" "+frequencia+"\n")
-                            break
-                        else:
-                            break
+                    esc_arquivo.write(frase+";"+frequencia+"\n")
     print("Quantidade de palavras: ", c)
     print("Soma das frequências: ", s)
     print("Média: ", int(s/c))
