@@ -65,9 +65,7 @@ class Forca {
        
         /**
          * Valida os arquivos de entrada de acordo com as especificações.
-         * Ao validar os arquivos, no caso de arquivos inválidos, este método deve retornar a 
-         * razão correspondente de acordo com as especificações.
-         * @return {T,""} se os arquivos estiverem válidos, {F,"razão"} caso contrário.
+         * Ao validar os arquivos, no caso de arquivos inválidos, este método irá encerrar o programa e mostrar o tipo de erro juntamente da linha onde ele ocorreu.
          */
         std::pair<bool, std::string> eh_valido();
  

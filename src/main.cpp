@@ -2,11 +2,12 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    Forca forca(argv[1], argv[2]);
+    Forca forca(argv[1], argv[2]); // Construindo a classe "forca".
 
+    // Primeira exibição de Interface.
     cout << ">>> Lendo arquivos de palavras ["<< argv[1] <<"] e scores ["<< argv[2] <<"], por favor aguarde.." << endl;
     cout << "--------------------------------------------------------------------" << endl;
-    auto valid = forca.eh_valido(); //Verificação de todos os testes.
+    auto valid = forca.eh_valido(); // Verificação de todos os testes.
     if (!valid.first) {
         cout<< valid.second <<endl;
         exit(-1);
@@ -21,22 +22,24 @@ int main(int argc, char *argv[]) {
     char palpite;
     string palavra_secreta;
 
+    // Loop principal do jogo.
     while(true) {
         cout << "Bem vindo ao Jogo Forca! Por favor escolha uma das opções" << endl;
         cout << "1 - Iniciar Jogo" << endl;
         cout << "2 - Ver scores anteriores" << endl;
         cout << "3 - Sair do Jogo" << endl;
         cout << "Sua escolha: ";
-        cin >> opcao; //Ler opção do usuário.
+        cin >> opcao; // Ler opção do usuário.
         cout << endl;
 
+        // Caso a escolha do jogador perante a interface seja '1' :
         if(opcao == 1) {
             cout << "Vamos iniciar o jogo! Por favor escolha o nível de dificuldade" << endl;
             cout << "1 - Fácil" << endl;
             cout << "2 - Médio" << endl;
             cout << "3 - Difícil" << endl;
             cout << "Sua escolha: ";
-            cin >> dificuldade; //Ler dificuldade escolhida.
+            cin >> dificuldade; // Ler dificuldade escolhida.
             cout << endl;
 
             if (dificuldade == 1){
@@ -105,10 +108,12 @@ int main(int argc, char *argv[]) {
                     }
                 }
             }
-            //ler informações do jogador para o score e gravar no arquivo 
-        }else if (opcao == 2) {
+            // Ler informações do jogador para o score e gravar no arquivo.
+            
+        // Caso a escolha do jogador perante a interface seja '1' :
+        } else if (opcao == 2) {
             forca.mostrar_scores();
-        }else{
+        } else { // Caso a opção seja 3 para sair do jogo ou alguma outra não especificada, o jogo encerra.
             break;
         }    
     }
