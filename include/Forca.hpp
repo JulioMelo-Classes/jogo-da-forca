@@ -42,7 +42,9 @@ class Forca {
 
         std::map<char,bool> mapa_letra_valor; //<! Map com as letras e valores, ex.:(MELAO) <E,true> se o chute for a letra 'E'. Caso contrário <E,false>.
 
-        std::map<char,int> mapa_consoantes; //<! Map com as consoantes das palavras e seus valores.
+        std::vector< std::pair< char, int> > mapa_consoantes; //<! Vector com as consoantes das palavras e seus valores.
+
+        std::vector< std::pair< char, int> > mapa_vogais; //<! Vector com as vogais das palavras e seus valores.
 
     public:
 
@@ -101,9 +103,15 @@ class Forca {
 
         void imprimir_chutes_errados();
 
-        void imprimir_underline(std::string palavra_escolhida);
+        void imprimir_underline(std::string palavra_escolhida, char consoante, char vogal);
 
-        void muda_valor_mapa(char letra_escolhida);
+        void muda_valor_letra_mapa(char letra_escolhida);
+
+        char muda_valor_consoante_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
+
+        char muda_valor_vogal_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
+
+        void consoante_aleatoria(int dificuldade_escolhida, std::string palavra_escolhida);
 
         bool letra_existe(char chute, std::string palavra);
 
@@ -165,13 +173,6 @@ class Forca {
          * m_letras_palpitadas como sendo um vetor vazio
          */
         void reset_rodada();
- 
-        /**
-         * Retorna a quantidade de tentativas restantes.
-         * @return a quantidade de tentativas restantes.
-         */
-        int get_tentativas_restantes(int tentativas_restantes);
-
 
         /**
          * Testes

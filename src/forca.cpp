@@ -253,6 +253,7 @@ vector<string> Forca::separar_por_dificuldade() {
         }
     // MÉDIO
     } else if (m_dificuldade == 1) {
+        cout << "A" << endl;
         for (int i = 0; i < (int)m_palavras.size(); i++){
             if (m_palavras[i].second < media_frequencia){
                 palavras_mediaMenor.push_back(m_palavras[i].first);
@@ -330,8 +331,80 @@ int Forca::get_tam_letras_erradas(){
     return m_letras_palpitadas.size();
 }
 
-void Forca::muda_valor_mapa(char letra_escolhida){
+void Forca::muda_valor_letra_mapa(char letra_escolhida){
     mapa_letra_valor[letra_escolhida] = true; //Marca true para qualquer letra chutada.
+}
+
+char Forca::muda_valor_consoante_mapa(string palavra_escolhida, int dificuldade_escolhida){
+    random_device random;
+    default_random_engine x(random());
+    string palavra_escolhida_copia;
+    int var2 = palavra_escolhida.size()/5;
+    int contador1 = 0;
+    vector<int> consoantes;
+
+    for (int i = 0; i < (int)palavra_escolhida.size(); i++) {
+        palavra_escolhida_copia.push_back(palavra_escolhida[i]);
+    }
+    sort(palavra_escolhida_copia.begin(),palavra_escolhida_copia.end());
+    palavra_escolhida_copia.erase(unique(palavra_escolhida_copia.begin(), palavra_escolhida_copia.end()), palavra_escolhida_copia.end());
+
+    for (char letra : palavra_escolhida_copia){
+        contador1++;
+        if ((letra != 'A') && (letra != 'E') && (letra != 'I') && (letra != 'O') && (letra != 'U')){
+            mapa_consoantes.push_back(make_pair(letra,contador1));
+        }
+    }
+    for (int i = 0; i < (int)mapa_consoantes.size(); i++){
+        consoantes.push_back(mapa_consoantes[i].second);
+    }
+    
+    if (m_dificuldade == 0){
+        int max1 = max(1, var2);
+        uniform_int_distribution<int> aleatorio1(0, max1);
+        const int nrand1 = aleatorio1(x);
+        for (int i = 0; i < (int)mapa_consoantes.size(); i++){
+            if (consoantes[nrand1] == mapa_consoantes[i].second){
+                return mapa_consoantes[i].first;
+            }
+        }
+    }
+}
+
+char Forca::muda_valor_vogal_mapa(string palavra_escolhida, int dificuldade_escolhida){
+    random_device random;
+    default_random_engine x(random());
+    string palavra_escolhida_copia;
+    int var2 = palavra_escolhida.size()/5;
+    int contador2 = 0;
+    vector<int> vogais;
+
+    for (int i = 0; i < (int)palavra_escolhida.size(); i++) {
+        palavra_escolhida_copia.push_back(palavra_escolhida[i]);
+    }
+    sort(palavra_escolhida_copia.begin(),palavra_escolhida_copia.end());
+    palavra_escolhida_copia.erase(unique(palavra_escolhida_copia.begin(), palavra_escolhida_copia.end()), palavra_escolhida_copia.end());
+
+    for (char letra : palavra_escolhida_copia){
+        contador2++;
+        if ((letra == 'A') || (letra == 'E') || (letra == 'I') || (letra == 'O') || (letra == 'U')){
+            mapa_vogais.push_back(make_pair(letra,contador2));
+        }
+    }
+    for (int i = 0; i < (int)mapa_vogais.size(); i++){
+        vogais.push_back(mapa_vogais[i].second);
+    }
+    
+    if (m_dificuldade == 1){
+        int max2 = max(1, var2);
+        uniform_int_distribution<int> aleatorio2(0, max2);
+        const int nrand2 = aleatorio2(x);
+        for (int i = 0; i < (int)mapa_vogais.size(); i++){
+            if (vogais[nrand2] == mapa_vogais[i].second){
+                return mapa_vogais[i].first;
+            }
+        }
+    }
 }
 
 void Forca::imprimir_boneco(int n_erros) {
@@ -387,13 +460,17 @@ bool Forca::verifica_derrota(char letra_escolhida){
     }
 }
 
-void Forca::imprimir_underline(string palavra_escolhida){
+void Forca::imprimir_underline(string palavra_escolhida, char consoante, char vogal){
     cout << endl;
     for (char letra : palavra_escolhida){
         if (mapa_letra_valor[letra]){
             cout << letra << " ";
         }else if (letra == ' '){
             cout << "- ";
+        }else if (letra == consoante){
+            cout << letra << " ";
+        }else if (letra == vogal){
+            cout << letra << " ";
         }else{
             cout << "_ ";
         }  
@@ -404,11 +481,6 @@ bool Forca::rodada_terminada(){
     if (true){
         return true;
     }
-}
-
-int Forca::get_tentativas_restantes(int tentativas_restantes){
-    tentativas_restantes--;
-    return tentativas_restantes;
 }
 
 /**

@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     forca.carregar_arquivos();
 
     int opcao, dificuldade, tentativas = 6, acertos = 0, dificuldade_escolhida = 0;
-    char palpite;
+    char palpite, consoante, vogal;
     string palavra_secreta;
 
     // Loop principal do jogo.
@@ -44,22 +44,32 @@ int main(int argc, char *argv[]) {
             cout << endl;
 
             if (dificuldade == 1){
-                dificuldade_escolhida = 0; cout << "Iniciando o Jogo no nível fácil, será que você conhece essa palavra?" << endl;
+                dificuldade_escolhida = 0;
+                forca.set_dificuldade(dificuldade_escolhida);
+                forca.separar_por_dificuldade();
+                palavra_secreta = forca.get_palavra_atual();
+                consoante = forca.muda_valor_consoante_mapa(palavra_secreta, dificuldade_escolhida);
+                cout << "Iniciando o Jogo no nível fácil, será que você conhece essa palavra?" << endl;
             } else if (dificuldade == 2){
-                dificuldade_escolhida = 1; cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
+                dificuldade_escolhida = 1; 
+                forca.set_dificuldade(dificuldade_escolhida);
+                cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
+                forca.separar_por_dificuldade();
+                palavra_secreta = forca.get_palavra_atual();
+                vogal = forca.muda_valor_vogal_mapa(palavra_secreta, dificuldade_escolhida);
             } else if (dificuldade == 3){
-                dificuldade_escolhida = 2; cout << "Iniciando o Jogo no nível difícil, será que você conhece essa palavra?" << endl;
+                dificuldade_escolhida = 2;
+                forca.set_dificuldade(dificuldade_escolhida);
+                cout << "Iniciando o Jogo no nível difícil, será que você conhece essa palavra?" << endl;
+                forca.separar_por_dificuldade();
+                palavra_secreta = forca.get_palavra_atual();
             }
 
-            forca.set_dificuldade(dificuldade_escolhida);
-            forca.separar_por_dificuldade();
-            palavra_secreta = forca.get_palavra_atual();
-        
             while(true) {
                 while(true) { //loop da rodada
                     forca.imprimir_chutes_errados();
                     cout << endl;
-                    forca.imprimir_underline(palavra_secreta);
+                    forca.imprimir_underline(palavra_secreta, consoante, vogal);
                     cout << endl;
                     cout << "Palavra secreta: " << palavra_secreta << endl;
                     cout << "Pontos: " << "TESTE" << endl;
@@ -70,7 +80,7 @@ int main(int argc, char *argv[]) {
                     cout << endl;
                     palpite = toupper(palpite); //Modifica a leitura pra maiúsculo.
 
-                    forca.muda_valor_mapa(palpite);
+                    forca.muda_valor_letra_mapa(palpite);
                     //Verifica se a letra existe na palavra e imprime.
                     bool resultado = forca.letra_existe(palpite, palavra_secreta);
 
