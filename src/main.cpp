@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
                     forca.imprimir_underline(palavra_secreta, consoante, vogal);
                     cout << endl;
                     cout << "Palavra secreta: " << palavra_secreta << endl;
-                    cout << "Pontos: " << "TESTE" << endl;
+                    cout << "Pontos: " << pontuacao << endl;
                     cout << "Tentativas: "; 
                     cout << tentativas << endl; // Diminui o número de tentantivas a cada jogada.
                     cout << "Palpite: ";

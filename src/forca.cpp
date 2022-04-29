@@ -427,6 +427,7 @@ void Forca::imprimir_chutes_errados(){
     }
 }
 
+
 int Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe) {
     int fix_loop = 0;
     if (existe) {
@@ -442,7 +443,6 @@ int Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &ponto
     } else {
         pontos--;
     }
-    cout << ">>>>>> PONTOS: " << pontos << endl;
     return 0;
 }
 

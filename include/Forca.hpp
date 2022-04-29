@@ -145,7 +145,7 @@ class Forca {
 
         bool verifica_derrota(char letra_escolhida);
 
-        // Mecânica de pontuação do jogador
+        // Mecânica de pontuação do jogador, retorna sempre uma referência para a variável de pontos.
         int pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe);
 
         /**
