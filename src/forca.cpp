@@ -253,7 +253,6 @@ vector<string> Forca::separar_por_dificuldade() {
         }
     // MÉDIO
     } else if (m_dificuldade == 1) {
-        cout << "A" << endl;
         for (int i = 0; i < (int)m_palavras.size(); i++){
             if (m_palavras[i].second < media_frequencia){
                 palavras_mediaMenor.push_back(m_palavras[i].first);
@@ -369,6 +368,7 @@ char Forca::muda_valor_consoante_mapa(string palavra_escolhida, int dificuldade_
             }
         }
     }
+    return 0;
 }
 
 char Forca::muda_valor_vogal_mapa(string palavra_escolhida, int dificuldade_escolhida){
@@ -384,7 +384,6 @@ char Forca::muda_valor_vogal_mapa(string palavra_escolhida, int dificuldade_esco
     }
     sort(palavra_escolhida_copia.begin(),palavra_escolhida_copia.end());
     palavra_escolhida_copia.erase(unique(palavra_escolhida_copia.begin(), palavra_escolhida_copia.end()), palavra_escolhida_copia.end());
-
     for (char letra : palavra_escolhida_copia){
         contador2++;
         if ((letra == 'A') || (letra == 'E') || (letra == 'I') || (letra == 'O') || (letra == 'U')){
@@ -405,15 +404,16 @@ char Forca::muda_valor_vogal_mapa(string palavra_escolhida, int dificuldade_esco
             }
         }
     }
+    return 0;
 }
 
 void Forca::imprimir_boneco(int n_erros) {
     switch (n_erros) {
-        case 1: cout << "  o  " << endl; break;
-        case 2: cout << "  o\n  |  "; break;
-        case 3: cout << "  o\n /|  "; break;
-        case 4: cout << "  o\n /|\\ "; break;
-        case 5: cout << "  o\n /|\\ \n / "; break;
+        case 1: cout << "  o  \n" << endl; break;
+        case 2: cout << "  o\n  |  \n"; break;
+        case 3: cout << "  o\n /|  \n"; break;
+        case 4: cout << "  o\n /|\\ \n"; break;
+        case 5: cout << "  o\n /|\\ \n / \n"; break;
         case 6: cout << "Vixe, Fim de Jogo!\n  o\n /|\\ \n / \\";
         default: break;
     }
@@ -425,6 +425,25 @@ void Forca::imprimir_chutes_errados(){
     for (char letra : m_letras_palpitadas){
         cout << letra << " ";
     }
+}
+
+int Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe) {
+    int fix_loop = 0;
+    if (existe) {
+        for (char letra : palavra_secreta){
+            if (letra == chute) {
+                pontos++;
+            } 
+            if ((letra == palavra_secreta[palavra_secreta.size()-1]) && (palavra_secreta[palavra_secreta.size()-1] == chute) && (fix_loop == 0)) {
+                fix_loop = 1;
+                pontos+= 2;
+            }
+        }
+    } else {
+        pontos--;
+    }
+    cout << ">>>>>> PONTOS: " << pontos << endl;
+    return 0;
 }
 
 // Selecionando uma palavra secreta aleatória pelas palavras filtradas por dificuldade.

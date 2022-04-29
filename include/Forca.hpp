@@ -144,7 +144,10 @@ class Forca {
         bool verifica_vitoria(char letra_escolhida, std::string palavra_atual, int acertos);
 
         bool verifica_derrota(char letra_escolhida);
- 
+
+        // Mecânica de pontuação do jogador
+        int pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe);
+
         /**
          * Testa se uma letra pertence á palavra atual e se já foi jogada pelo jogador.
          * Este método testa se uma letra pertence à palavra atual, caso a letra pertença a palavra

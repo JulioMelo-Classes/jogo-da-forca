@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
     forca.carregar_arquivos();
 
-    int opcao, dificuldade, tentativas = 6, acertos = 0, dificuldade_escolhida = 0;
+    int opcao, dificuldade, tentativas = 6, acertos = 0, dificuldade_escolhida = 0, pontuacao = 0;
     char palpite, consoante, vogal;
     string palavra_secreta;
 
@@ -83,8 +83,12 @@ int main(int argc, char *argv[]) {
                     forca.muda_valor_letra_mapa(palpite);
                     //Verifica se a letra existe na palavra e imprime.
                     bool resultado = forca.letra_existe(palpite, palavra_secreta);
+                        
 
                     if (resultado) { 
+
+                        forca.pontuacao_jogador(palavra_secreta, palpite, pontuacao, resultado);
+
                         //Se letra existir na palavra.
                         acertos++;
                         cout << "--------------------------------------------------------------------" << endl;
@@ -100,6 +104,9 @@ int main(int argc, char *argv[]) {
                         }
                         break;
                     }else{
+
+                        forca.pontuacao_jogador(palavra_secreta, palpite, pontuacao, resultado);
+
                         //Se letra não existir na palavra. 
                         tentativas--;
                         cout << "--------------------------------------------------------------------" << endl;
