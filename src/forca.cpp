@@ -1,4 +1,5 @@
 #include "Forca.hpp"
+#include <iostream>
 using namespace std;
 
 Forca::Forca(string palavras, string scores) {
@@ -234,10 +235,9 @@ bool Forca::letra_existe(char chute, string palavra){
 }
 
 vector<string> Forca::separar_por_dificuldade() {
-    unsigned seed = time(0);
-    int nrand;
+    random_device random;
+    default_random_engine dre(random());
     vector<string> palavras_facil, palavras_mediaMaior, palavras_mediaMenor, palavras_dificil, palavras_escolhidas;
-    srand(seed);
 
     // FÁCIL
     if (m_dificuldade == 0) {
@@ -247,8 +247,9 @@ vector<string> Forca::separar_por_dificuldade() {
             }
         }
         for (int i = 0; i < 10; i++) {
-            nrand = rand() % (int)palavras_facil.size();
-            palavras_escolhidas.push_back(palavras_facil[nrand]);
+            uniform_int_distribution<int> facil(0, palavras_facil.size()-1);
+            const int nrand1 = facil(dre);
+            palavras_escolhidas.push_back(palavras_facil[nrand1]);
         }
     // MÉDIO
     } else if (m_dificuldade == 1) {
@@ -260,12 +261,14 @@ vector<string> Forca::separar_por_dificuldade() {
             }
         }
         for (int i = 0; i < 7; i++){
-            nrand = rand() % (int)palavras_mediaMenor.size();
-            palavras_escolhidas.push_back(palavras_mediaMenor[nrand]);
+            uniform_int_distribution<int> mediomenor(0, palavras_mediaMenor.size()-1);
+            const int nrand2 = mediomenor(dre);
+            palavras_escolhidas.push_back(palavras_mediaMenor[nrand2]);
         }
         for (int i = 0; i < 13; i++){
-            nrand = rand() % (int)palavras_mediaMaior.size();
-            palavras_escolhidas.push_back(palavras_mediaMaior[nrand]);
+            uniform_int_distribution<int> mediomaior(0, palavras_mediaMaior.size()-1);
+            const int nrand3 = mediomaior(dre);
+            palavras_escolhidas.push_back(palavras_mediaMaior[nrand3]);
         } 
     // DIFÍCIL
     } else if (m_dificuldade == 2) {
@@ -278,23 +281,25 @@ vector<string> Forca::separar_por_dificuldade() {
             }
         }
         for (int i = 0; i < 22; i++) {
-            nrand = rand() % (int)palavras_mediaMenor.size();
-            palavras_escolhidas.push_back(palavras_mediaMenor[nrand]);
+            uniform_int_distribution<int> mediomenor(0, palavras_mediaMenor.size()-1);
+            const int nrand4 = mediomenor(dre);
+            palavras_escolhidas.push_back(palavras_mediaMenor[nrand4]);
         }
         for (int i = 0; i < 8; i++) {
-            nrand = rand() % (int)palavras_mediaMaior.size();
-            palavras_escolhidas.push_back(palavras_mediaMaior[nrand]);
+            uniform_int_distribution<int> mediomaior(0, palavras_mediaMaior.size()-1);
+            const int nrand5 = mediomaior(dre);
+            palavras_escolhidas.push_back(palavras_mediaMaior[nrand5]);
         }
     }
     return palavras_escolhidas;
 }
 
 string Forca::sorteia_palavra(vector<string> palavras) {
-    unsigned seed = time(0);
-    int nrand;
+    random_device random;
+    default_random_engine dre_(random());
+    uniform_int_distribution<int> aleatorio(0, palavras.size()-1);
+    const int nrand = aleatorio(dre_);
     vector<string> stringSorteada;
-    srand(seed);
-    nrand = rand() % (int)palavras.size();
     stringSorteada.push_back(palavras[nrand]);
     return stringSorteada[0];
 }

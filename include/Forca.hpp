@@ -1,18 +1,14 @@
-#include <iostream>
 #include <vector>
 #include <fstream>
 #include <string>
-#include <cstring>
 #include <iterator>
 #include <cstdlib>
-#include <ctime>
 #include <algorithm>
 #include <iomanip>
 #include <exception>
 #include <map>
 #include <random>
 
-using namespace std;
  
 class Forca {
     public:
@@ -45,6 +41,8 @@ class Forca {
         int m_tentativas_restantes; //TODO: armazenar tentativas restantes
 
         std::map<char,bool> mapa_letra_valor; //<! Map com as letras e valores, ex.:(MELAO) <E,true> se o chute for a letra 'E'. Caso contrário <E,false>.
+
+        std::map<char,int> mapa_consoantes; //<! Map com as consoantes das palavras e seus valores.
 
     public:
 
@@ -86,13 +84,13 @@ class Forca {
         /**
          * Faz a escolha das palavras de acordo com o nível de dificuldade * escolhido pelo jogador.
          */
-        vector<string> separar_por_dificuldade();
+        std::vector<std::string> separar_por_dificuldade();
 
         /**
          * Escolhendo uma palavra secreta de acordo com o nível de 
          * dificuldade
          */
-        string sorteia_palavra(vector<string> palavras);
+        std::string sorteia_palavra(std::vector<std::string> palavras);
 
         /**
          * Retorna o valor da palavra atual, útil no caso de um game over, para mostrar a palavra que estava
@@ -107,7 +105,7 @@ class Forca {
 
         void muda_valor_mapa(char letra_escolhida);
 
-        bool letra_existe(char chute, string palavra);
+        bool letra_existe(char chute, std::string palavra);
 
         void imprimir_boneco(int n_erros);
 
@@ -135,7 +133,7 @@ class Forca {
 
         int get_tam_letras_erradas();
 
-        bool verifica_vitoria(char letra_escolhida, string palavra_atual, int acertos);
+        bool verifica_vitoria(char letra_escolhida, std::string palavra_atual, int acertos);
 
         bool verifica_derrota(char letra_escolhida);
  
