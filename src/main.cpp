@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
                         cout << "--------------------------------------------------------------------" << endl;
                         forca.get_letras(palpite, consoante, vogal);
                         forca.pontuacao_jogador(palavra_secreta, palpite, pontuacao, resultado);
-                        
+                        forca.verifica_acertos(palpite, acertos, consoante, vogal, resultado); //Calcula acertos.
                     } else {
                         cout << "--------------------------------------------------------------------" << endl;
                         cout << "Meh, não achei a letra " << palpite << "! :<" << endl;
@@ -113,9 +113,6 @@ int main(int argc, char *argv[]) {
                         forca.pontuacao_jogador(palavra_secreta, palpite, pontuacao, resultado);
                     }
                     
-                    //Calcula acertos.
-                    forca.verifica_acertos(palpite, acertos, consoante, vogal);
-                    cout << acertos << endl;
                     forca.imprimir_boneco(forca.get_tam_letras_erradas());
 
                     //Se as tentativas acabarem ou enforcar o boneco, FIM DE JOGO.

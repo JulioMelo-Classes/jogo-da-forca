@@ -457,7 +457,7 @@ void Forca::imprimir_chutes_errados(){
     }
 }
 
-int Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe) {
+void Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe) {
     int fix_loop = 0;
     if (existe) {
         if (m_letras_palpitadas.size() == 2) {
@@ -476,15 +476,18 @@ int Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &ponto
             }
         }
     } else {
-        if (m_letras_erradas.size() == 1) {
-            pontos--;
-        } else if (*find(m_letras_erradas.begin(), m_letras_erradas.end(), chute) == chute) {
-            pontos--;
-        } else {
+        if (m_letras_erradas.empty()){
             
+        } else {
+            if (*find(m_letras_erradas.begin(), m_letras_erradas.end(), chute) == chute){
+
+            } else {
+                pontos--;
+            }
         }
+        
+        
     }
-    return 0;
 }
 
 // Selecionando uma palavra secreta aleatória pelas palavras filtradas por dificuldade.
@@ -541,49 +544,13 @@ bool Forca::verifica_tentativas(string palavra, char palpite, int tentativas){
     return 0;
 }
 
-int Forca::verifica_acertos(char palpite, int &acertos, char consoante, char vogal){
-    bool teste1;
-    bool teste2;
-    bool teste3;
-
-    for (char letra : m_palavra_atual){
-        if (palpite == letra){
-            teste1 = true;
-            break;
-        } else {
-            teste1 = false;
-        }
-    }
-
-    cout << teste1 << endl;
-
-    for (char letra : m_letras_palpitadas){
-        if (palpite == letra){
-            teste2 = true;
-            break;
-        } else {
-            teste2 = false;
-        }
-    }
-
-    cout << teste2 << endl;
-
-    if (m_letras_erradas.empty()){
-        teste3 = false;
-    } else if (m_letras_erradas.size() > 0){
-        teste3 = (*find(m_letras_erradas.begin(), m_letras_erradas.end(), palpite) == palpite);
-    } else {
-        teste3 = false;
-    }   
-
-    cout << teste3 << endl;
-    if (teste1 == true){
-        if ((palpite != vogal) && (palpite != consoante) && (teste2 == true) && (teste3 == false)) {
-            cout << "aaaAcertou" << endl;
+int Forca::verifica_acertos(char palpite, int &acertos, char consoante, char vogal, bool resultado){
+    if (resultado){
+        if ((palpite != vogal) && (palpite != consoante)) {
             acertos++;
         }
     }
-    
+    return acertos;
 }
 
 vector<char> Forca::vector_letra_errada(string palavra, char palpite){

@@ -120,7 +120,7 @@ class Forca {
 
         bool verifica_tentativas(std::string palavra, char palpite, int tentativas);
 
-        int verifica_acertos(char palpite, int &acertos, char consoante, char vogal);
+        int verifica_acertos(char palpite, int &acertos, char consoante, char vogal, bool resultado);
 
         std::vector<char> vector_letra_errada(std::string palavra, char palpite);
         /**
@@ -153,7 +153,7 @@ class Forca {
         bool verifica_derrota();
 
         // Mecânica de pontuação do jogador, retorna sempre uma referência para a variável de pontos.
-        int pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe);
+        void pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe);
 
         /**
          * Testa se uma letra pertence á palavra atual e se já foi jogada pelo jogador.
