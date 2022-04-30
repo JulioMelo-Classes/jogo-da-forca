@@ -142,7 +142,7 @@ class Forca {
          * @return a palavra atualmente sendo jogada.
          */
 
-        void get_letras(char letra_escolhida, char consoante, char vogal);
+        void get_letras(char letra_escolhida, char consoante, char vogal, bool resultado, int &acertos, int &pontos);
 
         void get_letra_erradas(char letra_escolhida, std::string palavra);
 
@@ -177,12 +177,12 @@ class Forca {
         bool rodada_terminada();
  
         /**
-         * Reseta o valor de tentativas restantes para 5 e do atributo m_letras_palpitadas para vazio
+         * Reseta o valor de tentativas restantes para 6 e do atributo m_letras_palpitadas para vazio
          * Este método é útil no caso do jogador escolher continuar o jogo, ou no início
          * de cada rodada, resetando o valor de tentativas restantes para 5 e do atributo
          * m_letras_palpitadas como sendo um vetor vazio
          */
-        void reset_rodada();
+        void reset_rodada(int &p, int &t, int &a, char &c, char &v, std::string &pa, std::vector<char> &le);
 
         /**
          * Testes
