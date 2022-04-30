@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
             }
             cout << "Palavra secreta: " << palavra_secreta << endl;
             while(true) {
-
+                lde:
                 while(true) { //Loop da Rodada.
                     cout << endl;
                     forca.imprimir_underline(palavra_secreta, consoante, vogal);
@@ -90,44 +90,38 @@ int main(int argc, char *argv[]) {
                     //Verifica se letra chutada existe na palavra.
                     bool resultado = forca.letra_existe(palpite, palavra_secreta);
 
-                    //Calcula acertos.
-                    aux_acertos = forca.verifica_acertos(palavra_secreta, palpite);
                     letras_erradas = forca.vector_letra_errada(palavra_secreta, palpite);
-                    if (aux_acertos){
-                        if (letras_erradas.empty()){ acertos++; }
-                        else if (*find(letras_erradas.begin(), letras_erradas.end(), palpite) == palpite){} 
-                        else { acertos++; }
-                    }
+                    
                     
                     if (resultado) { 
-                        forca.pontuacao_jogador(palavra_secreta, palpite, pontuacao, resultado);
-                        forca.get_letras(palpite);
+                        if (palpite == consoante || palpite == vogal){
+                            cout << "Letra já descoberta!" << endl;
+                            goto lde;
+                        }
                         cout << "--------------------------------------------------------------------" << endl;
                         cout << "Muito bem! A palavra contém a letra "<< palpite << "!" << endl;
                         cout << "--------------------------------------------------------------------" << endl;
-                    } else {
+                        forca.get_letras(palpite, consoante, vogal);
                         forca.pontuacao_jogador(palavra_secreta, palpite, pontuacao, resultado);
-                        forca.get_letras(palpite);
+                        
+                    } else {
                         cout << "--------------------------------------------------------------------" << endl;
                         cout << "Meh, não achei a letra " << palpite << "! :<" << endl;
                         cout << "--------------------------------------------------------------------" << endl;
-                    }
-
-                    forca.imprimir_boneco(forca.get_tam_letras_erradas());
-
-                    //Se descobrir todas as letras da palavra, VITÓRIA.
-                    if (forca.verifica_vitoria(palpite, palavra_secreta, acertos, dificuldade_escolhida)){
-                        cout << "Parabéns! Você conseguiu descobrir a palavra secreta: " + palavra_secreta + "." << endl;
-                        cout << endl;
-                        cout << "Digite o seu nome: ";
-                        cin >> nome;
-                        cout << endl;
+                        forca.get_letras(palpite, consoante, vogal);
+                        forca.get_letra_erradas(palpite, palavra_secreta);
+                        forca.pontuacao_jogador(palavra_secreta, palpite, pontuacao, resultado);
                     }
                     
+                    //Calcula acertos.
+                    forca.verifica_acertos(palpite, acertos, consoante, vogal);
+                    cout << acertos << endl;
+                    forca.imprimir_boneco(forca.get_tam_letras_erradas());
+
                     //Se as tentativas acabarem ou enforcar o boneco, FIM DE JOGO.
                     if (tentativas == 0 && forca.verifica_derrota()){
                         cout << endl;
-                        cout << "Suas tentativas acabaram e você não conseguiu descobrir a palavra: " + palavra_secreta + "." << endl;
+                        cout << "Suas tentativas acabaram ou você enforcou o boneco! Palavra secreta: " + palavra_secreta + "." << endl;
                         cout << endl;
                         cout << "Digite o seu nome: ";
                         cin >> nome;
@@ -142,6 +136,15 @@ int main(int argc, char *argv[]) {
                     } else if (forca.verifica_derrota()){
                         cout << endl;
                         cout << "Você enforcou o bonequinho. :( A palavra secreta era: " + palavra_secreta + "." << endl;
+                        cout << endl;
+                        cout << "Digite o seu nome: ";
+                        cin >> nome;
+                        cout << endl;
+                    }
+
+                    //Se descobrir todas as letras da palavra, VITÓRIA.
+                    if (forca.verifica_vitoria(palpite, palavra_secreta, acertos, dificuldade_escolhida)){
+                        cout << "Parabéns! Você conseguiu descobrir a palavra secreta: " + palavra_secreta + "." << endl;
                         cout << endl;
                         cout << "Digite o seu nome: ";
                         cin >> nome;

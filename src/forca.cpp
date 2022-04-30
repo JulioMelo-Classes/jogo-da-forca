@@ -245,9 +245,6 @@ bool Forca::letra_existe(char chute, string palavra){
             return true;
         }
     }
-    m_letras_erradas.push_back(chute);
-    sort(m_letras_erradas.begin(),m_letras_erradas.end());
-    m_letras_erradas.erase(unique(m_letras_erradas.begin(), m_letras_erradas.end()), m_letras_erradas.end());
     return false;
 }
 
@@ -331,14 +328,30 @@ void Forca::set_dificuldade(int dificuldade_escolhida){
     }
 }
 
-void Forca::get_letras(char letra_escolhida){
+void Forca::get_letras(char letra_escolhida, char consoante, char vogal){
     if (m_letras_palpitadas.size() == 0){
-        m_letras_palpitadas.push_back(letra_escolhida);
-    }else{
+        m_letras_palpitadas.push_back(consoante);
+        m_letras_palpitadas.push_back(vogal);
+    } 
+    if (m_letras_palpitadas.size() > 1) {
         if (*find(m_letras_palpitadas.begin(), m_letras_palpitadas.end(), letra_escolhida) == letra_escolhida) {
             cout << "Você já chutou essa letra!" << endl;
         } else {
             m_letras_palpitadas.push_back(letra_escolhida);
+        }
+    }
+    sort(m_letras_palpitadas.begin(),m_letras_palpitadas.end());
+    m_letras_palpitadas.erase(unique(m_letras_palpitadas.begin(), m_letras_palpitadas.end()), m_letras_palpitadas.end());
+}
+
+void Forca::get_letra_erradas(char letra_escolhida, string palavra){
+    for (char letra : m_letras_palpitadas) {
+        for (char letra_palavra : palavra) {
+            if (letra != letra_palavra) {
+                m_letras_erradas.push_back(letra_escolhida);
+                sort(m_letras_erradas.begin(),m_letras_erradas.end());
+                m_letras_erradas.erase(unique(m_letras_erradas.begin(), m_letras_erradas.end()), m_letras_erradas.end());
+            }
         }
     }
 }
@@ -444,21 +457,32 @@ void Forca::imprimir_chutes_errados(){
     }
 }
 
-
 int Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe) {
     int fix_loop = 0;
     if (existe) {
-        for (char letra : palavra_secreta){
-            if (letra == chute) {
-                pontos++;
-            } 
-            if ((letra == palavra_secreta[palavra_secreta.size()-1]) && (palavra_secreta[palavra_secreta.size()-1] == chute) && (fix_loop == 0)) {
-                fix_loop = 1;
-                pontos+= 2;
+        if (m_letras_palpitadas.size() == 2) {
+            
+        }if (*find(m_letras_palpitadas.begin(), m_letras_palpitadas.end(), chute) == chute) {
+
+        } else {
+            for (char letra : palavra_secreta){
+                if (letra == chute) {
+                    pontos++;
+                } 
+                if ((letra == palavra_secreta[palavra_secreta.size()-1]) && (palavra_secreta[palavra_secreta.size()-1] == chute) && (fix_loop == 0)) {
+                    fix_loop = 1;
+                    pontos+= 2;
+                }
             }
         }
     } else {
-        pontos--;
+        if (m_letras_erradas.size() == 1) {
+            pontos--;
+        } else if (*find(m_letras_erradas.begin(), m_letras_erradas.end(), chute) == chute) {
+            pontos--;
+        } else {
+            
+        }
     }
     return 0;
 }
@@ -466,6 +490,7 @@ int Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &ponto
 // Selecionando uma palavra secreta aleatória pelas palavras filtradas por dificuldade.
 string Forca::get_palavra_atual(){
     string palavra_secreta = sorteia_palavra(separar_por_dificuldade());
+    m_palavra_atual = palavra_secreta;
     return palavra_secreta;
 }
 
@@ -516,24 +541,62 @@ bool Forca::verifica_tentativas(string palavra, char palpite, int tentativas){
     return 0;
 }
 
-bool Forca::verifica_acertos(string palavra, char palpite){
-    for (int i = 0; i < (int)palavra.size(); i++){
-        if (m_letras_palpitadas.empty()){
-            return true;
-        }else if (*find(m_letras_palpitadas.begin(), m_letras_palpitadas.end(), palpite) == palpite){
-            return false;
-        }else{
-            return true;
+int Forca::verifica_acertos(char palpite, int &acertos, char consoante, char vogal){
+    bool teste1;
+    bool teste2;
+    bool teste3;
+
+    for (char letra : m_palavra_atual){
+        if (palpite == letra){
+            teste1 = true;
+            break;
+        } else {
+            teste1 = false;
         }
     }
-    return 0;
+
+    cout << teste1 << endl;
+
+    for (char letra : m_letras_palpitadas){
+        if (palpite == letra){
+            teste2 = true;
+            break;
+        } else {
+            teste2 = false;
+        }
+    }
+
+    cout << teste2 << endl;
+
+    if (m_letras_erradas.empty()){
+        teste3 = false;
+    } else if (m_letras_erradas.size() > 0){
+        teste3 = (*find(m_letras_erradas.begin(), m_letras_erradas.end(), palpite) == palpite);
+    } else {
+        teste3 = false;
+    }   
+
+    cout << teste3 << endl;
+    if (teste1 == true){
+        if ((palpite != vogal) && (palpite != consoante) && (teste2 == true) && (teste3 == false)) {
+            cout << "aaaAcertou" << endl;
+            acertos++;
+        }
+    }
+    
 }
 
 vector<char> Forca::vector_letra_errada(string palavra, char palpite){
     vector<char> letras_erradas;
-    for (char letra : m_letras_erradas){
-        letras_erradas.push_back(letra);
+    if (m_letras_erradas.empty()) {
+        
+    } else {
+        for (char letra : m_letras_erradas){
+            letras_erradas.push_back(letra);
+        }
     }
+    sort(letras_erradas.begin(),letras_erradas.end());
+    letras_erradas.erase(unique(letras_erradas.begin(), letras_erradas.end()), letras_erradas.end());
     return letras_erradas;
 }
 

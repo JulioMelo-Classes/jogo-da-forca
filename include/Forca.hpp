@@ -120,7 +120,7 @@ class Forca {
 
         bool verifica_tentativas(std::string palavra, char palpite, int tentativas);
 
-        bool verifica_acertos(std::string palavra, char palpite);
+        int verifica_acertos(char palpite, int &acertos, char consoante, char vogal);
 
         std::vector<char> vector_letra_errada(std::string palavra, char palpite);
         /**
@@ -141,9 +141,10 @@ class Forca {
          * já acertadas/sorteadas ao invés de “_”.
          * @return a palavra atualmente sendo jogada.
          */
-        std::string get_palavra_jogada();
 
-        void get_letras(char letra_escolhida);
+        void get_letras(char letra_escolhida, char consoante, char vogal);
+
+        void get_letra_erradas(char letra_escolhida, std::string palavra);
 
         int get_tam_letras_erradas();
 
