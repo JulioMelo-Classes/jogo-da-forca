@@ -23,43 +23,63 @@ Abra o terminal na pasta dos arquivos e digite:
 
 ## Validação dos arquivos (TESTES)
 
+Após ter criado a pasta build e usado o 'cmake --build .', digite os seguintes comandos de testes no terminal:
+
 ### Arquivo das PALAVRAS
-  - Arquivo (palavras) inexistente:
+  - Para testar o caso "Arquivo (palavras) Inexistente":
+    ```sh
+    ./program ../data/palavras_teste.txt ../data/scores.txt
+    ```
+    Saída esperada: < `Erro! Arquivo das palavras inexistente.` >
 
-    Obs: o arquivo 'palavrasFormatada.txt' não se encontra na pasta, como pode visualizar no canto esquerdo.
-    ![image](https://user-images.githubusercontent.com/86920019/165214668-1dd4b540-a2da-4009-b325-0c3cde4fec5a.png)
-  
-  - Palavras com caracteres que não estejam entre [a - z|A - Z], ‘ ‘(espaço em branco) ou hífen ‘-’:
+  - Para testar o caso "Palavras com caracteres que não estejam entre [a - z|A - Z], ‘ ‘(espaço em branco) ou hífen ‘-’":
+    ```sh
+    ./program ../data/arquivos_testes_palavras/palavras_caracteres_invalidos.txt ../data/scores.txt
+    ```
+    Saída esperada: < `Palavra "$OBR&" inválida na linha 3.` >
 
-    Obs: como mostra o arquivo 'palavrasFormatada.txt', a palavra na linha 7 contém caracteres inválidos.
-    ![image](https://user-images.githubusercontent.com/86920019/165215271-c7ce5fea-6368-4b84-8a6c-87ccfbd31a20.png)
-
-  - Palavras que não tenham sua frequência correspondente, ou a frequência não seja um número inteiro positivo:
+  - Para testar o caso "Palavras que não tenham sua frequência correspondente, ou a frequência não seja um número inteiro positivo":
 
     Frequência vazia/inexistente:
-    ![image](https://user-images.githubusercontent.com/86920019/165217478-e545232e-22a8-4725-a66f-e86dd95c73cc.png)
+    ```sh
+    ./program ../data/arquivos_testes_palavras/palavras_frequencia_inexistente.txt ../data/scores.txt
+    ```
+    Saída esperada: < `A palavra "SISTEMA" na linha 25, não possui frequência.` >
     
     Frequência negativa:
-    ![image](https://user-images.githubusercontent.com/86920019/165216931-0b98f2d2-7d81-4322-a446-09b91631e275.png)
+    ```sh
+    ./program ../data/arquivos_testes_palavras/palavras_frequencia_negativa.txt ../data/scores.txt
+    ```
+    Saída esperada: < `A palavra "FORAM" na linha 4, não possui frequência positiva.` >
   
-  - Palavras com tamanho menor ou igual a 4:
-  
-    ![image](https://user-images.githubusercontent.com/86920019/165217720-a6341c3d-1c6b-430c-a4d5-8b2689b2ec16.png)
+  - Para testar o caso "Palavras com tamanho menor ou igual a 4":
+    ```sh
+    ./program ../data/arquivos_testes_palavras/palavras_menores.txt ../data/scores.txt
+    Saída esperada: < `Erro! A palavra TEM na linha 17 contém menos de 5 letras.` >
     
 ### Arquivo dos SCORES
-  - Arquivo (scores) inexistente:
+  - Para testar o caso "Arquivo (scores) Inexistente":
+    ```sh
+    ./program ../data/palavrasFormatadas.txt ../data/scores_teste.txt
+    ```
+    Saída esperada: < `Erro! Arquivo das scores inexistente.` >
+  
+  - Para testar o caso "Presença de mais ou menos que 3 “;” em alguma linha":
 
-    Obs: o arquivo 'scores.txt' não se encontra na pasta, como pode visualizar no canto esquerdo.
-    ![image](https://user-images.githubusercontent.com/86920019/165214910-aa3d0fc5-3256-4814-a50b-39784053db8f.png)
-  
-  - Presença de mais ou menos que 3 “;” em alguma linha:
-  
-    ![image](https://user-images.githubusercontent.com/86920019/165218389-1f2bcfd4-9374-4c2a-b3ea-7ff847532766.png)
-    ![image](https://user-images.githubusercontent.com/86920019/165218522-88888ed0-d8c4-4359-93ba-20c51b28ee43.png)
-  
-  - Qualquer um dos campos: "nível de dificuldade”, “nome”  ou “pontuação” vazios:
-  
-    ![image](https://user-images.githubusercontent.com/86920019/165218672-27004e48-9352-493d-90d8-5704a3d56d82.png)
-    ![image](https://user-images.githubusercontent.com/86920019/165218799-c7bf561f-960d-4e96-a0a8-25459dde8a09.png)
+    Mais de 3 ';':
+    ```sh
+    ./program ../data/palavrasFormatadas.txt ../data/arquivos_testes_scores/scores_mais_de.txt
+    ```
+    Saída esperada: < `Erro! Mais de 3 ';' na linha: 2` >
 
- 
+    Menos de 3 ';':
+    ```sh
+    ./program ../data/palavrasFormatadas.txt ../data/arquivos_testes_scores/scores_menos_de.txt
+    ```
+    Saída esperada: < `Erro! Menos de 3 ';' na linha: 1` >
+  
+  - Para testar o caso "Qualquer um dos campos: "nível de dificuldade”, “nome”  ou “pontuação” vazios":
+    ```sh
+    ./program ../data/palavrasFormatadas.txt ../data/arquivos_testes_scores/scores_campo_vazio.txt
+    ```
+    Saída esperada: < `Algum campo vazio na linha: 4` >

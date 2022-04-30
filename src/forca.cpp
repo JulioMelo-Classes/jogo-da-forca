@@ -168,60 +168,74 @@ void Forca::carregar_arquivos() {
 
 };
 
-void Forca::mostrar_scores(){
+void Forca::mostrar_scores() {
     fstream arquivos_scores;
     vector<std::string> dificuldade, jogador, palavras, pontos;
     vector<string>::iterator it_dificuldade, it_jogador, it_palavras, it_pontos;
-    
+
     arquivos_scores.open(m_arquivo_scores, fstream::in);
     string linha_p, linha_s;
     int pos, tam;
 
     cout << "Dificuldade | Jogador    | Palavras     | Pontos" << endl;
 
-    while(!arquivos_scores.eof()){
+    while (!arquivos_scores.eof()) {
         getline(arquivos_scores, linha_s);
         pos = linha_s.find(";", 0);
         dificuldade.push_back(linha_s.substr(0, pos));
-        tam = pos+1;
-        pos = linha_s.find(";", pos+1);
-        jogador.push_back(linha_s.substr(tam, pos-tam));
-        tam = pos+1;
-        pos = linha_s.find(";", pos+1);
-        palavras.push_back(linha_s.substr(tam, pos-tam));
-        tam = pos+1;
+        tam = pos + 1;
+        pos = linha_s.find(";", pos + 1);
+        jogador.push_back(linha_s.substr(tam, pos - tam));
+        tam = pos + 1;
+        pos = linha_s.find(";", pos + 1);
+        palavras.push_back(linha_s.substr(tam, pos - tam));
+        tam = pos + 1;
         pos = linha_s.find("\n", -1);
-        pontos.push_back(linha_s.substr(tam, pos-tam));
+        pontos.push_back(linha_s.substr(tam, pos - tam));
     }
-    int i = 0, j = 0;
+    int i = 0, j = 0, fix = 0;
+
     for (it_dificuldade = dificuldade.begin(), it_jogador = jogador.begin(), it_pontos = pontos.begin(); it_dificuldade != dificuldade.end(); ++it_dificuldade, ++it_jogador, ++it_pontos) {
-        // cout << *it_dificuldade  << setw(9) << " | " << *it_jogador << setw(5); 
         cout << *it_dificuldade;
-        for (j = 0; j < (13 - ((int)dificuldade[i].size())); j++) {
+        for (j = 0; j < (12 - ((int)dificuldade[i].size())); j++) {
             cout << " ";
         }
         cout << "| " << *it_jogador;
         for (j = 0; j < (11 - (int)jogador[i].size()); j++) {
             cout << " ";
         }
+        cout << "| ";
 
-        // j = 0;
-        // if (j == 0) {
-        //     cout << "| ";
-        //     pos = palavras[j].find(',', 0);
-        //     string primeira_palavra = palavras[a].substr(0, pos);
-        //     cout << primeira_palavra;
-            
-        //     for (k = 0; k < 13 - (primeira_palavra.size()); k++) {
-        //         cout << ' ';
-        //     }
-        //     cout << "| " << it_pontos[i].substr(0, 2) << "\n";
-        //     j++, a++;
-        // }
-            // cout  <<"            |            |              |";
-        
-        cout << "\n" <<"------------+------------+--------------+--------" << endl;
+        // PALAVRAS
+        char delim = ',';
+        std::vector<string> result;
+        std::stringstream ss(palavras[i]);
+        std::string item;
+
+        while (getline(ss, item, delim)) {
+            result.push_back(item);
+        }
+        for (std::string palavra : result) {
+            if (fix == 0) {
+                cout << palavra;
+                for (j = 0; j < (13 - (int)palavra.size()); j++) {
+                    cout << " ";
+                }
+                cout << "| " << *it_pontos << endl;
+                fix++;
+            } else {
+                cout << "            |            | ";
+                cout << palavra;
+                for (j = 0; j < (13 - (int)palavra.size()); j++) {
+                    cout << " ";
+                }
+                cout << "| " << endl;
+            }
+        }
+
+        cout << "------------+------------+--------------+--------" << endl;
         i++;
+        fix = 0;
     }
 };
 
@@ -231,6 +245,9 @@ bool Forca::letra_existe(char chute, string palavra){
             return true;
         }
     }
+    m_letras_erradas.push_back(chute);
+    sort(m_letras_erradas.begin(),m_letras_erradas.end());
+    m_letras_erradas.erase(unique(m_letras_erradas.begin(), m_letras_erradas.end()), m_letras_erradas.end());
     return false;
 }
 
@@ -314,7 +331,7 @@ void Forca::set_dificuldade(int dificuldade_escolhida){
     }
 }
 
-void Forca::get_letras_erradas(char letra_escolhida){
+void Forca::get_letras(char letra_escolhida){
     if (m_letras_palpitadas.size() == 0){
         m_letras_palpitadas.push_back(letra_escolhida);
     }else{
@@ -327,7 +344,7 @@ void Forca::get_letras_erradas(char letra_escolhida){
 }
 
 int Forca::get_tam_letras_erradas(){
-    return m_letras_palpitadas.size();
+    return m_letras_erradas.size();
 }
 
 void Forca::muda_valor_letra_mapa(char letra_escolhida){
@@ -409,10 +426,11 @@ char Forca::muda_valor_vogal_mapa(string palavra_escolhida, int dificuldade_esco
 
 void Forca::imprimir_boneco(int n_erros) {
     switch (n_erros) {
-        case 1: cout << "  o  \n" << endl; break;
-        case 2: cout << "  o\n  |  \n"; break;
-        case 3: cout << "  o\n /|  \n"; break;
-        case 4: cout << "  o\n /|\\ \n"; break;
+        case 0: cout << endl; cout << endl; cout << endl; break;
+        case 1: cout << "  o  \n" << endl; cout << endl; break;
+        case 2: cout << "  o\n  |  \n"; cout << endl; break;
+        case 3: cout << "  o\n /|  \n"; cout << endl; break;
+        case 4: cout << "  o\n /|\\ \n"; cout << endl; break;
         case 5: cout << "  o\n /|\\ \n / \n"; break;
         case 6: cout << "Vixe, Fim de Jogo!\n  o\n /|\\ \n / \\";
         default: break;
@@ -420,9 +438,8 @@ void Forca::imprimir_boneco(int n_erros) {
 }
 
 void Forca::imprimir_chutes_errados(){
-    cout << endl;
-    cout << "Chutes errados: "; //Imprime cada letra chutada errada.
-    for (char letra : m_letras_palpitadas){
+    cout << "Chutes errados --> "; //Imprime cada letra chutada errada.
+    for (char letra : m_letras_erradas){
         cout << letra << " ";
     }
 }
@@ -452,9 +469,8 @@ string Forca::get_palavra_atual(){
     return palavra_secreta;
 }
 
-bool Forca::verifica_vitoria(char letra_escolhida, string palavra_atual, int acertos){
+bool Forca::verifica_vitoria(char letra_escolhida, string palavra_atual, int acertos, int dificuldade){
     string palavra_secreta_copia; //String contendo apenas as letras não repetidas da palavra secreta.
-    string palavra_secreta_auxiliar; //String auxiliar para verificação de acerto da palavra secreta.
 
     //Pegando as letras únicas da palavra secreta e armazenando na cópia.
     for (int i = 0; i < (int)palavra_atual.size(); i++) {
@@ -464,23 +480,64 @@ bool Forca::verifica_vitoria(char letra_escolhida, string palavra_atual, int ace
     palavra_secreta_copia.erase(unique(palavra_secreta_copia.begin(), palavra_secreta_copia.end()), palavra_secreta_copia.end());
 
     //Verifica de acordo com os palpites se a string 'palavra_sec' contém todas as letras da palavra secreta, ou seja, se são do mesmo tamanho.
-    if (acertos == (int)palavra_secreta_copia.size()){
+    if (dificuldade == 0 || dificuldade == 1){
+        if (acertos == (int)palavra_secreta_copia.size()){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        if (acertos-1 == (int)palavra_secreta_copia.size()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+
+bool Forca::verifica_derrota(){
+    if (m_letras_erradas.size() == 6){
         return true;
     }else{
         return false;
     }
 }
 
-bool Forca::verifica_derrota(char letra_escolhida){
-    if (m_letras_palpitadas.size() == 6){
-        return true;
-    }else{
-        return false;
+bool Forca::verifica_tentativas(string palavra, char palpite, int tentativas){
+    for (int i = 0; i < (int)palavra.size(); i++){
+        if (m_letras_erradas.empty()){
+            return true;
+        }else if (*find(m_letras_erradas.begin(), m_letras_erradas.end(), palpite) == palpite){
+            return false;
+        }else{
+            return true;
+        }  
     }
+    return 0;
+}
+
+bool Forca::verifica_acertos(string palavra, char palpite){
+    for (int i = 0; i < (int)palavra.size(); i++){
+        if (m_letras_palpitadas.empty()){
+            return true;
+        }else if (*find(m_letras_palpitadas.begin(), m_letras_palpitadas.end(), palpite) == palpite){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    return 0;
+}
+
+vector<char> Forca::vector_letra_errada(string palavra, char palpite){
+    vector<char> letras_erradas;
+    for (char letra : m_letras_erradas){
+        letras_erradas.push_back(letra);
+    }
+    return letras_erradas;
 }
 
 void Forca::imprimir_underline(string palavra_escolhida, char consoante, char vogal){
-    cout << endl;
     for (char letra : palavra_escolhida){
         if (mapa_letra_valor[letra]){
             cout << letra << " ";

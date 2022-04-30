@@ -9,7 +9,6 @@
 #include <map>
 #include <random>
 
- 
 class Forca {
     public:
         enum Dificuldade{
@@ -33,6 +32,8 @@ class Forca {
         std::vector< std::string > m_scores_do_jogo; //<! container “Scores do Jogo”
 
         std::vector< char > m_letras_palpitadas; //<! contem as letras palpitadas pelo jogador
+
+        std::vector< char > m_letras_erradas; //<! contem as letras erradas pelo jogador
 
         std::string m_palavra_atual; //<! palavra sendo jogada “atualmente”
 
@@ -117,6 +118,11 @@ class Forca {
 
         void imprimir_boneco(int n_erros);
 
+        bool verifica_tentativas(std::string palavra, char palpite, int tentativas);
+
+        bool verifica_acertos(std::string palavra, char palpite);
+
+        std::vector<char> vector_letra_errada(std::string palavra, char palpite);
         /**
          * Retorna a próxima palavra de acordo com a dificuldade atual.
          * Este método deve atualizar o valor dos atributos m_palavra_atual, com a palavra atual,
@@ -137,13 +143,13 @@ class Forca {
          */
         std::string get_palavra_jogada();
 
-        void get_letras_erradas(char letra_escolhida);
+        void get_letras(char letra_escolhida);
 
         int get_tam_letras_erradas();
 
-        bool verifica_vitoria(char letra_escolhida, std::string palavra_atual, int acertos);
+        bool verifica_vitoria(char letra_escolhida, std::string palavra_atual, int acertos, int dificuldade);
 
-        bool verifica_derrota(char letra_escolhida);
+        bool verifica_derrota();
 
         // Mecânica de pontuação do jogador, retorna sempre uma referência para a variável de pontos.
         int pontuacao_jogador(std::string palavra_secreta, char chute, int &pontos, bool existe);
