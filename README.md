@@ -55,6 +55,7 @@ Após ter criado a pasta build e usado o 'cmake --build .', digite os seguintes 
   - Para testar o caso "Palavras com tamanho menor ou igual a 4":
     ```sh
     ./program ../data/arquivos_testes_palavras/palavras_menores.txt ../data/scores.txt
+    ```
     Saída esperada: < `Erro! A palavra TEM na linha 17 contém menos de 5 letras.` >
     
 ### Arquivo dos SCORES
