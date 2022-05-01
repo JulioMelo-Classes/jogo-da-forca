@@ -313,7 +313,6 @@ string Forca::sorteia_palavra(vector<string> palavras) {
     default_random_engine dre_(random());
     uniform_int_distribution<int> aleatorio(0, palavras.size()-1);
     const int nrand = aleatorio(dre_);
-    cout << nrand << endl;
     string stringSorteada;
     stringSorteada = (palavras[nrand]);
     return stringSorteada;
@@ -329,13 +328,15 @@ void Forca::set_dificuldade(int dificuldade_escolhida){
     }
 }
 
-void Forca::get_letras(char letra_escolhida, char consoante, char vogal, bool resultado, int &acertos, int &pontos){
-    cout << m_palavra_atual << endl;
+void Forca::get_letras(char letra_escolhida, vector<char> consoante, char vogal, bool resultado, int &acertos, int &pontos){
+    
     if (m_letras_palpitadas.size() == 0){
-        m_letras_palpitadas.push_back(consoante);
+        for (int i = 0; i < (int)consoante.size(); i++){
+            m_letras_palpitadas.push_back(consoante[i]);
+        }
         m_letras_palpitadas.push_back(vogal);
-    } 
-    if (m_letras_palpitadas.size() > 1) {
+    }
+    if (m_letras_palpitadas.size() != 0) {
         if (*find(m_letras_palpitadas.begin(), m_letras_palpitadas.end(), letra_escolhida) == letra_escolhida) {
             cout << "Você já chutou essa letra!" << endl;
         } else {
@@ -352,7 +353,6 @@ void Forca::get_letras(char letra_escolhida, char consoante, char vogal, bool re
                     fix_loop = 1;
                     pontos+= 2;
                 }
-                cout << "Teste acertos: " << acertos << endl;
                 acertos++;
             }
             m_letras_palpitadas.push_back(letra_escolhida);
@@ -382,73 +382,85 @@ void Forca::muda_valor_letra_mapa(char letra_escolhida){
     mapa_letra_valor[letra_escolhida] = true; //Marca true para qualquer letra chutada.
 }
 
-char Forca::muda_valor_consoante_mapa(string palavra_escolhida, int dificuldade_escolhida){
+vector<char> Forca::muda_valor_consoante_mapa(string palavra_escolhida, int dificuldade_escolhida){
     random_device random;
     default_random_engine x(random());
     string palavra_escolhida_copia;
     int var2 = palavra_escolhida.size()/5;
     int contador1 = 0;
     vector<int> consoantes;
+    vector<char> letra_sorteada;
 
     for (int i = 0; i < (int)palavra_escolhida.size(); i++) {
         palavra_escolhida_copia.push_back(palavra_escolhida[i]);
     }
-    sort(palavra_escolhida_copia.begin(),palavra_escolhida_copia.end());
     palavra_escolhida_copia.erase(unique(palavra_escolhida_copia.begin(), palavra_escolhida_copia.end()), palavra_escolhida_copia.end());
 
     for (char letra : palavra_escolhida_copia){
-        contador1++;
-        if ((letra != 'A') && (letra != 'E') && (letra != 'I') && (letra != 'O') && (letra != 'U')){
+        
+        if ((letra != ' ') && (letra != 'A') && (letra != 'E') && (letra != 'I') && (letra != 'O') && (letra != 'U')){
+            
             mapa_consoantes.push_back(make_pair(letra,contador1));
         }
-    }
-    for (int i = 0; i < (int)mapa_consoantes.size(); i++){
-        consoantes.push_back(mapa_consoantes[i].second);
+        contador1++;
     }
     
+    for (int i = 0; i < (int)mapa_consoantes.size(); i++){
+        mapa_consoantes[i].second = i;
+    }
+
     if (m_dificuldade == 0){
         int max1 = max(1, var2);
-        uniform_int_distribution<int> aleatorio1(0, max1);
-        const int nrand1 = aleatorio1(x);
-        for (int i = 0; i < (int)mapa_consoantes.size(); i++){
-            if (consoantes[nrand1] == mapa_consoantes[i].second){
-                return mapa_consoantes[i].first;
+        numero_de_letras = max1;
+        for (int j = 0; j < max1; j++){
+            uniform_int_distribution<int> aleatorio1(0, mapa_consoantes.size()-1);
+            const int n1 = aleatorio1(x);
+            for (int i = 0; i < (int)mapa_consoantes.size(); i++){
+                if (n1 == mapa_consoantes[i].second){
+                    letra_sorteada.push_back(mapa_consoantes[i].first);
+                }
             }
         }
     }
-    return 0;
+    return letra_sorteada;
 }
 
 char Forca::muda_valor_vogal_mapa(string palavra_escolhida, int dificuldade_escolhida){
-    random_device random;
-    default_random_engine x(random());
+    random_device random1;
+    default_random_engine z(random1());
     string palavra_escolhida_copia;
-    int var2 = palavra_escolhida.size()/5;
+    int var3 = palavra_escolhida.size()/5;
     int contador2 = 0;
-    vector<int> vogais;
+    char letra_sorteada;
 
     for (int i = 0; i < (int)palavra_escolhida.size(); i++) {
         palavra_escolhida_copia.push_back(palavra_escolhida[i]);
     }
-    sort(palavra_escolhida_copia.begin(),palavra_escolhida_copia.end());
     palavra_escolhida_copia.erase(unique(palavra_escolhida_copia.begin(), palavra_escolhida_copia.end()), palavra_escolhida_copia.end());
+
     for (char letra : palavra_escolhida_copia){
-        contador2++;
+        
         if ((letra == 'A') || (letra == 'E') || (letra == 'I') || (letra == 'O') || (letra == 'U')){
+            
             mapa_vogais.push_back(make_pair(letra,contador2));
         }
-    }
-    for (int i = 0; i < (int)mapa_vogais.size(); i++){
-        vogais.push_back(mapa_vogais[i].second);
+        contador2++;
     }
     
+    for (int i = 0; i < (int)mapa_vogais.size(); i++){
+        mapa_vogais[i].second = i;
+    }
     if (m_dificuldade == 1){
-        int max2 = max(1, var2);
-        uniform_int_distribution<int> aleatorio2(0, max2);
-        const int nrand2 = aleatorio2(x);
-        for (int i = 0; i < (int)mapa_vogais.size(); i++){
-            if (vogais[nrand2] == mapa_vogais[i].second){
-                return mapa_vogais[i].first;
+        int max2 = max(1, var3);
+        numero_de_letras = max2;
+        for (int j = 0; j < max2; j++){
+            uniform_int_distribution<int> aleatorio2(0, mapa_vogais.size()-1);
+            int n2 = aleatorio2(z);
+            for (int i = 0; i < (int)mapa_vogais.size(); i++){
+                if (n2 == mapa_vogais[i].second){
+                    letra_sorteada = (mapa_vogais[i].first);
+                    return letra_sorteada;
+                }
             }
         }
     }
@@ -492,15 +504,19 @@ void Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &pont
 }
 
 // Selecionando uma palavra secreta aleatória pelas palavras filtradas por dificuldade.
-string Forca::get_palavra_atual(){
-    string palavra_secreta = sorteia_palavra(separar_por_dificuldade());
-    m_palavra_atual = palavra_secreta;
-    return palavra_secreta;
+string Forca::get_palavra_atual(string palavra){
+    m_palavra_atual = palavra;
+    return m_palavra_atual;
 }
 
 bool Forca::verifica_vitoria(char letra_escolhida, string palavra_atual, int acertos, int dificuldade){
+    int espacos = 0;
+    for (auto item : palavra_atual){
+        if (item == ' '){
+            espacos++;
+        }
+    }
     string palavra_secreta_copia; //String contendo apenas as letras não repetidas da palavra secreta.
-
     //Pegando as letras únicas da palavra secreta e armazenando na cópia.
     for (int i = 0; i < (int)palavra_atual.size(); i++) {
         palavra_secreta_copia.push_back(palavra_atual[i]);
@@ -509,15 +525,20 @@ bool Forca::verifica_vitoria(char letra_escolhida, string palavra_atual, int ace
     palavra_secreta_copia.erase(unique(palavra_secreta_copia.begin(), palavra_secreta_copia.end()), palavra_secreta_copia.end());
 
     //Verifica de acordo com os palpites se a string 'palavra_sec' contém todas as letras da palavra secreta, ou seja, se são do mesmo tamanho.
-    cout << (int)palavra_secreta_copia.size() << endl;
-    if (dificuldade == 0 || dificuldade == 1){
-        if (acertos == (int)palavra_secreta_copia.size()){
+    if (dificuldade == 0){
+        if (acertos+numero_de_letras-1 == (int)palavra_secreta_copia.size()-espacos){
             return true;
         }else{
             return false;
         }
-    }else{
-        if (acertos-1 == (int)palavra_secreta_copia.size()){
+    } else if (dificuldade == 1){
+        if (acertos == (int)palavra_secreta_copia.size()-espacos){
+            return true;
+        }else{
+            return false;
+        }
+    } else {
+        if (acertos-1 == (int)palavra_secreta_copia.size()-espacos){
             return true;
         }else{
             return false;
@@ -560,33 +581,58 @@ vector<char> Forca::vector_letra_errada(string palavra, char palpite){
     return letras_erradas;
 }
 
-void Forca::imprimir_underline(string palavra_escolhida, char consoante, char vogal){
-    for (char letra : palavra_escolhida){
-        if (mapa_letra_valor[letra]){
-            cout << letra << " ";
-        }else if (letra == ' '){
-            cout << "- ";
-        }else if (letra == consoante){
-            cout << letra << " ";
-        }else if (letra == vogal){
-            cout << letra << " ";
-        }else{
-            cout << "_ ";
-        }  
+void Forca::imprimir_underline(string palavra_escolhida, vector<char> consoante, char vogal, int dificuldade){
+    if (dificuldade == 0){
+        for (char letra : palavra_escolhida){
+            if (mapa_letra_valor[letra]){
+                cout << letra << " ";
+            }else if (letra == ' '){
+                cout << "- ";
+            }else if (*find(consoante.begin(), consoante.end(), letra) == letra){
+                cout << letra << " ";
+            }else{
+                cout << "_ ";
+            }
+        }
+    } else if (dificuldade == 1){
+        for (char letra : palavra_escolhida){
+            if (mapa_letra_valor[letra]){
+                cout << letra << " ";
+            }else if (letra == ' '){
+                cout << "- ";
+            }else if (letra == vogal){
+                cout << letra << " ";
+            }else{
+                cout << "_ ";
+            }
+        }
+    } else {
+        for (char letra : palavra_escolhida){
+            if (mapa_letra_valor[letra]){
+                cout << letra << " ";
+            }else if (letra == ' '){
+                cout << "- ";
+            }else{
+                cout << "_ ";
+            }
+        }
     }
 }
 
-void Forca::reset_rodada(int &p, int &t, int &a, char &c, char &v, string &pa, vector<char> &le){
-    p = 0;
+void Forca::reset_rodada(int &t, int &a, vector<char> &c, char &v, string &pa, vector<char> &le){
     t = 6;
     a = 1;
-    c = '\0';
+    c.clear();
     v = '\0';
     pa.clear();
     le.clear();
+    m_dificuldade = FACIL;
+    m_palavra_jogada.clear();
+    m_tentativas_restantes = 6;
     m_letras_palpitadas.clear();
     m_letras_erradas.clear();
     m_palavra_atual.clear();
+    mapa_letra_valor.clear();
     mapa_letra_valor.clear();
     mapa_consoantes.clear();
     mapa_vogais.clear();
@@ -596,6 +642,17 @@ bool Forca::rodada_terminada(){
     if (true){
         return true;
     }
+}
+
+void Forca::escrever_scores(){
+    fstream arquivo_scores;
+
+    arquivo_scores.open(m_arquivo_scores, ios::app);
+
+    while (!arquivo_scores.eof()){
+        arquivo_scores<<
+    }
+    
 }
 
 /**

@@ -47,6 +47,8 @@ class Forca {
 
         std::vector< std::pair< char, int> > mapa_vogais; //<! Vector com as vogais das palavras e seus valores.
 
+        int numero_de_letras; //<! Número de letras a serem reveladas.
+
     public:
 
         int media_frequencia = 0; //! Media das frequências das palavras
@@ -100,15 +102,15 @@ class Forca {
          * sendo jogada
          * @return o valor do atributo palavra_atual
          **/
-        std::string get_palavra_atual();
+        std::string get_palavra_atual(std::string palavra);
 
         void imprimir_chutes_errados();
 
-        void imprimir_underline(std::string palavra_escolhida, char consoante, char vogal);
+        void imprimir_underline(std::string palavra_escolhida, std::vector<char> consoante, char vogal, int dificuldade);
 
         void muda_valor_letra_mapa(char letra_escolhida);
 
-        char muda_valor_consoante_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
+        std::vector<char> muda_valor_consoante_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
 
         char muda_valor_vogal_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
 
@@ -142,7 +144,7 @@ class Forca {
          * @return a palavra atualmente sendo jogada.
          */
 
-        void get_letras(char letra_escolhida, char consoante, char vogal, bool resultado, int &acertos, int &pontos);
+        void get_letras(char letra_escolhida, std::vector<char> consoante, char vogal, bool resultado, int &acertos, int &pontos);
 
         void get_letra_erradas(char letra_escolhida, std::string palavra);
 
@@ -175,6 +177,8 @@ class Forca {
          *         acertou toda a palavra, F caso contrário.
          */
         bool rodada_terminada();
+
+        void escrever_scores();
  
         /**
          * Reseta o valor de tentativas restantes para 6 e do atributo m_letras_palpitadas para vazio
@@ -182,7 +186,7 @@ class Forca {
          * de cada rodada, resetando o valor de tentativas restantes para 5 e do atributo
          * m_letras_palpitadas como sendo um vetor vazio
          */
-        void reset_rodada(int &p, int &t, int &a, char &c, char &v, std::string &pa, std::vector<char> &le);
+        void reset_rodada(int &t, int &a, std::vector<char> &c, char &v, std::string &pa, std::vector<char> &le);
 
         /**
          * Testes
