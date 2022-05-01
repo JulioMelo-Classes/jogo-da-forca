@@ -130,7 +130,6 @@ int main(int argc, char *argv[]) {
 
                     //Se as tentativas acabarem ou enforcar o boneco, FIM DE JOGO.
                     if (tentativas == 0 || forca.verifica_derrota()){
-                        
                         char resposta;
                         cout << endl;
                         cout << "Suas tentativas acabaram ou você enforcou o boneco! Palavra secreta: " + palavra_secreta + "." << endl;
@@ -138,7 +137,6 @@ int main(int argc, char *argv[]) {
                         cout << "Deseja jogar novamente?[S/N] ";
                         cin >> resposta;
                         resposta = (toupper(resposta));
-
                         switch (resposta){
                             case 'S':
                                 forca.reset_rodada(tentativas, acertos, consoante, vogal, palavra_secreta, letras_erradas);
@@ -149,15 +147,12 @@ int main(int argc, char *argv[]) {
                                 cin >> nome;
                                 transform(nome.begin(), nome.end(),nome.begin(), ::toupper);
                                 cout << endl;
-
                                 cout << "--------------------------------------------------------------------" << endl;
-                                cout << "---------- Salvando informações no arquivo dos scores. -----------" << endl;
+                                cout << "----------- Salvando informações no arquivo dos scores. ------------" << endl;
                                 cout << "--------------------------------------------------------------------" << endl;
-
+                                //Guardar informações.
                                 jogada_informacoes = '\n' + dificuldade_scores + ';' + nome  + ';';
                                 forca.escrever_scores(jogada_informacoes, palavras_acertadas_inf, pontuacao);
-                                // forca.escrever_scores();
-                                //Guardar informações.
                                 exit(-1);
                             
                             default:
@@ -176,8 +171,6 @@ int main(int argc, char *argv[]) {
                         cin >> resposta;
                         resposta = (toupper(resposta));
                         palavras_acertadas_inf.push_back(palavra_secreta + ',');
-
-
                         switch (resposta){
                             case 'S':
                                 forca.reset_rodada(tentativas, acertos, consoante, vogal, palavra_secreta, letras_erradas);
@@ -192,12 +185,10 @@ int main(int argc, char *argv[]) {
                                 cout << "--------------------------------------------------------------------" << endl;
                                 cout << "---------- Salvando informações no arquivo dos scores. -----------" << endl;
                                 cout << "--------------------------------------------------------------------" << endl;
-
+                                //Guardar informações.
                                 jogada_informacoes = '\n' + dificuldade_scores + ';' + nome  + ';';
                                 forca.escrever_scores(jogada_informacoes, palavras_acertadas_inf, pontuacao);
-                                //Guardar informações.
                                 exit(-1);
-                            
                             default:
                                 cout << "Caractere inválido." << endl;
                                 break;

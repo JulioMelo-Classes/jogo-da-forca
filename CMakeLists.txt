@@ -8,6 +8,7 @@ include_directories( include )
 set( APP_NAME "program" )
 add_executable( ${APP_NAME}
                 src/main.cpp
-                src/forca.cpp )
+                src/forca.cpp
+                src/forca_text.cpp )
 
 set_property(TARGET ${APP_NAME} PROPERTY CXX_STANDARD 14)
