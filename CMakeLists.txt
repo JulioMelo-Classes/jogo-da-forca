@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(all_any_none_program VERSION 0.1 LANGUAGES CXX )
+project(Jogo_Da_Forca VERSION 0.1 LANGUAGES CXX )
 
 set ( CMAKE_CXX_FLAGS "-Wall" )
 
