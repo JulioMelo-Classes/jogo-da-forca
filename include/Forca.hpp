@@ -178,7 +178,7 @@ class Forca {
          */
         bool rodada_terminada();
 
-        void escrever_scores();
+        void escrever_scores(std::string jogada_informacoes, std::vector<std::string> palavras_acertadas, int &pontos);
  
         /**
          * Reseta o valor de tentativas restantes para 6 e do atributo m_letras_palpitadas para vazio

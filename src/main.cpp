@@ -19,10 +19,11 @@ int main(int argc, char *argv[]) {
     char palpite, vogal;
     vector<char> consoante;
     bool aux_tentativas;
-    string palavra_secreta, nome, palavra;
+    string palavra_secreta, nome, palavra, dificuldade_scores;
     vector<char> letras_erradas;
+    vector<string> palavras_acertadas_inf;
 
-    tela_inicial:
+
     // Loop principal do jogo.
     while(true) {
         cout << "Bem vindo ao Jogo Forca! Por favor escolha uma das opções" << endl;
@@ -33,6 +34,7 @@ int main(int argc, char *argv[]) {
         cin >> opcao; // Ler opção do usuário.
         cout << endl;
 
+        tela_inicial:
         // Caso a escolha do jogador perante a interface seja '1' :
         if (opcao == 1) {
             cout << "Vamos iniciar o jogo! Por favor escolha o nível de dificuldade" << endl;
@@ -44,6 +46,7 @@ int main(int argc, char *argv[]) {
             cout << endl;
 
             if (dificuldade == 1){
+                dificuldade_scores = "FACIL";
                 dificuldade_escolhida = 0;
                 forca.set_dificuldade(dificuldade_escolhida);
                 palavra = forca.sorteia_palavra(forca.separar_por_dificuldade());
@@ -51,6 +54,7 @@ int main(int argc, char *argv[]) {
                 consoante = forca.muda_valor_consoante_mapa(palavra_secreta, dificuldade_escolhida);
                 cout << "Iniciando o Jogo no nível fácil, será que você conhece essa palavra?" << endl;
             } else if (dificuldade == 2){
+                dificuldade_scores = "MEDIO";
                 dificuldade_escolhida = 1; 
                 forca.set_dificuldade(dificuldade_escolhida);
                 palavra = forca.sorteia_palavra(forca.separar_por_dificuldade());
@@ -58,6 +62,7 @@ int main(int argc, char *argv[]) {
                 vogal = forca.muda_valor_vogal_mapa(palavra_secreta, dificuldade_escolhida);
                 cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
             } else if (dificuldade == 3){
+                dificuldade_scores = "DIFICIL";
                 dificuldade_escolhida = 2;
                 forca.set_dificuldade(dificuldade_escolhida);
                 palavra = forca.sorteia_palavra(forca.separar_por_dificuldade());
@@ -68,6 +73,7 @@ int main(int argc, char *argv[]) {
             while(true) {
                 lde:
                 while(true) { //Loop da Rodada.
+                    string jogada_informacoes;
                     cout << endl;
                     forca.imprimir_underline(palavra_secreta, consoante, vogal, dificuldade_escolhida);
                     cout << endl;
@@ -124,26 +130,33 @@ int main(int argc, char *argv[]) {
 
                     //Se as tentativas acabarem ou enforcar o boneco, FIM DE JOGO.
                     if (tentativas == 0 || forca.verifica_derrota()){
+                        
                         char resposta;
                         cout << endl;
                         cout << "Suas tentativas acabaram ou você enforcou o boneco! Palavra secreta: " + palavra_secreta + "." << endl;
                         cout << endl;
-                        cout << "Digite o seu nome: ";
-                        cin >> nome;
-                        cout << endl;
                         cout << "Deseja jogar novamente?[S/N] ";
                         cin >> resposta;
                         resposta = (toupper(resposta));
+
                         switch (resposta){
                             case 'S':
                                 forca.reset_rodada(tentativas, acertos, consoante, vogal, palavra_secreta, letras_erradas);
                                 goto tela_inicial;
                                 break;
                             case 'N':
+                                cout << "Digite o seu nome: ";
+                                cin >> nome;
+                                transform(nome.begin(), nome.end(),nome.begin(), ::toupper);
+                                cout << endl;
+
                                 cout << "--------------------------------------------------------------------" << endl;
                                 cout << "---------- Salvando informações no arquivo dos scores. -----------" << endl;
                                 cout << "--------------------------------------------------------------------" << endl;
-                                forca.escrever_scores();
+
+                                jogada_informacoes = '\n' + dificuldade_scores + ';' + nome  + ';';
+                                forca.escrever_scores(jogada_informacoes, palavras_acertadas_inf, pontuacao);
+                                // forca.escrever_scores();
                                 //Guardar informações.
                                 exit(-1);
                             
@@ -159,12 +172,12 @@ int main(int argc, char *argv[]) {
                         char resposta;
                         cout << "Parabéns! Você conseguiu descobrir a palavra secreta: " + palavra_secreta + "." << endl;
                         cout << endl;
-                        cout << "Digite o seu nome: ";
-                        cin >> nome;
-                        cout << endl;
                         cout << "Deseja jogar novamente?[S/N] ";
                         cin >> resposta;
                         resposta = (toupper(resposta));
+                        palavras_acertadas_inf.push_back(palavra_secreta + ',');
+
+
                         switch (resposta){
                             case 'S':
                                 forca.reset_rodada(tentativas, acertos, consoante, vogal, palavra_secreta, letras_erradas);
@@ -172,9 +185,16 @@ int main(int argc, char *argv[]) {
                                 goto tela_inicial;
                                 break;
                             case 'N':
+                                cout << "Digite o seu nome: ";
+                                cin >> nome;
+                                transform(nome.begin(), nome.end(),nome.begin(), ::toupper);
+                                cout << endl;
                                 cout << "--------------------------------------------------------------------" << endl;
                                 cout << "---------- Salvando informações no arquivo dos scores. -----------" << endl;
                                 cout << "--------------------------------------------------------------------" << endl;
+
+                                jogada_informacoes = '\n' + dificuldade_scores + ';' + nome  + ';';
+                                forca.escrever_scores(jogada_informacoes, palavras_acertadas_inf, pontuacao);
                                 //Guardar informações.
                                 exit(-1);
                             

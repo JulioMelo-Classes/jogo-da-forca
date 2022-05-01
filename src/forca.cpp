@@ -644,15 +644,21 @@ bool Forca::rodada_terminada(){
     }
 }
 
-void Forca::escrever_scores(){
+void Forca::escrever_scores(string jogada_informacoes, vector<string> palavras_acertadas, int &pontos) {
     fstream arquivo_scores;
-
     arquivo_scores.open(m_arquivo_scores, ios::app);
 
-    while (!arquivo_scores.eof()){
-        arquivo_scores<<
+    for ( string palavra : palavras_acertadas ) {
+        jogada_informacoes = jogada_informacoes +  palavra;
     }
-    
+    jogada_informacoes[jogada_informacoes.size()-1] = ';';
+    jogada_informacoes = jogada_informacoes + to_string(pontos);
+    cout << jogada_informacoes <<" <<<<<";
+
+
+    arquivo_scores << jogada_informacoes;
+
+    arquivo_scores.close();
 }
 
 /**
