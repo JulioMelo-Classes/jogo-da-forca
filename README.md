@@ -1,8 +1,8 @@
 # **Trabalho - Unidade 1 - LP1 - T01 (2022.1)**
 
 ## **Componentes:**
-  - Danrley Lima
-  - Lucas Morais
+  * Danrley Lima
+  * Lucas Morais
 
 # **Jogo da Forca!**
   <img src="https://user-images.githubusercontent.com/71523376/166153527-165963f8-49c3-4fd4-a369-e4ba2f0f3ab7.png" width="60%" height="60%"/>
@@ -16,7 +16,7 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" width="60" height="60"/>
 
 
-- ## **Requisítos compilação**
+- ## **Requisítos de compilação**
   * Cmake </br>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cmake/cmake-original.svg" width="60" height="60"/>
 
