@@ -34,7 +34,6 @@ int main(int argc, char *argv[]) {
         cin >> opcao; // Ler opção do usuário.
         cout << endl;
 
-        tela_inicial:
         // Caso a escolha do jogador perante a interface seja '1' :
         if (opcao == 1) {
             cout << "Vamos iniciar o jogo! Por favor escolha o nível de dificuldade" << endl;
@@ -44,6 +43,8 @@ int main(int argc, char *argv[]) {
             cout << "Sua escolha: ";
             cin >> dificuldade; // Ler dificuldade escolhida.
             cout << endl;
+
+            tela_inicial: // Place holder para quando o jogador escolher continuar jogando após o fim da rodada.
 
             if (dificuldade == 1){
                 dificuldade_scores = "FACIL";
@@ -70,6 +71,8 @@ int main(int argc, char *argv[]) {
                 cout << "Iniciando o Jogo no nível difícil, será que você conhece essa palavra?" << endl;
             }
             cout << "Palavra secreta: " << palavra_secreta << endl;
+
+            // Loop Principal.
             while(true) {
                 lde:
                 while(true) { //Loop da Rodada.

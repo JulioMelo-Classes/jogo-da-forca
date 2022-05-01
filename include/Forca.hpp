@@ -98,51 +98,62 @@ class Forca {
         std::string sorteia_palavra(std::vector<std::string> palavras);
 
         /**
-         * Retorna o valor da palavra atual, útil no caso de um game over, para mostrar a palavra que estava
-         * sendo jogada
-         * @return o valor do atributo palavra_atual
+         * Selecionando uma palavra secreta aleatória pelas palavras filtradas por dificuldade.
          **/
         std::string get_palavra_atual(std::string palavra);
 
+        /**
+         * Função imprimir as letras erradas pelo jogador
+         */
         void imprimir_chutes_errados();
 
+        /**
+         * Imprime os "_" na tela 
+         * @param palavra_escolhida palavra que o jogador esta tentando acertar
+         * @param consoante consoantes da palavra
+         * @param vogal vogais da palavra
+         * @param dificuldade dificuldade do jogo
+         */
         void imprimir_underline(std::string palavra_escolhida, std::vector<char> consoante, char vogal, int dificuldade);
 
-        void muda_valor_letra_mapa(char letra_escolhida);
+        /**
+         * Função que imprime o bonequinho
+         * @param n_erros recebe a quantidade de erros do jogador para imprimir o boneco de acordo.
+         */
+        void imprimir_boneco(int n_erros);
 
         std::vector<char> muda_valor_consoante_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
+
+        void muda_valor_letra_mapa(char letra_escolhida);
 
         char muda_valor_vogal_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
 
         void consoante_aleatoria(int dificuldade_escolhida, std::string palavra_escolhida);
 
+        /**
+         * Verifica se a letra chutada existe na palavra da rodada.
+         * @param chute letra chutada pelo jogador.
+         * @param palavra palavra da rodada.
+         * @return false caso a letra chutada não esteja na palavra, true caso esteja;
+         */
         bool letra_existe(char chute, std::string palavra);
 
-        void imprimir_boneco(int n_erros);
-
+        /**
+         * Verifica quantas tentativas ainda restam pelo jogador.
+         * @param palavra palavra da rodada.
+         * @param palpite letra chutada pelo jogador.
+         * @param tentativas tentativas restantes do jogador.
+         * @return True caso o jogador erre o chute.
+         */
         bool verifica_tentativas(std::string palavra, char palpite, int tentativas);
 
-        int verifica_acertos(char palpite, int &acertos, char consoante, char vogal, bool resultado);
-
+        /**
+         * Retorna um vetor com todas as letras únicas erradas pelo jogador, removendo repetidas.
+         * @param palavra palavra da rodada.
+         * @param palpite letra chutada pelo jogador.
+         * @return std::vector<char> 
+         */
         std::vector<char> vector_letra_errada(std::string palavra, char palpite);
-        /**
-         * Retorna a próxima palavra de acordo com a dificuldade atual.
-         * Este método deve atualizar o valor dos atributos m_palavra_atual, com a palavra atual,
-         * do atributo m_palavra_jogada com um texto no formato "_ _ _ _ ... _".
-         * O método também deve sortear as letras que devem aparecer dependendo do nível de dificuldade,
-         * alterando o valor de m_palavra_jogada de acordo.
-         * @return o valor do atributo m_palavra_jogada.
-         */
-        std::string proxima_palavra();
- 
-        /**
-         * Retorna a palavra atual que está sendo jogada.
-         * Diferente do método proxima_palavra(), este método __não atualiza__ o atributo
-         * m_palavra_atual, apenas retorna o atributo m_palavra_jogada que é a palavra no
-         * formato  "_ _ _ _ ... _" contendo todas as letras
-         * já acertadas/sorteadas ao invés de “_”.
-         * @return a palavra atualmente sendo jogada.
-         */
 
         void get_letras(char letra_escolhida, std::vector<char> consoante, char vogal, bool resultado, int &acertos, int &pontos);
 
@@ -183,21 +194,18 @@ class Forca {
         /**
          * Reseta o valor de tentativas restantes para 6 e do atributo m_letras_palpitadas para vazio
          * Este método é útil no caso do jogador escolher continuar o jogo, ou no início
-         * de cada rodada, resetando o valor de tentativas restantes para 5 e do atributo
-         * m_letras_palpitadas como sendo um vetor vazio
+         * de cada rodada, resetando o valor de todas as variáveis que foram utilizadas na rodada anterior.
          */
         void reset_rodada(int &t, int &a, std::vector<char> &c, char &v, std::string &pa, std::vector<char> &le);
 
         /**
-         * Testes
+         * Lê o arquivo de scores dos jogadores anteriores e imprime as informações na tela .
          */
+        void mostrar_scores();
 
+
+        // Funções de teste para desenvolvimento.
         void mostrar_palavraSort();
         void mostrar_parDePalavras();
         void mostrar_palavras();
-
-        /**
-         * Exibe tabela dos scores anteriores.
-         */
-        void mostrar_scores();
 };

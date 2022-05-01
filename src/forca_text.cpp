@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 
+
 void Forca::imprimir_chutes_errados(){
     cout << "Chutes errados --> "; //Imprime cada letra chutada errada.
     for (char letra : m_letras_erradas){
@@ -59,6 +60,7 @@ void Forca::imprimir_underline(string palavra_escolhida, vector<char> consoante,
         }
     }
 }
+
 
 pair<bool, string> Forca::eh_valido() {
     int contador1 = 1, contador2 = 0, contador3 = 0, contador_n_palavras = 0;
@@ -175,6 +177,7 @@ pair<bool, string> Forca::eh_valido() {
     return parTeste;
 }
 
+
 void Forca::mostrar_scores() {
     fstream arquivos_scores;
     vector<std::string> dificuldade, jogador, palavras, pontos;
@@ -275,6 +278,7 @@ void Forca::mostrar_scores() {
         std::vector<string> result;
         std::stringstream ss(palavras[i]);
         std::string item;
+        
 
         while (getline(ss, item, delim)) {
             result.push_back(item);
@@ -385,20 +389,21 @@ void Forca::mostrar_scores() {
     }
 }
 
-/**
- * ---- FUNÇÕES ----
- * ------ DE -------
- * ---- TESTES -----
- * 
- */
 
+
+/**
+ * ------- FUNÇÕES -------
+ * --------- DE ----------
+ * ------- TESTES --------
+ * 
+ * --- DESENVOLVIMENTO ---
+ */
 void Forca::mostrar_palavraSort() {
     vector<string>::iterator it_ps;
     /*for (it_ps = stringSorteada.begin(); it_ps != stringSorteada.end(); ++it_ps){
         cout << *it_ps << endl;
     } */
 }
-
 void Forca::mostrar_parDePalavras() {
     cout << "(";
     for (int i = 0; i < (int)m_palavras.size(); i++) {
@@ -410,7 +415,6 @@ void Forca::mostrar_parDePalavras() {
     }
     cout << ")" << endl;
 }
-
 void Forca::mostrar_palavras() {
     std::vector< std::string >::iterator it_p;
     for (it_p = m_palavras_do_jogo.begin(); it_p != m_palavras_do_jogo.end(); ++it_p){

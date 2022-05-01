@@ -297,7 +297,6 @@ void Forca::pontuacao_jogador(std::string palavra_secreta, char chute, int &pont
     }
 }
 
-// Selecionando uma palavra secreta aleatória pelas palavras filtradas por dificuldade.
 string Forca::get_palavra_atual(string palavra){
     m_palavra_atual = palavra;
     return m_palavra_atual;
