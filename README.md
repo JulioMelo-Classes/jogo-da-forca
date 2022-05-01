@@ -32,6 +32,7 @@
     * cmake ..
     * cmake --build .
     * ./program ../data/palavrasFormatadas.txt ../data/scores.txt
+    * ↑ <strong> Repetir apenas o último comando caso já tenha executado os anteriores e queira iniciar o programa novamente </strong> ↑
 ***
 
   - ## **Validação dos arquivos (TESTES)**
