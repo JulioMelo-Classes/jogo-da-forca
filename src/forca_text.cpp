@@ -61,7 +61,6 @@ void Forca::imprimir_underline(string palavra_escolhida, vector<char> consoante,
     }
 }
 
-
 pair<bool, string> Forca::eh_valido() {
     int contador1 = 1, contador2 = 0, contador3 = 0, contador_n_palavras = 0;
     string linha_1, linha_2, linha_3, linha_4, parte1, palavra_invalida;
@@ -387,37 +386,4 @@ void Forca::mostrar_scores() {
         i++;
         fix = 0;
     }
-}
-
-
-
-/**
- * ------- FUNÇÕES -------
- * --------- DE ----------
- * ------- TESTES --------
- * 
- * --- DESENVOLVIMENTO ---
- */
-void Forca::mostrar_palavraSort() {
-    vector<string>::iterator it_ps;
-    /*for (it_ps = stringSorteada.begin(); it_ps != stringSorteada.end(); ++it_ps){
-        cout << *it_ps << endl;
-    } */
-}
-void Forca::mostrar_parDePalavras() {
-    cout << "(";
-    for (int i = 0; i < (int)m_palavras.size(); i++) {
-        cout << "[" << m_palavras[i].first << "," << m_palavras[i].second << "], ";
-        if (i == ((int)m_palavras.size()-2)) {
-            cout << "[" << m_palavras[i-1].first << "," << m_palavras[i-1].second << "]";
-            break;
-        }
-    }
-    cout << ")" << endl;
-}
-void Forca::mostrar_palavras() {
-    std::vector< std::string >::iterator it_p;
-    for (it_p = m_palavras_do_jogo.begin(); it_p != m_palavras_do_jogo.end(); ++it_p){
-        cout << *it_p << endl;
-    }      
 }
