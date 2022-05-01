@@ -20,13 +20,15 @@ int main(int argc, char *argv[]) {
 
     forca.carregar_arquivos();
 
-    int opcao, dificuldade, tentativas = 6, acertos = 1, dificuldade_escolhida = 0, pontuacao = 0;
+    int opcao, dificuldade, tentativas = 6, acertos = 1, dificuldade_escolhida = 0, pontuacao = 0, pontos_final = 0;
     char palpite, vogal;
     vector<char> consoante;
     bool aux_tentativas;
     string palavra_secreta, nome, palavra, dificuldade_scores;
     vector<char> letras_erradas;
     vector<string> palavras_acertadas_inf;
+
+    Inicio:
 
     // Loop principal do jogo.
     while (true) {
@@ -79,7 +81,7 @@ int main(int argc, char *argv[]) {
             /*
              * IMPRIME A PALAVRA SECRETA PARA FACILITAR TESTES DE DESENVOLVIMENTO
              */
-            // cout << "Palavra secreta: " << palavra_secreta << endl;
+            cout << "Palavra secreta: " << palavra_secreta << endl;
 
             // Loop Principal.
             while (true) {
@@ -92,6 +94,7 @@ int main(int argc, char *argv[]) {
                     forca.imprimir_chutes_errados();
                     cout << endl;
                     cout << "Pontos: " << pontuacao << " | Tentativas: " << tentativas << endl;
+                    fflush(stdin);
                     cout << "Palpite: ";
                     cin >> palpite;  // Ler o palpite.
                     cout << endl;
@@ -151,15 +154,18 @@ int main(int argc, char *argv[]) {
                         cout << endl;
                         cout << "Deseja jogar novamente?[S/N] ";
                         cin >> resposta;
+
                         resposta = (toupper(resposta));
                         switch (resposta) {
                             case 'S':
                                 forca.reset_rodada(tentativas, acertos, consoante, vogal, palavra_secreta, letras_erradas);
+                                pontuacao = 0;
                                 goto tela_inicial;
                                 break;
                             case 'N':
                                 cout << "Digite o seu nome: ";
                                 cin >> nome;
+
                                 transform(nome.begin(), nome.end(), nome.begin(), ::toupper);
                                 cout << endl;
                                 cout << "--------------------------------------------------------------------" << endl;
@@ -167,8 +173,8 @@ int main(int argc, char *argv[]) {
                                 cout << "--------------------------------------------------------------------" << endl;
                                 // Guardar informações.
                                 jogada_informacoes = '\n' + dificuldade_scores + ';' + nome + ';';
-                                forca.escrever_scores(jogada_informacoes, palavras_acertadas_inf, pontuacao);
-                                exit(-1);
+                                forca.escrever_scores(jogada_informacoes, palavras_acertadas_inf, pontos_final);
+                                goto Inicio;
 
                             default:
                                 cout << "Caractere inválido." << endl;
@@ -182,13 +188,16 @@ int main(int argc, char *argv[]) {
                         char resposta;
                         cout << "Parabéns! Você conseguiu descobrir a palavra secreta: " + palavra_secreta + "." << endl;
                         cout << endl;
+                        pontos_final += pontuacao;
                         cout << "Deseja jogar novamente?[S/N] ";
                         cin >> resposta;
                         resposta = (toupper(resposta));
                         palavras_acertadas_inf.push_back(palavra_secreta + ',');
                         switch (resposta) {
                             case 'S':
+
                                 forca.reset_rodada(tentativas, acertos, consoante, vogal, palavra_secreta, letras_erradas);
+                                pontuacao = 0;
                                 fflush(stdin);
                                 goto tela_inicial;
                                 break;
@@ -202,8 +211,9 @@ int main(int argc, char *argv[]) {
                                 cout << "--------------------------------------------------------------------" << endl;
                                 // Guardar informações.
                                 jogada_informacoes = '\n' + dificuldade_scores + ';' + nome + ';';
-                                forca.escrever_scores(jogada_informacoes, palavras_acertadas_inf, pontuacao);
-                                exit(-1);
+                                forca.escrever_scores(jogada_informacoes, palavras_acertadas_inf, pontos_final);
+                                goto Inicio;
+
                             default:
                                 cout << "Caractere inválido." << endl;
                                 break;

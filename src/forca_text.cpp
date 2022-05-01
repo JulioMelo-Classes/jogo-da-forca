@@ -117,7 +117,7 @@ pair<bool, string> Forca::eh_valido() {
 
         //Verifica se existe palavras com menos de cinco letras.
         if ((int)linha_1.size() <= 4) {
-            cout << "Erro! A palavra " + palavra_invalida + " na linha " + to_string(contador1) + " contém menos de 5 letras." << endl;
+            cout << "Erro! A palavra " + palavra_invalida + " na linha " + to_string(contador1-1) + " contém menos de 5 letras." << endl;
             exit(-1);
         } else {
             parTeste.first = true;
