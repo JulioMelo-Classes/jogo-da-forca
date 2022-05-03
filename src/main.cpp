@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
         cin >> opcao;  // Ler opção do usuário.
         cout << endl;
 
-        // Caso a escolha do jogador perante a interface seja '1' :
         if (opcao == 1) {
             cout << "Vamos iniciar o jogo! Por favor escolha o nível de dificuldade" << endl;
             cout << "1 - Fácil" << endl;
@@ -81,7 +80,7 @@ int main(int argc, char *argv[]) {
             /*
              * IMPRIME A PALAVRA SECRETA PARA FACILITAR TESTES DE DESENVOLVIMENTO
              */
-            cout << "Palavra secreta: " << palavra_secreta << endl;
+            // cout << "Palavra secreta: " << palavra_secreta << endl;
 
             // Loop Principal.
             while (true) {
@@ -98,12 +97,10 @@ int main(int argc, char *argv[]) {
                     cout << "Palpite: ";
                     cin >> palpite;  // Ler o palpite.
                     cout << endl;
-                    palpite = toupper(palpite);  // Modifica a leitura pra maiúsculo.
+                    palpite = toupper(palpite);  
 
-                    // Marca true no map das letras da palavra.
                     forca.muda_valor_letra_mapa(palpite);
 
-                    // Calcula tentativas.
                     aux_tentativas = forca.verifica_tentativas(palavra_secreta, palpite, tentativas);
                     if (aux_tentativas) {
                         tentativas--;
@@ -224,7 +221,7 @@ int main(int argc, char *argv[]) {
             }
         } else if (opcao == 2) {
             forca.mostrar_scores();
-        } else {  // Caso a opção seja 3, para sair do jogo ou alguma outra não especificada, o jogo encerra.
+        } else {  
             break;
         }
     }

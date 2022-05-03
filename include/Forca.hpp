@@ -107,16 +107,16 @@ class Forca {
 
         /**
          * Imprime os "_" na tela.
-         * @param palavra_escolhida palavra que o jogador esta tentando acertar.
-         * @param consoante consoantes da palavra.
-         * @param vogal vogais da palavra.
-         * @param dificuldade dificuldade do jogo.
+         * @param palavra_escolhida Palavra que o jogador esta tentando acertar.
+         * @param consoante Consoantes da palavra.
+         * @param vogal Vogais da palavra.
+         * @param dificuldade Dificuldade do jogo.
          */
         void imprimir_underline(std::string palavra_escolhida, std::vector<char> consoante, char vogal, int dificuldade);
 
         /**
          * Função que imprime o bonequinho.
-         * @param n_erros recebe a quantidade de erros do jogador para imprimir o boneco de acordo.
+         * @param n_erros Recebe a quantidade de erros do jogador para imprimir o boneco de acordo.
          */
         void imprimir_boneco(int n_erros);
 
@@ -131,8 +131,8 @@ class Forca {
 
         /**
          * Retorna um vetor com todas as letras únicas erradas pelo jogador, removendo repetidas.
-         * @param palavra palavra da rodada.
-         * @param palpite letra chutada pelo jogador.
+         * @param palavra Palavra da rodada.
+         * @param palpite Letra chutada pelo jogador.
          * @return std::vector<char> 
          */
         std::vector<char> vector_letra_errada(std::string palavra, char palpite);
@@ -145,17 +145,17 @@ class Forca {
 
         /**
          * Verifica se a letra chutada existe na palavra da rodada.
-         * @param chute letra chutada pelo jogador.
-         * @param palavra palavra da rodada.
-         * @return false caso a letra chutada não esteja na palavra, true caso esteja;
+         * @param chute Letra chutada pelo jogador.
+         * @param palavra Palavra da rodada.
+         * @return False caso a letra chutada não esteja na palavra, true caso esteja;
          */
         bool letra_existe(char chute, std::string palavra);
 
         /**
          * Verifica quantas tentativas ainda restam pelo jogador.
-         * @param palavra palavra da rodada.
-         * @param palpite letra chutada pelo jogador.
-         * @param tentativas tentativas restantes do jogador.
+         * @param palavra Palavra da rodada.
+         * @param palpite Letra chutada pelo jogador.
+         * @param tentativas Tentativas restantes do jogador.
          * @return True caso o jogador erre o chute.
          */
         bool verifica_tentativas(std::string palavra, char palpite, int tentativas);
