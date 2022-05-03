@@ -64,7 +64,7 @@ void Forca::imprimir_underline(string palavra_escolhida, vector<char> consoante,
 pair<bool, string> Forca::eh_valido() {
     int contador1 = 1, contador2 = 0, contador3 = 0, contador_n_palavras = 0;
     string linha_1, linha_2, linha_3, linha_4, parte1, palavra_invalida;
-    pair<bool, std::string> parTeste;
+    pair<bool, string> parTeste;
     ifstream arq_palavras;
     ifstream arq_scores;
 
@@ -179,7 +179,7 @@ pair<bool, string> Forca::eh_valido() {
 
 void Forca::mostrar_scores() {
     fstream arquivos_scores;
-    vector<std::string> dificuldade, jogador, palavras, pontos;
+    vector<string> dificuldade, jogador, palavras, pontos;
     vector<string>::iterator it_dificuldade, it_jogador, it_palavras, it_pontos;
 
     arquivos_scores.open(m_arquivo_scores, fstream::in);
@@ -204,6 +204,7 @@ void Forca::mostrar_scores() {
     cout << "  Dificuldade  |     Jogador     |       Palavras       ";
     cout <<"|  Pontos" << endl;
     for (it_dificuldade = dificuldade.begin(), it_jogador = jogador.begin(), it_pontos = pontos.begin(); it_dificuldade != dificuldade.end(); ++it_dificuldade, ++it_jogador, ++it_pontos) {
+        //------------------ DIFICULDADES + NOMES ------------------
         int daux1 = 0;
         for (char item : *it_dificuldade){
             daux1++;
@@ -272,18 +273,17 @@ void Forca::mostrar_scores() {
         }
         cout << "|";
 
-        //-----------PALAVRAS-------------
+        //------------------ PALAVRAS + PONTOS ------------------
         char delim = ',';
-        std::vector<string> result;
-        std::stringstream ss(palavras[i]);
-        std::string item;
-        
+        vector<string> result;
+        stringstream ss(palavras[i]);
+        string item;
 
         while (getline(ss, item, delim)) {
             result.push_back(item);
         }
         
-        for (std::string palavra : result) {
+        for (string palavra : result) {
             if (fix == 0) {
                 int daux2 = 0;
                 for (char item : palavra){

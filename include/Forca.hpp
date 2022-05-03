@@ -1,13 +1,12 @@
-#include <vector>
-#include <fstream>
-#include <string>
-#include <iterator>
-#include <cstdlib>
-#include <algorithm>
-#include <iomanip>
-#include <exception>
-#include <map>
-#include <random>
+#include <vector> //<! Biblioteca para utilizar vectors.
+#include <fstream> //<! Biblioteca para manipular de arquivos.
+#include <string> //<! Biblioteca para tratar strings.
+#include <iterator> //<! Biblioteca para utilizar iterators de vectors.
+#include <algorithm> //<! Biblioteca para buscar, copiar, ordenar, etc.
+#include <exception> //<! Biblioteca para exceções de erros padrões.
+#include <map> //<! Biblioteca para criar mapas com chaves e valores correspondentes.
+#include <random> //<! Biblioteca para gerar números aleatórios.
+#include <sstream> //<! Biblioteca para fornecer classes de stream de string.
 
 class Forca {
     public:
@@ -30,8 +29,6 @@ class Forca {
         std::string m_arquivo_palavras; //<! nome do arquivo contendo as palavras
 
         std::string m_palavra_atual; //<! palavra sendo jogada “atualmente”
-
-        std::string m_palavra_jogada; //<! palavra sendo jogada “atualmente” no formato “_ _ _ ... _ “
 
         std::vector< int > m_frequencias; //<! frequências das palavras no Corpus
  
@@ -68,12 +65,14 @@ class Forca {
        
         /**
          * Valida os arquivos de entrada de acordo com as especificações.
-         * Ao validar os arquivos, no caso de arquivos inválidos, este método irá encerrar o programa e mostrar o tipo de erro juntamente da linha onde ele ocorreu.
+         * Ao validar os arquivos, no caso de arquivos inválidos, 
+         * este método irá encerrar o programa e mostrar o tipo de erro juntamente da linha onde ele ocorreu.
          */
         std::pair<bool, std::string> eh_valido();
  
         /**
-         * Carrega os arquivos de scores e palavras preenchendo as estrutura m_palavras, m_scores_do_jogo e calculando média das frequências.
+         * Carrega os arquivos de scores e palavras preenchendo as 
+         * estrutura m_palavras, m_scores_do_jogo e calculando média das frequências.
          */
         void carregar_arquivos();
 
@@ -106,7 +105,8 @@ class Forca {
         void imprimir_chutes_errados();
 
         /**
-         * Imprime os "_" na tela.
+         * Imprime vogais ou consoantes reveladas no início do jogo, além disso,
+         * imprime '-' se a palavra conter hífen e as demais letras exibe "_" na tela.
          * @param palavra_escolhida Palavra que o jogador esta tentando acertar.
          * @param consoante Consoantes da palavra.
          * @param vogal Vogais da palavra.
@@ -120,14 +120,26 @@ class Forca {
          */
         void imprimir_boneco(int n_erros);
 
-
+        /**
+         * Cria e retorna um vetor com n consoantes sorteadas de acordo com a dificuldade escolhida e a condição da palavra sorteada.
+         * @param palavra_escolhida Palavra secreta já sorteada.
+         * @param dificuldade_escolhida Dificuldade escolhida pelo usuário.
+         * @return std::vector<char> Vetor de consoantes da palavra sorteada.
+         */
         std::vector<char> muda_valor_consoante_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
 
+        /**
+         * Transforma o valor de cada chave do map em true ao ser chutada uma letra.
+         * @param letra_escolhida Letra chutada pelo usuário.
+         */
         void muda_valor_letra_mapa(char letra_escolhida);
 
-        char muda_valor_vogal_mapa(std::string palavra_escolhida, int dificuldade_escolhida);
-
-        void consoante_aleatoria(int dificuldade_escolhida, std::string palavra_escolhida);
+        /**
+         * Retorna uma letra (vogal) sorteada da palavra secreta ao escolher a dificuldade média.
+         * @param palavra_escolhida Palavra secreta sorteada.
+         * @return char Vogal da palavra sorteada.
+         */
+        char muda_valor_vogal_mapa(std::string palavra_escolhida);
 
         /**
          * Retorna um vetor com todas as letras únicas erradas pelo jogador, removendo repetidas.
@@ -137,10 +149,31 @@ class Forca {
          */
         std::vector<char> vector_letra_errada(std::string palavra, char palpite);
 
+        /**
+         * Coloca no vetor m_letras_palpitadas todas as letras não repetidas chutadas pelo usuário.
+         * Além disso, adiciona a m_letras_palpitadas a(s) consoante(s) ou a vogal sorteada da palavra. 
+         * Essa função auxiliar o somador de pontos e acertos.
+         * @param letra_escolhida Letra chutada pelo usuário.
+         * @param consoante Consoante(s) sorteada(s) da palavra.
+         * @param vogal Vogal sorteada da palavra.
+         * @param resultado Retorna true se acertou alguma letra da palavra, false caso contrário.
+         * @param acertos Adiciona 1 a cada letra existente na palavra não repetida ou já exposta.
+         * @param pontos Adiciona (1*quantidade da letra chutada que existe na palavra), 
+         * caso o chute for a última letra da palavra, adiciona (1*quantidade da letra chutada que existe na palavra)+2.
+         */
         void get_letras(char letra_escolhida, std::vector<char> consoante, char vogal, bool resultado, int &acertos, int &pontos);
 
+        /**
+         * Verifica se para cada letra de m_letras_palpitadas está na palavra sorteada.
+         * Se não estiver, é porque foi um chute errado, então salva a letra em m_letras_erradas.
+         * @param letra_escolhida Chute do usuário.
+         * @param palavra Palavra secreta.
+         */
         void get_letras_erradas(char letra_escolhida, std::string palavra);
 
+        /**
+         * @return Tamanho do vetor m_letras_erradas.
+         */
         int get_tam_letras_erradas();
 
         /**
@@ -200,5 +233,4 @@ class Forca {
          * com as formatações estabelecidas.
          */
         void mostrar_scores();
-
 };

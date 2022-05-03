@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
                 forca.set_dificuldade(dificuldade_escolhida);
                 palavra = forca.sorteia_palavra(forca.separar_por_dificuldade());
                 palavra_secreta = forca.get_palavra_atual(palavra);
-                vogal = forca.muda_valor_vogal_mapa(palavra_secreta, dificuldade_escolhida);
+                vogal = forca.muda_valor_vogal_mapa(palavra_secreta);
                 cout << "Iniciando o Jogo no nível médio, será que você conhece essa palavra?" << endl;
             } else if (dificuldade == 3) {
                 dificuldade_scores = "DIFICIL";

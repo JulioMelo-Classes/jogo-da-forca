@@ -237,7 +237,7 @@ vector<char> Forca::muda_valor_consoante_mapa(string palavra_escolhida, int difi
     return letra_sorteada;
 }
 
-char Forca::muda_valor_vogal_mapa(string palavra_escolhida, int dificuldade_escolhida) {
+char Forca::muda_valor_vogal_mapa(string palavra_escolhida) {
     random_device random1;
     default_random_engine z(random1());
     string palavra_escolhida_copia;
@@ -375,7 +375,6 @@ void Forca::reset_rodada(int &t, int &a, vector<char> &c, char &v, string &pa, v
     pa.clear();
     le.clear();
     m_dificuldade = FACIL;
-    m_palavra_jogada.clear();
     m_tentativas_restantes = 6;
     m_letras_palpitadas.clear();
     m_letras_erradas.clear();
