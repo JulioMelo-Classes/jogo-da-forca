@@ -6,7 +6,7 @@ if len(sys.argv) == 1:
 else:
     bruto = sys.argv[1]
 
-formatado = "palavrasFormatadas.txt"
+formatado = "palavrasTestes.txt"
 
 try:
     ref_arquivo = open(bruto,"r",encoding='utf-8')
@@ -14,6 +14,7 @@ try:
     esc_arquivo.truncate(0)
     c = 0
     s = 0
+    espacos = 0
     for linha in ref_arquivo:
         if len(linha)>1 and linha[-2].isdigit():
             part = linha.split()
@@ -28,7 +29,7 @@ try:
                     '.':'', 'º':'', '°':'', 'ª':'', '§':'', '£':'', '©':'', '¡':'', '<':'', '¹':'', '²':'',
                     '³':'', '@':'', '#':'', '!':'', '$':'', '%':'', '¨':'', '&':'', '*':'', '(':'', ')':'', 
                     '_':'', '+':'', '=':'', '/':'', ']':'', '[':'', ',':'', '?':'', ':':'', ';':'', '¢':'', 
-                    '¬':'', '|':'', '{':'', '}':'', '>':'', '-':' ',
+                    '¬':'', '|':'', '{':'', '}':'', '>':'',
                     'ç':"c", 'Ç':'C',
                     'á':'a', 'â':'a', 'à':'a', 'ã':'a', 'ä':'a', 'Á':'A', 'À':'A', 'Â':'A', 'Ã':'A', 'Ä':'A',
                     'é':'e', 'è':'e', 'ê':'e', 'ẽ':'e', 'ë':'e', 'É':'E', 'È':'E', 'Ê':'E', 'Ẽ':'E', 'Ë':'E',
@@ -38,8 +39,9 @@ try:
                 }
                 transTable = frase.maketrans(dictionary)
                 frase = frase.translate(transTable)
-                frase.replace("-"," ")
-                frase = re.sub(r"[^a-zA-Z ]","",frase)
+                frase = re.sub(r"[^a-zA-Z -]",'',frase)
+                frase = re.sub(r"--$", "", frase)
+                frase = re.sub(r"-$", "", frase)
                 frase = frase.upper()
                 if (len(frase) > 4 and len(frequencia) > 1):
                     c += 1

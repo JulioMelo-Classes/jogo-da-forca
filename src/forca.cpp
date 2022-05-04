@@ -143,7 +143,8 @@ void Forca::set_dificuldade(int dificuldade_escolhida) {
     }
 }
 
-void Forca::get_letras(char letra_escolhida, vector<char> consoante, char vogal, bool resultado, int &acertos, int &pontos) {
+
+bool Forca::get_letras(char letra_escolhida, vector<char> consoante, char vogal, bool resultado, int &acertos, int &pontos) {
     if (m_letras_palpitadas.size() == 0) {
         for (int i = 0; i < (int)consoante.size(); i++) {
             m_letras_palpitadas.push_back(consoante[i]);
@@ -152,7 +153,7 @@ void Forca::get_letras(char letra_escolhida, vector<char> consoante, char vogal,
     }
     if (m_letras_palpitadas.size() != 0) {
         if (*find(m_letras_palpitadas.begin(), m_letras_palpitadas.end(), letra_escolhida) == letra_escolhida) {
-            cout << "Você já chutou essa letra!" << endl;
+            return false;
         } else {
             int fix_loop = 0;
             if (resultado) {
@@ -167,13 +168,13 @@ void Forca::get_letras(char letra_escolhida, vector<char> consoante, char vogal,
                     fix_loop = 1;
                     pontos += 2;
                 }
-                acertos++;
             }
             m_letras_palpitadas.push_back(letra_escolhida);
         }
     }
     sort(m_letras_palpitadas.begin(), m_letras_palpitadas.end());
     m_letras_palpitadas.erase(unique(m_letras_palpitadas.begin(), m_letras_palpitadas.end()), m_letras_palpitadas.end());
+    return true;
 }
 
 void Forca::get_letras_erradas(char letra_escolhida, string palavra) {
@@ -194,6 +195,35 @@ int Forca::get_tam_letras_erradas() {
 
 void Forca::muda_valor_letra_mapa(char letra_escolhida) {
     mapa_letra_valor[letra_escolhida] = true;  // Marca true para qualquer letra chutada.
+}
+
+void Forca::verifica_espaco(int &acertos, string palavra, vector<char> consoante, char vogal){
+    vector<char> palavras;
+    for (char letra : palavra){
+        palavras.push_back(letra);
+    }
+    sort(palavras.begin(), palavras.end());
+    palavras.erase(unique(palavras.begin(), palavras.end()), palavras.end());
+
+    for (char letra : palavras){
+        if (letra == ' '){  
+            acertos++;
+            mapa_letra_valor[letra] = true;
+        } else if (*find(consoante.begin(), consoante.end(), letra) == letra){
+            acertos++;
+        } else if (letra == vogal){
+            acertos++;
+        }
+    }
+}
+
+bool Forca::verifica_entrada(char palpite){
+    if ((palpite >= 'a' && palpite <= 'z') || (palpite >= 'A' && palpite <= 'Z') || ((int)sizeof(palpite) != 1)){
+        return true;
+    } else {
+        cout << "Entrada inválida, por favor digite apenas uma letra." << endl;
+        return false;
+    }
 }
 
 vector<char> Forca::muda_valor_consoante_mapa(string palavra_escolhida, int dificuldade_escolhida) {
@@ -296,41 +326,16 @@ string Forca::get_palavra_atual(string palavra) {
     return m_palavra_atual;
 }
 
-bool Forca::verifica_vitoria(char letra_escolhida, string palavra_atual, int acertos, int dificuldade) {
-    int espacos = 0;
-    for (auto item : palavra_atual) {
-        if (item == ' ') {
-            espacos++;
-        }
+bool Forca::verifica_vitoria(int &acertos) {
+    int contador = 0;
+    for (auto letra : mapa_letra_valor){
+        contador++;
     }
-    string palavra_secreta_copia;  // String contendo apenas as letras não repetidas da palavra secreta.
-    // Pegando as letras únicas da palavra secreta e armazenando na cópia.
-    for (int i = 0; i < (int)palavra_atual.size(); i++) {
-        palavra_secreta_copia.push_back(palavra_atual[i]);
+    if (acertos == contador){
+        return true;
+        contador = 0;
     }
-    sort(palavra_secreta_copia.begin(), palavra_secreta_copia.end());
-    palavra_secreta_copia.erase(unique(palavra_secreta_copia.begin(), palavra_secreta_copia.end()), palavra_secreta_copia.end());
-
-    // Verifica de acordo com os palpites se a string 'palavra_sec' contém todas as letras da palavra secreta, ou seja, se são do mesmo tamanho.
-    if (dificuldade == 0) {
-        if (acertos + numero_de_letras - 1 == (int)palavra_secreta_copia.size() - espacos) {
-            return true;
-        } else {
-            return false;
-        }
-    } else if (dificuldade == 1) {
-        if (acertos == (int)palavra_secreta_copia.size() - espacos) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        if (acertos - 1 == (int)palavra_secreta_copia.size() - espacos) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    return false;
 }
 
 bool Forca::verifica_derrota() {

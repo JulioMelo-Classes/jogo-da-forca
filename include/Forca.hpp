@@ -106,7 +106,8 @@ class Forca {
 
         /**
          * Imprime vogais ou consoantes reveladas no início do jogo, além disso,
-         * imprime '-' se a palavra conter hífen e as demais letras exibe "_" na tela.
+         * imprime '-' se a palavra conter hífen (anteriormente tratamos '-' por ' ' em cada palavra)
+         * e as demais letras exibe "_" na tela.
          * @param palavra_escolhida Palavra que o jogador esta tentando acertar.
          * @param consoante Consoantes da palavra.
          * @param vogal Vogais da palavra.
@@ -161,7 +162,7 @@ class Forca {
          * @param pontos Adiciona (1*quantidade da letra chutada que existe na palavra), 
          * caso o chute for a última letra da palavra, adiciona (1*quantidade da letra chutada que existe na palavra)+2.
          */
-        void get_letras(char letra_escolhida, std::vector<char> consoante, char vogal, bool resultado, int &acertos, int &pontos);
+        bool get_letras(char letra_escolhida, std::vector<char> consoante, char vogal, bool resultado, int &acertos, int &pontos);
 
         /**
          * Verifica se para cada letra de m_letras_palpitadas está na palavra sorteada.
@@ -196,7 +197,7 @@ class Forca {
         /**
          * Retorna true caso o jogador tenha descoberto todas as letras da palavra, VITÓRIA!
          */
-        bool verifica_vitoria(char letra_escolhida, std::string palavra_atual, int acertos, int dificuldade);
+        bool verifica_vitoria(int &acertos);
 
         /**
          * Retorna false caso a quantidade de erros do jogador seja == 6, causando o encerramento da rodada.
@@ -233,4 +234,22 @@ class Forca {
          * com as formatações estabelecidas.
          */
         void mostrar_scores();
+
+        /**
+         * Verifica se o fluxo de entrada de dados do palpite é válida.
+         * @param palpite 
+         * @return true Caso a entrada seja um caractere.
+         * @return false Caso a entrada seja diferente do tipo caracter, ex.: int, float.
+         */
+        bool verifica_entrada(char palpite);
+
+        /**
+         * @brief Verifica se na palavra existem espaços.
+         * 
+         * @param acertos Soma 1 para cada espaço ou letra já revelada na palavra.
+         * @param palavra Palavra Secreta.
+         * @param consoante Consoante(s) sorteada(s) revelada(s) na palavra.
+         * @param vogal Vogal revelada na palavra.
+         */
+        void verifica_espaco(int &acertos, std::string palavra, std::vector<char> consoante, char vogal);
 };

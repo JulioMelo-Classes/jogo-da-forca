@@ -18,7 +18,7 @@
      <br>
      Obs: troca os caracteres especiais por espaço vazio '', e os hífens por um espaço em branco ' '.
      <br><br>
-   - Transforma qualquer palavra minúscula em maiúscula;
+   - Transforma qualquer letra minúscula em maiúscula;
    - Remove as palavras que contenham menos de 5 letras;
    - Remove as palavras com frequência menor que 10;
    - Junta a frase e a frequência e separa-os por ';' e no final quebra a linha e escreve no arquivo novo:

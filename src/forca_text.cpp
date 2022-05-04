@@ -31,6 +31,7 @@ void Forca::imprimir_underline(string palavra_escolhida, vector<char> consoante,
             }else if (letra == ' '){
                 cout << "- ";
             }else if (*find(consoante.begin(), consoante.end(), letra) == letra){
+                mapa_letra_valor[letra] = true;
                 cout << letra << " ";
             }else{
                 cout << "_ ";
@@ -43,6 +44,7 @@ void Forca::imprimir_underline(string palavra_escolhida, vector<char> consoante,
             }else if (letra == ' '){
                 cout << "- ";
             }else if (letra == vogal){
+                mapa_letra_valor[letra] = true;
                 cout << letra << " ";
             }else{
                 cout << "_ ";
