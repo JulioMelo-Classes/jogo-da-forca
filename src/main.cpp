@@ -143,6 +143,7 @@ int main(int argc, char *argv[]) {
                         forca.get_letras_erradas(palpite, palavra_secreta); 
                         forca.imprimir_boneco(forca.get_tam_letras_erradas());
                         forca.pontuacao_jogador(palavra_secreta, palpite, pontuacao, resultado);
+                        pontuacao--;
                     }
                     
                     // Se as tentativas acabarem ou enforcar o boneco, FIM DE JOGO.
