@@ -1,5 +1,45 @@
 # **Trabalho - Unidade 1 - LP1 - T01 (2022.1)**
 
+# Avaliação e Feedback
+
+## Geral
+
+- Implementção da Classe forca ou similar | 10 / 10 pontos
+	- ok
+
+- Implementação da Interface textual | 10 / 10 pontos
+	- ok
+
+- Execução completa do jogo | 13 / 15 pontos
+	- Sorteio correto de paralavras para o jogo: cp1
+	- Configuração correta da palavra jogada, dependendo da dificuldade: 5 / 5 
+	- Execução correta do jogo (não pode repetir palpites, contabilização correta dos pontos e loop): 1 / 3
+    - voces não entenderam muito bem o loop do jogo, quando o jogador termina uma palavra ele deve manter os pontos!
+	- Salvamento correto do score: 2 / 2
+	- Exibição correta dos scores: 5 / 5
+
+- Validação dos arquivos de texto | 5 / 5 pontos
+	- ok
+
+- Arquivos de teste de validação dos casos de erro | 5 / 5 pontos
+	- ok
+
+## Código
+
+- Documentação do código e readme | 10 / 10 pontos
+	- ok
+
+- Organização e indentação do código | 0 / 10 pontos
+	- Aqui vou tirar pontos pela divisão equivocada do forca.hpp
+  - Vou tirar todos os pontos deste quesito pelo uso de goto, embora c++ suporte essa construção é feita para ser usada com assembly e implementações de baixo nível!
+
+- Compilação automatizada | 5 / 5 pontos
+	- ok
+	
+## Comentários
+- A implementação de um .hpp é sempre em um unico .cpp, isso pq a ideia de dividir em arquivos é que os arquivos agrupem funcionalidades logicamente relacionadas. Se vc escolheu dividir o forca.cpp em dus arquivos, é pq claramente parte do forca.hpp deveria também ser dividido em 2.
+- Como eu falei para vocês no CP1, não se usa goto, especialmente em c++ que tem objetivo de aumentar o nível de abstração. Veja que usar goto quebra completamente com a ideia de programação estruturada, quanto mais a ideia de programação orientada à objetos. Por favor, não repitam isso no próximo projeto.
+
 ## **Componentes:**
   * Danrley Lima
   * Lucas Morais
